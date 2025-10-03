@@ -1,4 +1,5 @@
-import OrderSearchBar from "../components/MyOrders/OrderSearchbar"
+
+import OrderSearchBar from "../components/MyOrders/OrderSearchBar"
 import OrderTable from "../components/MyOrders/OrderTable"
 import OrderTabs from "../components/MyOrders/OrderTabs"
 import Pagination from "../components/MyOrders/Pagination"
