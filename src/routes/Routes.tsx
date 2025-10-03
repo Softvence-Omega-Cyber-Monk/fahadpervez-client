@@ -23,6 +23,8 @@ import Signup from "@/pages/Signup/Signup";
 import Home from "@/pages/Home/Home";
 import Categories from "@/pages/Home/Categories";
 import SingleProduct from "@/pages/Home/SingleProduct";
+import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
+import { sellerRoutes } from "./SellerRoutes";
 
 const routes = createBrowserRouter([
   {
@@ -119,6 +121,11 @@ const routes = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/seller-dashboard",
+    element: <SellerDashboardLayout />,
+    children: sellerRoutes,
   },
   {
     path: "*",
