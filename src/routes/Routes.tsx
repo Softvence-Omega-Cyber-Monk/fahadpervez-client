@@ -20,6 +20,9 @@ import AdminSettings from "@/pages/Admin-Dashboard/Settings/AdminSettings";
 import AdmninDashboard from "@/pages/Admin-Dashboard/AdminDashboard/AdminDashboard";
 import Login from "@/pages/Login/Login";
 import Signup from "@/pages/Signup/Signup";
+import Home from "@/pages/Home/Home";
+import Categories from "@/pages/Home/Categories";
+import SingleProduct from "@/pages/Home/SingleProduct";
 
 const routes = createBrowserRouter([
   {
@@ -27,83 +30,94 @@ const routes = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/categories/:categoryName",
+        element: <Categories />,
+      },
+      {
+        path: "/products/:id",
+        element: <SingleProduct />,
+      },
+      {
         path: "/login",
         element: <Login />,
       },
       {
         path: "/signup",
-        element: <Signup/>,
+        element: <Signup />,
       },
       {
-        path:'buyer-dashboard',
-        element:<BuyerDashboardLayout/>,
-        children:[
+        path: "buyer-dashboard",
+        element: <BuyerDashboardLayout />,
+        children: [
           {
-            index:true,
-            element:<Dashboard/>
+            index: true,
+            element: <Dashboard />,
           },
           {
-            path:'my-orders',
-            element:<MyOrders/>
+            path: "my-orders",
+            element: <MyOrders />,
           },
           {
-            path:'wishlist',
-            element:<WishList/>
+            path: "wishlist",
+            element: <WishList />,
           },
           {
-            path:'settings',
-            element:<Settings/>
+            path: "settings",
+            element: <Settings />,
           },
           {
-            path:'help-support',
-            element:<HelpSupport/>
-          }
-        ]
+            path: "help-support",
+            element: <HelpSupport />,
+          },
+        ],
       },
 
       {
-        path:'admin-dashboard',
-        element:<AdminDashboardLayout/>,
-        children:[
+        path: "admin-dashboard",
+        element: <AdminDashboardLayout />,
+        children: [
           {
-            index:true,
-            element:<AdmninDashboard/>
+            index: true,
+            element: <AdmninDashboard />,
           },
           {
-            path:'users',
-            element:<Users/>
+            path: "users",
+            element: <Users />,
           },
           {
-            path:'orders',
-            element:<Order/>
+            path: "orders",
+            element: <Order />,
           },
           {
-            path:'product',
-            element:<Product/>
+            path: "product",
+            element: <Product />,
           },
           {
-            path:'sales-reports',
-            element:<SalesReports/>
+            path: "sales-reports",
+            element: <SalesReports />,
           },
           {
-            path:'payments',
-            element:<Payments/>
+            path: "payments",
+            element: <Payments />,
           },
           {
-            path:'shipping',
-            element:<Shipping/>
+            path: "shipping",
+            element: <Shipping />,
           },
           {
-            path:'support',
-            element:<Support/>
+            path: "support",
+            element: <Support />,
           },
           {
-            path:'settings',
-            element:<AdminSettings/>
-          }
-        ]
-      }
-
+            path: "settings",
+            element: <AdminSettings />,
+          },
+        ],
+      },
     ],
   },
   {
