@@ -13,9 +13,8 @@ const SellerDashboardLayout = () => {
       <div className="flex-1 flex flex-col bg-gray-50 min-h-screen">
         {/* Topbar */}
         <SellerDashboardNav />
-
         {/* Main content below the topbar */}
-        <div className="p-6">
+        <div className="p-10 bg-primary-background min-h-screen">
         <Outlet/>
           {/* Add more content here */}
         </div>
