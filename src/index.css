@@ -11,14 +11,20 @@
 
 @theme inline {
   --color-primary-background: var(--primary-background);
-  --color-secondary-background: var(--secondary-background);
+  --color-light-background: var(--light-background);
   --color-border: var(--border);
   --color-primary-blue: var(--primary-blue);
   --color-dark-blue: var(--dark-blue);
   --color-light-gray: var(--light-gray);
   --color-primary-green: var(--primary-green);
   --color-primary-red: var(--primary-red);
+  --color-light-red: var(--light-red);
   --color-primary-yellow: var(--primary-yellow);
+  --color-light-yellow: var(--light-yellow);
+  --color-primary-purple: var(--primary-purple);
+  --color-light-purple: var(--light-purple);
+  --color-primary-cyan: var(--primary-cyan);
+  --color-light-cyan: var(--light-cyan);
 }
 
 :root {
@@ -30,7 +36,13 @@
   --light-gray: #70797e;
   --primary-green: #08ad36;
   --primary-yellow: #fcab3f;
+  --light-yellow: #FCAB3F1A;
   --primary-red: #ff0000;
+  --light-red: #FF00001A;
+  --primary-purple: #8A38F5;
+  --light-purple: #8A38F51A;
+  --primary-cyan: #00C7F4;
+  --light-cyan: #00C7F41A;
 }
 
 @utility p1{

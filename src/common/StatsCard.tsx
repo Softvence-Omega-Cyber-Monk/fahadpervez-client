@@ -21,11 +21,11 @@ const StatsCard: React.FC<StatCardProps> = (props) => {
   };
 
   return (
-    <div className="w-full px-10 py-6 flex flex-col space-y-4 border border-border rounded-2xl ">
+    <div className="w-full pl-8 pr-10 py-6 flex flex-col space-y-4 border border-border rounded-2xl bg-light-background">
       <p className="text-light-gray">{title}</p>
       <h5 className="text-3xl font-semibold">
         {currency && "$"}
-        {value}
+        {value.toLocaleString("en-US")}
       </h5>
       <p className={` ${cardStyle[type as string]} flex items-center gap-1`}>{cardIcon[type as string]}{status}</p>
     </div>
