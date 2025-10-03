@@ -1,3 +1,4 @@
+import ProductStats from "../components/Products/ProductStats";
 
 
 
@@ -5,7 +6,8 @@ const Products = () => {
 
   return (
     <div className="">
-      Products
+      <h1>Products</h1>
+      <ProductStats/>
     </div>
   );
 };
