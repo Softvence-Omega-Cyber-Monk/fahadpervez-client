@@ -32,9 +32,6 @@ const products: Product[] = [
   },
 ];
 
-
-
-
 export default function TopProducts() {
   return (
     <div className="bg-light-background rounded-xl p-6 border border-border">
