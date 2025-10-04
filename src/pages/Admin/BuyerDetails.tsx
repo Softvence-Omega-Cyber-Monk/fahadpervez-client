@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 
 export default function BuyerDetails() {
   const { id } = useParams()
+  console.log(id)
 
   return (
     <div className="space-y-6">

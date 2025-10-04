@@ -1,7 +1,4 @@
-"use client"
-
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LabelList } from "recharts"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
 const salesData = [
   { month: "Jan", sales: 69 },
@@ -42,14 +39,8 @@ export default function SalesAnalytics() {
       </div>
 
       {/* Chart */}
-      <ChartContainer
-        config={{
-          sales: {
-            label: "Sales",
-            color: "#60B7FF",
-          },
-        }}
-        className="h-[280px] w-full"
+      <div
+         className="h-[280px] w-full"
       >
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={salesData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
@@ -61,13 +52,12 @@ export default function SalesAnalytics() {
               tick={{ fill: "#70797E", fontSize: 12 }}
               ticks={[0, 20, 40, 60, 80, 100]}
             />
-            <ChartTooltip content={<ChartTooltipContent />} />
             <Bar dataKey="sales" fill="#60B7FF" radius={[4, 4, 0, 0]}>
               <LabelList dataKey="sales" position="top" fill="#70797E" fontSize={11} />
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </ChartContainer>
+      </div>
     </div>
   )
 }
