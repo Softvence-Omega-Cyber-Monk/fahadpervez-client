@@ -1,7 +1,5 @@
-"use client"
-
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+
 
 const revenueData = [
   { day: "Mon", revenue: 3000 },
@@ -33,13 +31,8 @@ export default function RevenueOverview() {
       </div>
 
       {/* Chart */}
-      <ChartContainer
-        config={{
-          revenue: {
-            label: "Revenue",
-            color: "#8B7FD8",
-          },
-        }}
+      <div
+
         className="h-[280px] w-full"
       >
         <ResponsiveContainer width="100%" height="100%">
@@ -59,7 +52,6 @@ export default function RevenueOverview() {
               tickFormatter={(value) => `${value / 1000}k`}
               ticks={[0, 1000, 2000, 3000, 4000, 5000]}
             />
-            <ChartTooltip content={<ChartTooltipContent />} />
             <Area
               type="monotone"
               dataKey="revenue"
@@ -70,7 +62,7 @@ export default function RevenueOverview() {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </ChartContainer>
+      </div>
     </div>
   )
 }

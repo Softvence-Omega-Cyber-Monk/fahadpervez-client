@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 @theme {
   --color-website-color-black: #212a31;
@@ -9,12 +9,10 @@
   --color-website-color-lightGray: #d3d9d4;
   --color-website-color-green: #124e66;
   --color-website-color-lightGreen: #748d92;
-  --color-website-color-blue: #1C2A33;
+  --color-website-color-blue: #1c2a33;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-*{
+* {
   font-family: "Montserrat", sans-serif;
 }
 *:focus,
@@ -46,35 +44,34 @@
 :root {
   --primary-background: #f1f5f8;
   --light-background: #fefefe;
-  --border: #E8EAEB;
-  --primary-blue: #0082FA;
+  --border: #e8eaeb;
+  --primary-blue: #0082fa;
   --dark-blue: #1c2a33;
   --light-gray: #70797e;
   --primary-green: #08ad36;
   --primary-yellow: #fcab3f;
-  --light-yellow: #FCAB3F1A;
-  --primary-orange: #FFA600;
-  --light-orange: #FFA6001A;
+  --light-yellow: #fcab3f1a;
+  --primary-orange: #ffa600;
+  --light-orange: #ffa6001a;
   --primary-red: #ff0000;
-  --light-red: #FF00001A;
-  --primary-purple: #8A38F5;
-  --light-purple: #8A38F51A;
-  --primary-cyan: #00C7F4;
-  --light-cyan: #00C7F41A;
+  --light-red: #ff00001a;
+  --primary-purple: #8a38f5;
+  --light-purple: #8a38f51a;
+  --primary-cyan: #00c7f4;
+  --light-cyan: #00c7f41a;
 }
 
-@utility p1{
-    @apply text-base text-dark-blue font-medium;
-    font-size: clamp(1rem, 1vw + 0.5rem, 1rem); /* ~16px */
-    line-height: 1.6;
-  }
+@utility p1 {
+  @apply text-base text-dark-blue font-medium;
+  font-size: clamp(1rem, 1vw + 0.5rem, 1rem); /* ~16px */
+  line-height: 1.6;
+}
 
 @utility p2 {
-    @apply text-sm text-light-gray font-normal;
-    font-size: clamp(0.875rem, 1vw + 0.25rem, 0.875rem); /* ~14px */
-    line-height: 1.6;
-  }
-
+  @apply text-sm text-light-gray font-normal;
+  font-size: clamp(0.875rem, 1vw + 0.25rem, 0.875rem); /* ~14px */
+  line-height: 1.6;
+}
 
 @layer base {
   html {
@@ -97,11 +94,11 @@
     font-size: clamp(1rem, 2vw + 0.25rem, 1.25rem); /* 16px -> 20px */
     line-height: 1.4;
   }
-  p{
-    @apply font-medium text-base text-dark-blue
+  p {
+    @apply font-medium text-base text-dark-blue;
   }
 }
-@theme{
+@theme {
   --font-poppins: "Poppins", sans-serif;
   --font-montserrat: "Montserrat", sans-serif;
 }
