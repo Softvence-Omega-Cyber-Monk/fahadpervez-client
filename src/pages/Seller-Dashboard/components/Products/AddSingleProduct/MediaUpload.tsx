@@ -1,4 +1,4 @@
-import { Upload } from "lucide-react"
+import { Upload } from "lucide-react";
 
 export default function MediaUpload() {
   const imageSlots = [
@@ -6,20 +6,21 @@ export default function MediaUpload() {
     { id: "side1", label: "Side image" },
     { id: "side2", label: "Side" },
     { id: "last", label: "Last image" },
-  ]
+  ];
 
   return (
+    <div className=" space-y-10">
     <div className="bg-light-background rounded-lg p-6 space-y-6">
       {/* Image Upload Section */}
       <div>
-        <div className="flex items-baseline gap-1 mb-4">
-          <h3 className="text-dark-blue font-semibold text-base">Add Image</h3>
-          <span className="text-primary-red text-base">*</span>
+        <div className="flex items-center justify-between gap-1 py-4 mb-6 border-b-2 border-b-border ">
+          <h3 className="">
+            Add Image<span className=" text-base">*</span>
+          </h3>
+          <p className="p2">
+            Upload an image or drag and drop PNG, JPG, PDF up to 2 mb.
+          </p>
         </div>
-        <p className="text-light-gray text-xs font-normal mb-4">
-          Upload an image or drag and drop PNG, JPG, PDF up to 2 mb.
-        </p>
-
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {imageSlots.map((slot) => (
             <div
@@ -29,43 +30,36 @@ export default function MediaUpload() {
               <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
                 <Upload className="w-6 h-6 text-light-gray" />
               </div>
-              <span className="text-light-gray text-xs font-normal text-center">{slot.label}</span>
+              <span className="p1 ">
+                {slot.label}
+              </span>
             </div>
           ))}
         </div>
       </div>
-
-      {/* Video Upload Section */}
-      <div>
-        <div className="flex items-baseline gap-1 mb-4">
-          <h3 className="text-dark-blue font-semibold text-base">Add Video</h3>
+    </div>
+    {/* Video Upload Section */}
+      <div className="bg-light-background rounded-lg p-6 space-y-6">
+        <div className="flex items-center justify-between gap-1 py-4 mb-6 border-b-2 border-border">
+          <h3 className="">Add Video</h3>
+        <p className="p2 ">
+          Upload a video up to 10 mb.
+        </p>
         </div>
-        <p className="text-light-gray text-xs font-normal mb-4">Upload a video up to 10 mb.</p>
 
-        <div className="relative border-2 border-dashed border-primary-blue rounded-lg p-12 bg-[#f0f8ff]">
-          {/* Corner badges */}
-          <div className="absolute top-2 left-2 w-8 h-8 bg-primary-blue text-white rounded flex items-center justify-center text-xs font-bold">
-            20
-          </div>
-          <div className="absolute top-2 right-2 w-8 h-8 bg-primary-blue text-white rounded flex items-center justify-center text-xs font-bold">
-            20
-          </div>
-          <div className="absolute bottom-2 left-2 w-8 h-8 bg-primary-blue text-white rounded flex items-center justify-center text-xs font-bold">
-            20
-          </div>
-          <div className="absolute bottom-2 right-2 w-8 h-8 bg-primary-blue text-white rounded flex items-center justify-center text-xs font-bold">
-            20
-          </div>
+        <div className="relative border-2 border-dashed border-border rounded-2xl px-20 py-12 bg-[#f0f8ff] w-fit">
 
           {/* Upload content */}
           <div className="flex flex-col items-center gap-3">
             <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center">
               <Upload className="w-8 h-8 text-light-gray" />
             </div>
-            <span className="text-light-gray text-sm font-normal">Add video</span>
+            <span className="p1">
+              Add video
+            </span>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
