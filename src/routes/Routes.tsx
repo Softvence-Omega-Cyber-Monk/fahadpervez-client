@@ -33,6 +33,7 @@ import ProductDetail from "@/pages/ProductDetail";
 
 
 const routes = createBrowserRouter([
+  
   {
     path: "/",
     element: <App />,
@@ -46,6 +47,7 @@ const routes = createBrowserRouter([
         element: <Categories />,
       },
       {
+        
         path: "/products/:id",
         element: <SingleProduct />,
       },
