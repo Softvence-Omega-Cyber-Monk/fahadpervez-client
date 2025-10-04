@@ -8,6 +8,11 @@
   --color-website-color-green: #124e66;
   --color-website-color-lightGreen: #748d92;
 }
+*:focus,
+*:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 @theme inline {
   --color-primary-background: var(--primary-background);
@@ -33,7 +38,7 @@
   --primary-background: #f1f5f8;
   --light-background: #fefefe;
   --border: #E8EAEB;
-  --primary-blue: #0064e0;
+  --primary-blue: #0082FA;
   --dark-blue: #1c2a33;
   --light-gray: #70797e;
   --primary-green: #08ad36;

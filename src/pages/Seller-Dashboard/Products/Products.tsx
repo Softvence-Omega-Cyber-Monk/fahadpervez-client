@@ -1,13 +1,13 @@
-import ProductStats from "../components/Products/ProductStats";
+
+import { Outlet } from "react-router-dom";
 
 
 
 const Products = () => {
 
   return (
-    <div className="">
-      <h1>Products</h1>
-      <ProductStats/>
+    <div className="space-y-10">
+      <Outlet/>
     </div>
   );
 };
