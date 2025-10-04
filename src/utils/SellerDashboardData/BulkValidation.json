@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Total products",
+    "value": 155,
+    "icon": "box"
+  },
+  {
+    "title": "Valid products",
+    "value": 142,
+    "icon": "check"
+  },
+  {
+    "title": "Warnings",
+    "value": 8,
+    "icon": "warning"
+  },
+  {
+    "title": "Critical Errors",
+    "value": 5,
+    "icon": "alert"
+  }
+]

@@ -1,12 +1,18 @@
 import Dashboard from "@/pages/Seller-Dashboard/Dashboard/Dashboard";
-import Products from "@/pages/Seller-Dashboard/Products/Products";
 import { RiDashboardFill } from "react-icons/ri";
 import { AiOutlineShoppingCart, AiOutlineDollarCircle, AiOutlineMessage, AiOutlineSetting, AiOutlineQuestionCircle } from "react-icons/ai";
-import Order from "@/pages/Seller-Dashboard/Order/Order";
 import Earnings from "@/pages/Seller-Dashboard/Earnings/Earnings";
 import Message from "@/pages/Seller-Dashboard/Message/Message";
 import Settings from "@/pages/Seller-Dashboard/Settings/Settings";
 import HelpAndSupport from "@/pages/Seller-Dashboard/HelpAndSupport/HelpAndSupport";
+import AddProduct from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
+import AddBulkProduct from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/AddBulkProduct";
+import ProductsLandingPage from "@/pages/Seller-Dashboard/components/Products/ProductsLandingPage/ProductsLandingPage";
+import BulkValidation from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/BulkValidation";
+import ConfirmUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/ConfirmUpload";
+import CompleteUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/CompleteUpload";
+import OrderLandingPage from "@/pages/Seller-Dashboard/components/Order/OrderLandingPage";
+import OrderTracking from "@/pages/Seller-Dashboard/components/Order/OrderTracking";
 
 export const sellerRoutes = [
   {
@@ -20,13 +26,49 @@ export const sellerRoutes = [
     path: "products",
     icon: <AiOutlineShoppingCart />,
     name: "Products",
-    element: <Products />,
+    // element: <Products />,
+    children:[
+      {
+        index:true,
+        element:<ProductsLandingPage/>
+      },
+      {
+        path:"add-single-product",
+        element:<AddProduct/>
+      },
+      {
+        path:"add-bulk-product",
+        element:<AddBulkProduct/>
+      },
+      {
+        path:"bulk-validation",
+        element:<BulkValidation/>
+      },
+      {
+        path:"confirm-upload",
+        element:<ConfirmUpload/>
+      },
+      {
+        path:"upload-complete",
+        element:<CompleteUpload/>
+      },
+    ]
   },
   {
     path: "orders",
     icon: <AiOutlineShoppingCart />,
     name: "Orders",
-    element: <Order />,
+    // element: <Order />,
+    children:[
+      {
+        index:true,
+        element:<OrderLandingPage/>
+      },
+      {
+        path:"order-status",
+        element:<OrderTracking />
+      }
+    ]
   },
   {
     path: "earnings",

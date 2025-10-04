@@ -4,7 +4,7 @@ import { SendHorizontal } from 'lucide-react';
 const Footer: React.FC = () => {
   return (
     <footer className="bg-[#212a31] text-white py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-15">
         <div className="flex justify-between">
           {/* About Section */}
           <div>
@@ -22,10 +22,10 @@ const Footer: React.FC = () => {
           {/* Support Media Section */}
           <div className="w-[15%]">
             <h2 className="text-2xl font-medium mb-6 font-montserrat text-gray-100">Support</h2>
-            <div className="flex flex-col gap-4 text-gray-300 font-montserrat">
-              <p>456 Maple Avenue, Springfield, IL 62704, USA.</p>
-              <p>exclusive@gmail.com</p>
-              <p>+88015-88888-9999</p> 
+            <div className="flex flex-col gap-4 font-montserrat">
+              <p className="text-gray-300">456 Maple Avenue, Springfield, IL 62704, USA.</p>
+              <p className="text-gray-300">exclusive@gmail.com</p>
+              <p className="text-gray-300">+88015-88888-9999</p> 
             </div>
           </div>
 

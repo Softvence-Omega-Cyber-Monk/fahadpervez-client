@@ -75,7 +75,7 @@ const BestSeller: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-12 bg-white">
+    <div className="w-full max-w-6xl mx-auto px-4 py-12 bg-[#F1F5F8]">
       <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue">BEST SELLERS</h2>
       
       <div className="relative">
@@ -83,7 +83,7 @@ const BestSeller: React.FC = () => {
         <button
           onClick={prevSlide}
           disabled={currentIndex === 0}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="absolute left-0 top-[50%] -translate-y-[100%] -translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           aria-label="Previous products"
         >
           <ChevronLeft className="w-6 h-6 text-gray-600" />
@@ -152,7 +152,7 @@ const BestSeller: React.FC = () => {
         <button
           onClick={nextSlide}
           disabled={currentIndex === maxIndex}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="absolute right-0 top-[50%] -translate-y-[100%] translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           aria-label="Next products"
         >
           <ChevronRight className="w-6 h-6 text-gray-600" />
