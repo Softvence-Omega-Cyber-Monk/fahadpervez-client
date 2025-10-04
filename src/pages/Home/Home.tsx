@@ -8,7 +8,7 @@ import { MoveUpRight } from 'lucide-react';
 const Home = () => {
   return (
     <>
-      <div>
+      <div className="bg-[#F1F5F8]">
           <div className="flex justify-center ">
             <div className="bg-website-color-blue w-[50%] pt-50 pl-97">
               <h1 className="font-montserrat text-5xl font-medium text-white uppercase leading-[120%] mb-6">Experience Top-Notch Healthcare Products with Ease</h1>
