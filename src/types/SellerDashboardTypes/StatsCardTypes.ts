@@ -1,5 +1,5 @@
 export interface StatType {
-  type:"up" | "down" | "warning" | "success" | "error" | "info" | "check" | "box" | "plus" | "alert",
+  type:"up" | "down" | "warning" | "success" | "error" | "info" | "check" | "box" | "plus" | "alert" | string,
 }
 
 export interface StatCardTypes {
