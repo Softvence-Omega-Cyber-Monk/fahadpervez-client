@@ -56,6 +56,9 @@ const SideBar = () => {
           <Link to='/buyer-dashboard/help-support'>
           <SidebarItem icon={<FaHeadset />} label="Help & Support" />
           </Link>
+          <Link to='/buyer-dashboard/message'>
+          <SidebarItem icon={<FaHeadset />} label="Message" />
+          </Link>
         </nav>
       </div>
      

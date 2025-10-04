@@ -1,15 +1,18 @@
 import { FaBell, FaShoppingCart } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const DashboardNav = () => {
   return (
     <div className="flex justify-between items-center p-4 bg-white shadow-sm w-full">
       {/* Left Side: User Info */}
       <div className="flex items-center space-x-3">
-        <img
-          src="https://i.pravatar.cc/40?img=12" // Replace with your own image
-          alt="User"
-          className="w-10 h-10 rounded-full object-cover"
-        />
+    <Link to="/buyer-dashboard/buyer-profile">
+  <img
+    src="https://i.pravatar.cc/40?img=12"
+    alt="User"
+    className="w-10 h-10 rounded-full object-cover cursor-pointer"
+  />
+</Link>
         <div>
           <p className="text-sm font-medium text-gray-900">Marvin McKinney</p>
           <p className="text-xs text-gray-500">Buyer</p>

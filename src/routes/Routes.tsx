@@ -29,6 +29,10 @@ import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetail
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
 import ProductDetail from "@/pages/ProductDetail";
+import Notifications from "@/pages/Buyer-Dashboard/Notifications/Notifications";
+import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
+import BuyerProfile from "@/pages/Buyer-Dashboard/BuyerProfile/BuyerProfile";
+import Message from "@/pages/Buyer-Dashboard/Message/Message";
 
 
 
@@ -88,6 +92,22 @@ const routes = createBrowserRouter([
           {
             path:'product-details/:productId',
             element:<ProductDetails/>
+          },
+          {
+            path:'notifications',
+            element:<Notifications/>
+          },
+          {
+            path:'dashboard-product-details/:productId',
+            element:<DashboardProductDetails/>
+          },
+          {
+            path:'buyer-profile',
+            element:<BuyerProfile/>
+          },
+          {
+            path:'message',
+            element:<Message/>
           }
         ],
       },
