@@ -48,6 +48,7 @@ import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetail
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
 import ProductDetail from "@/pages/ProductDetail";
+import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 
 
 
@@ -122,6 +123,15 @@ const routes = createBrowserRouter([
                 path: "orders/:id",
                 element: <OrderDetails />,
               },
+              /* Kayes */
+              {
+                path: "sales",
+                element: <SalesReportsPage />,
+              },
+               {
+                path: "payments",
+                element: <Payments />,
+              },
             ],
           },
           {
@@ -152,6 +162,7 @@ const routes = createBrowserRouter([
                 path: 'product-details/:productId',
                 element: <ProductDetails />
               }
+              
             ],
           },
 
