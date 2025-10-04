@@ -1,4 +1,7 @@
+import InventoryAlerts from "../components/Dashboard/InventoryAlerts";
 import RecentOrders from "../components/Dashboard/RecentOrders";
+import RevenueOverview from "../components/Dashboard/RevenueOverview";
+import SalesAnalytics from "../components/Dashboard/SalesAnalytics";
 import Stats from "../components/Dashboard/Stats";
 import TopProducts from "../components/Dashboard/TopProducts";
 
@@ -14,6 +17,9 @@ const Dashboard = () => {
           <TopProducts />
         </div>
       </div>
+      <RevenueOverview/>
+      <SalesAnalytics/>
+      <InventoryAlerts/>
     </div>
   );
 };
