@@ -28,8 +28,6 @@ import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetail
 
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
-import ProductDetail from "@/pages/ProductDetail";
-
 
 
 const routes = createBrowserRouter([
@@ -50,10 +48,6 @@ const routes = createBrowserRouter([
         
         path: "/products/:id",
         element: <SingleProduct />,
-      },
-      {
-        path:'/product-details',
-        element:<ProductDetail/>
       },
       {
         path: "/login",
