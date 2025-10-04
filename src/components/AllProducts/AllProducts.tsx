@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, MoveUpRight } from 'lucide-react';
 import Button from '../Button/Button';
+import { NavLink } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -64,10 +65,12 @@ const AllProducts: React.FC = () => {
         </div>
         
         <div className="flex justify-center">
-          <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
-                Browse All
-            <MoveUpRight />
-          </Button>
+          <NavLink to="/products/:id">
+              <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
+                  Browse All
+              <MoveUpRight />
+            </Button>
+          </NavLink>
         </div>
       </div>
     </div>
