@@ -9,6 +9,9 @@ import HelpAndSupport from "@/pages/Seller-Dashboard/HelpAndSupport/HelpAndSuppo
 import AddProduct from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
 import AddBulkProduct from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/AddBulkProduct";
 import ProductsLandingPage from "@/pages/Seller-Dashboard/components/Products/ProductsLandingPage/ProductsLandingPage";
+import BulkValidation from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/BulkValidation";
+import ConfirmUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/ConfirmUpload";
+import CompleteUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/CompleteUpload";
 
 export const sellerRoutes = [
   {
@@ -35,7 +38,19 @@ export const sellerRoutes = [
       {
         path:"add-bulk-product",
         element:<AddBulkProduct/>
-      }
+      },
+      {
+        path:"bulk-validation",
+        element:<BulkValidation/>
+      },
+      {
+        path:"confirm-upload",
+        element:<ConfirmUpload/>
+      },
+      {
+        path:"upload-complete",
+        element:<CompleteUpload/>
+      },
     ]
   },
   {
