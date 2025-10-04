@@ -1,5 +1,24 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
+// import About from "../pages/About";
+// import Contact from "../pages/Contact";
+// import NotFound from "../pages/NotFound";
+// import Home from "../pages/Home";
+import AdminRoute from "./AdminRoutes";
+// import Login from "@/pages/Login";
+// import Signup from "@/pages/Signup";
+// import Form from "@/pages/Form";
+// import Services from "@/pages/Services";
+import Layout from "@/Layout/AdminLayout";
+
+// Admin Pages
+import AdminDashboard from "@/pages/Admin/AdminDashboard";
+import UsersTab from "@/pages/Admin/UsersTab";
+import BuyerDetails from "@/pages/Admin/BuyerDetails";
+import SellerRequests from "@/pages/Admin/SellerRequests";
+import SellerApplication from "@/pages/Admin/SellerApplication";
+import Orders from "@/pages/Admin/Orders";
+import OrderDetails from "@/pages/Admin/OrderDetails";
 
 import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerDashboardLayout";
 import Dashboard from "@/pages/Buyer-Dashboard/Dashboard/Dashboard";
@@ -28,6 +47,8 @@ import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetail
 
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
+import ProductDetail from "@/pages/ProductDetail";
+
 
 
 const routes = createBrowserRouter([
@@ -48,6 +69,10 @@ const routes = createBrowserRouter([
         element: <SingleProduct />,
       },
       {
+        path: '/product-details',
+        element: <ProductDetail />
+      },
+      {
         path: "/login",
         element: <Login />,
       },
@@ -55,90 +80,138 @@ const routes = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
+
+      // ✅ Admin Protected Routes
       {
-        path: "buyer-dashboard",
-        element: <BuyerDashboardLayout />,
+        path: "/admin",
+        element: <AdminRoute />, // Checks for admin
         children: [
           {
-            index: true,
-            element: <Dashboard />,
+            path: "",
+            element: <Navigate to="dashboard" replace />,
           },
           {
-            path: "my-orders",
-            element: <MyOrders />,
+            path: "",
+            element: <Layout />,
+            children: [
+              {
+                path: "dashboard",
+                element: <AdminDashboard />,
+              },
+              {
+                path: "users",
+                element: <UsersTab />,
+              },
+              {
+                path: "users/buyer/:id",
+                element: <BuyerDetails />,
+              },
+              {
+                path: "users/sellers/requests",
+                element: <SellerRequests />,
+              },
+              {
+                path: "users/sellers/requests/:id",
+                element: <SellerApplication />,
+              },
+              {
+                path: "orders",
+                element: <Orders />,
+              },
+              {
+                path: "orders/:id",
+                element: <OrderDetails />,
+              },
+            ],
           },
           {
-            path: "wishlist",
-            element: <WishList />,
+            path: "buyer-dashboard",
+            element: <BuyerDashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <Dashboard />,
+              },
+              {
+                path: "my-orders",
+                element: <MyOrders />,
+              },
+              {
+                path: "wishlist",
+                element: <WishList />,
+              },
+              {
+                path: "settings",
+                element: <Settings />,
+              },
+              {
+                path: "help-support",
+                element: <HelpSupport />,
+              },
+              {
+                path: 'product-details/:productId',
+                element: <ProductDetails />
+              }
+            ],
           },
+
           {
-            path: "settings",
-            element: <Settings />,
+            path: "admin-dashboard",
+            element: <AdminDashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <AdmninDashboard />,
+              },
+              {
+                path: "users",
+                element: <Users />,
+              },
+              {
+                path: "orders",
+                element: <Order />,
+              },
+              {
+                path: "product",
+                element: <Product />,
+              },
+              {
+                path: "sales-reports",
+                element: <SalesReports />,
+              },
+              {
+                path: "payments",
+                element: <Payments />,
+              },
+              {
+                path: "shipping",
+                element: <Shipping />,
+              },
+              {
+                path: "support",
+                element: <Support />,
+              },
+              {
+                path: "settings",
+                element: <AdminSettings />,
+              },
+            ],
           },
-          {
-            path: "help-support",
-            element: <HelpSupport />,
-          },
-          {
-            path:'product-details/:productId',
-            element:<ProductDetails/>
-          }
         ],
+      },
+      {
+        path: "/seller-dashboard",
+        element: <SellerDashboardLayout />,
+        children: sellerRoutes,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
 
-      {
-        path: "admin-dashboard",
-        element: <AdminDashboardLayout />,
-        children: [
-          {
-            index: true,
-            element: <AdmninDashboard />,
-          },
-          {
-            path: "users",
-            element: <Users />,
-          },
-          {
-            path: "orders",
-            element: <Order />,
-          },
-          {
-            path: "product",
-            element: <Product />,
-          },
-          {
-            path: "sales-reports",
-            element: <SalesReports />,
-          },
-          {
-            path: "payments",
-            element: <Payments />,
-          },
-          {
-            path: "shipping",
-            element: <Shipping />,
-          },
-          {
-            path: "support",
-            element: <Support />,
-          },
-          {
-            path: "settings",
-            element: <AdminSettings />,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: "/seller-dashboard",
-    element: <SellerDashboardLayout />,
-    children: sellerRoutes,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+    ]
+  }
+
 ]);
 
 export default routes;
