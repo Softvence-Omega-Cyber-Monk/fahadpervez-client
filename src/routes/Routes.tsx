@@ -12,7 +12,6 @@ import AdminDashboardLayout from "@/pages/Admin-Dashboard/DashboardLayout/AdminD
 import Users from "@/pages/Admin-Dashboard/Users/Users";
 import Order from "@/pages/Admin-Dashboard/Order/Order";
 import Product from "@/pages/Admin-Dashboard/Product/Product";
-import SalesReports from "@/pages/Admin-Dashboard/SalesReports";
 import Payments from "@/pages/Admin-Dashboard/Payments/Payments";
 import Shipping from "@/pages/Admin-Dashboard/Shipping/Shipping";
 import Support from "@/pages/Admin-Dashboard/Support/Support";
@@ -28,6 +27,8 @@ import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetail
 
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
+import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord";
+import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 
 
 const routes = createBrowserRouter([
@@ -109,10 +110,6 @@ const routes = createBrowserRouter([
             element: <Product />,
           },
           {
-            path: "sales-reports",
-            element: <SalesReports />,
-          },
-          {
             path: "payments",
             element: <Payments />,
           },
@@ -127,6 +124,14 @@ const routes = createBrowserRouter([
           {
             path: "settings",
             element: <AdminSettings />,
+          },
+          {
+            path: "admin-payment",
+            element: <PaymentsDasbord />,
+          },
+          {
+            path: "sales-reports",
+            element: <SalesReportsPage />,
           },
         ],
       },
