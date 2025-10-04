@@ -17,6 +17,11 @@
 *{
   font-family: "Montserrat", sans-serif;
 }
+*:focus,
+*:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 @theme inline {
   --color-primary-background: var(--primary-background);
@@ -30,6 +35,8 @@
   --color-light-red: var(--light-red);
   --color-primary-yellow: var(--primary-yellow);
   --color-light-yellow: var(--light-yellow);
+  --color-primary-orange: var(--primary-orange);
+  --color-light-orange: var(--light-orange);
   --color-primary-purple: var(--primary-purple);
   --color-light-purple: var(--light-purple);
   --color-primary-cyan: var(--primary-cyan);
@@ -40,12 +47,14 @@
   --primary-background: #f1f5f8;
   --light-background: #fefefe;
   --border: #E8EAEB;
-  --primary-blue: #0064e0;
+  --primary-blue: #0082FA;
   --dark-blue: #1c2a33;
   --light-gray: #70797e;
   --primary-green: #08ad36;
   --primary-yellow: #fcab3f;
   --light-yellow: #FCAB3F1A;
+  --primary-orange: #FFA600;
+  --light-orange: #FFA6001A;
   --primary-red: #ff0000;
   --light-red: #FF00001A;
   --primary-purple: #8A38F5;
@@ -73,7 +82,7 @@
   }
   h1 {
     @apply font-semibold;
-    font-size: clamp(1.875rem, 3vw + 1rem, 3.5rem); /* 28px -> 56px */
+    font-size: clamp(1.875rem, 3vw + 1rem, 2rem); /* 28px -> 56px */
     line-height: 1.2;
   }
   /* H2 - Section Headings */
