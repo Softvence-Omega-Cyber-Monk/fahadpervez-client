@@ -1,5 +1,6 @@
 import React from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, MoveUpRight } from 'lucide-react';
+import Button from '../Button/Button';
 
 interface Product {
   id: number;
@@ -26,7 +27,7 @@ const AllProducts: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen pb-16">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue">ALL PRODUCTS</h1>
         
@@ -47,10 +48,10 @@ const AllProducts: React.FC = () => {
                 />
               </div>
               
-              <div className="">
-                <h3 className="text-sm text-gray-800 my-2 mt-3">{product.name}</h3>
+              <div>
+                <h3 className="text-md font-montserrat font-medium text-gray-800 my-2 mt-3">{product.name}</h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold text-gray-900">
+                  <span className="text-lg font-montserrat font-medium text-website-color-blue">
                     ${product.price.toFixed(2)}
                   </span>
                   <span className="text-sm text-gray-400 line-through">
@@ -63,12 +64,10 @@ const AllProducts: React.FC = () => {
         </div>
         
         <div className="flex justify-center">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-2.5 rounded-md flex items-center gap-2 transition">
-            Browse All
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+          <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
+                Browse All
+            <MoveUpRight />
+          </Button>
         </div>
       </div>
     </div>
