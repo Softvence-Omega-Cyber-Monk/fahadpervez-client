@@ -1,38 +1,42 @@
-"use client"
-
-import type React from "react"
-
-import { Upload } from "lucide-react"
-import { useState } from "react"
-import PrimaryButton from "@/common/PrimaryButton"
+import type React from "react";
+import { Upload } from "lucide-react";
+import { useState } from "react";
+import PrimaryButton from "@/common/PrimaryButton";
+import { useNavigate } from "react-router-dom";
 
 export default function UploadProductFile() {
-  const [isDragging, setIsDragging] = useState(false)
+  const navigate = useNavigate();
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(true)
-  }
+    e.preventDefault();
+    setIsDragging(true);
+  };
 
   const handleDragLeave = () => {
-    setIsDragging(false)
-  }
+    setIsDragging(false);
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-    // Handle file drop logic here
-  }
-
+    e.preventDefault();
+    setIsDragging(false);
+  };
+  const handleBrowseFile = () => {
+    navigate("/seller-dashboard/products/bulk-validation");
+  };
   return (
     <div className="">
-              <h2 className="text-dark-blue font-semibold text-xl mb-6">Upload Your Product File</h2>
+      <h2 className="text-dark-blue font-semibold text-xl mb-6">
+        Upload Your Product File
+      </h2>
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`bg-light-background rounded-lg py-16 text-center transition-colors ${
-          isDragging ? "border-primary-blue bg-primary-blue/5" : "border-border bg-white"
+          isDragging
+            ? "border-primary-blue bg-primary-blue/5"
+            : "border-border bg-white"
         }`}
       >
         <div className="flex flex-col items-center gap-4">
@@ -46,15 +50,24 @@ export default function UploadProductFile() {
           </div>
 
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 bg-gray-100 text-light-gray text-xs font-medium rounded">Excel (.xlsx)</span>
-            <span className="px-3 py-1 bg-gray-100 text-light-gray text-xs font-medium rounded">CSV (.csv)</span>
+            <span className="px-3 py-1 bg-gray-100 text-light-gray text-xs font-medium rounded">
+              Excel (.xlsx)
+            </span>
+            <span className="px-3 py-1 bg-gray-100 text-light-gray text-xs font-medium rounded">
+              CSV (.csv)
+            </span>
           </div>
 
           <p className="p2 ">Maximum file size: 10MB</p>
 
-          <PrimaryButton type="Primary" title="Browse File" className="px-10"/>
+          <PrimaryButton
+            type="Primary"
+            title="Browse File"
+            className="px-10"
+            onClick={handleBrowseFile}
+          />
         </div>
       </div>
     </div>
-  )
+  );
 }
