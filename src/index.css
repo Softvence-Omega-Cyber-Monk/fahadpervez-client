@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -7,6 +9,92 @@
   --color-website-color-lightGray: #d3d9d4;
   --color-website-color-green: #124e66;
   --color-website-color-lightGreen: #748d92;
+  --color-website-color-blue: #1C2A33;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+  font-family: "Montserrat", sans-serif;
+}
+
+@theme inline {
+  --color-primary-background: var(--primary-background);
+  --color-light-background: var(--light-background);
+  --color-border: var(--border);
+  --color-primary-blue: var(--primary-blue);
+  --color-dark-blue: var(--dark-blue);
+  --color-light-gray: var(--light-gray);
+  --color-primary-green: var(--primary-green);
+  --color-primary-red: var(--primary-red);
+  --color-light-red: var(--light-red);
+  --color-primary-yellow: var(--primary-yellow);
+  --color-light-yellow: var(--light-yellow);
+  --color-primary-purple: var(--primary-purple);
+  --color-light-purple: var(--light-purple);
+  --color-primary-cyan: var(--primary-cyan);
+  --color-light-cyan: var(--light-cyan);
+}
+
+:root {
+  --primary-background: #f1f5f8;
+  --light-background: #fefefe;
+  --border: #E8EAEB;
+  --primary-blue: #0064e0;
+  --dark-blue: #1c2a33;
+  --light-gray: #70797e;
+  --primary-green: #08ad36;
+  --primary-yellow: #fcab3f;
+  --light-yellow: #FCAB3F1A;
+  --primary-red: #ff0000;
+  --light-red: #FF00001A;
+  --primary-purple: #8A38F5;
+  --light-purple: #8A38F51A;
+  --primary-cyan: #00C7F4;
+  --light-cyan: #00C7F41A;
+}
+
+@utility p1{
+    @apply text-base text-dark-blue font-medium;
+    font-size: clamp(1rem, 1vw + 0.5rem, 1rem); /* ~16px */
+    line-height: 1.6;
+  }
+
+@utility p2 {
+    @apply text-sm text-light-gray font-normal;
+    font-size: clamp(0.875rem, 1vw + 0.25rem, 0.875rem); /* ~14px */
+    line-height: 1.6;
+  }
+
+
+@layer base {
+  html {
+    font-family: "Montserrat", sans-serif;
+  }
+  h1 {
+    @apply font-semibold;
+    font-size: clamp(1.875rem, 3vw + 1rem, 3.5rem); /* 28px -> 56px */
+    line-height: 1.2;
+  }
+  /* H2 - Section Headings */
+  h2 {
+    @apply font-semibold text-dark-blue;
+    font-size: clamp(1.125rem, 2vw + 0.5rem, 1.5rem); /* 18px -> 24px */
+    line-height: 1.3;
+  }
+
+  h3 {
+    @apply font-semibold;
+    font-size: clamp(1rem, 2vw + 0.25rem, 1.25rem); /* 16px -> 20px */
+    line-height: 1.4;
+  }
+  p{
+    @apply font-medium text-base text-dark-blue
+  }
+}
+@theme{
+  --font-poppins: "Poppins", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
 }
 body {
   font-family: "Montserrat", sans-serif;

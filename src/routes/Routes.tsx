@@ -1,24 +1,53 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import NotFound from "../pages/NotFound";
-import Home from "../pages/Home";
+// import About from "../pages/About";
+// import Contact from "../pages/Contact";
+// import NotFound from "../pages/NotFound";
+// import Home from "../pages/Home";
 import AdminRoute from "./AdminRoutes";
-import Login from "@/pages/Login";
-import Signup from "@/pages/Signup";
-import Form from "@/pages/Form";
-import Services from "@/pages/Services";
+// import Login from "@/pages/Login";
+// import Signup from "@/pages/Signup";
+// import Form from "@/pages/Form";
+// import Services from "@/pages/Services";
 import Layout from "@/Layout/AdminLayout";
 
 // Admin Pages
 import AdminDashboard from "@/pages/Admin/AdminDashboard";
-import Users from "@/pages/Admin/Users";
+import UsersTab from "@/pages/Admin/UsersTab";
 import BuyerDetails from "@/pages/Admin/BuyerDetails";
 import SellerRequests from "@/pages/Admin/SellerRequests";
 import SellerApplication from "@/pages/Admin/SellerApplication";
 import Orders from "@/pages/Admin/Orders";
 import OrderDetails from "@/pages/Admin/OrderDetails";
+
+import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerDashboardLayout";
+import Dashboard from "@/pages/Buyer-Dashboard/Dashboard/Dashboard";
+import MyOrders from "@/pages/Buyer-Dashboard/MyOrders/MyOrders";
+import WishList from "@/pages/Buyer-Dashboard/WishList/WishList";
+import Settings from "@/pages/Buyer-Dashboard/Settings/Settings";
+import HelpSupport from "@/pages/Buyer-Dashboard/HelpSupport/HelpSupport";
+import NotFound from "@/pages/NotFound";
+import AdminDashboardLayout from "@/pages/Admin-Dashboard/DashboardLayout/AdminDashboardLayout";
+import Users from "@/pages/Admin-Dashboard/Users/Users";
+import Order from "@/pages/Admin-Dashboard/Order/Order";
+import Product from "@/pages/Admin-Dashboard/Product/Product";
+import SalesReports from "@/pages/Admin-Dashboard/SalesReports";
+import Payments from "@/pages/Admin-Dashboard/Payments/Payments";
+import Shipping from "@/pages/Admin-Dashboard/Shipping/Shipping";
+import Support from "@/pages/Admin-Dashboard/Support/Support";
+import AdminSettings from "@/pages/Admin-Dashboard/Settings/AdminSettings";
+import AdmninDashboard from "@/pages/Admin-Dashboard/AdminDashboard/AdminDashboard";
+import Login from "@/pages/Login/Login";
+import Signup from "@/pages/Signup/Signup";
+import Home from "@/pages/Home/Home";
+import Categories from "@/pages/Home/Categories";
+import SingleProduct from "@/pages/Home/SingleProduct";
+
+import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetails";
+
+import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
+import { sellerRoutes } from "./SellerRoutes";
+import ProductDetail from "@/pages/ProductDetail";
 
 
 
@@ -32,20 +61,16 @@ const routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/about",
-        element: <About />,
+        path: "/categories/:categoryName",
+        element: <Categories />,
       },
       {
-        path: "/contact",
-        element: <Contact />,
+        path: "/products/:id",
+        element: <SingleProduct />,
       },
       {
-        path: "/services",
-        element: <Services />,
-      },
-      {
-        path: "/form",
-        element: <Form />,
+        path: '/product-details',
+        element: <ProductDetail />
       },
       {
         path: "/login",
@@ -75,7 +100,7 @@ const routes = createBrowserRouter([
               },
               {
                 path: "users",
-                element: <Users />,
+                element: <UsersTab />,
               },
               {
                 path: "users/buyer/:id",
@@ -99,14 +124,94 @@ const routes = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "buyer-dashboard",
+            element: <BuyerDashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <Dashboard />,
+              },
+              {
+                path: "my-orders",
+                element: <MyOrders />,
+              },
+              {
+                path: "wishlist",
+                element: <WishList />,
+              },
+              {
+                path: "settings",
+                element: <Settings />,
+              },
+              {
+                path: "help-support",
+                element: <HelpSupport />,
+              },
+              {
+                path: 'product-details/:productId',
+                element: <ProductDetails />
+              }
+            ],
+          },
+
+          {
+            path: "admin-dashboard",
+            element: <AdminDashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <AdmninDashboard />,
+              },
+              {
+                path: "users",
+                element: <Users />,
+              },
+              {
+                path: "orders",
+                element: <Order />,
+              },
+              {
+                path: "product",
+                element: <Product />,
+              },
+              {
+                path: "sales-reports",
+                element: <SalesReports />,
+              },
+              {
+                path: "payments",
+                element: <Payments />,
+              },
+              {
+                path: "shipping",
+                element: <Shipping />,
+              },
+              {
+                path: "support",
+                element: <Support />,
+              },
+              {
+                path: "settings",
+                element: <AdminSettings />,
+              },
+            ],
+          },
         ],
       },
-    ],
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+      {
+        path: "/seller-dashboard",
+        element: <SellerDashboardLayout />,
+        children: sellerRoutes,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
+
+    ]
+  }
+
 ]);
 
 export default routes;

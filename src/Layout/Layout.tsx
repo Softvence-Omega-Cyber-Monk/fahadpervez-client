@@ -1,7 +1,6 @@
 import Footer from "./Footer";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
-
 const Layout: React.FC = () => {
   const location = useLocation()
   const isDashboardRoute = location.pathname.startsWith("/admin");
