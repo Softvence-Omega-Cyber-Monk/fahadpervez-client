@@ -1,4 +1,4 @@
-import PaymentsDasbord from "@/components/Admin/paymentsDasbord/paymentsDasbord"
+import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord"
 
 const Payments = () => {
   return (

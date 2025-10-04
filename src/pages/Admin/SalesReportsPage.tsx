@@ -4,8 +4,8 @@ import SalesReportsDashboard from "@/components/Admin/SalesReports/SalesReportsD
  
 const SalesReportsPage = () => {
   return (
-    <div className="     ">
-{/* <  FiltersExportSection classname={""}/> */}
+    <div className="  ">
+
 <SalesReportsDashboard/>
 
     </div>

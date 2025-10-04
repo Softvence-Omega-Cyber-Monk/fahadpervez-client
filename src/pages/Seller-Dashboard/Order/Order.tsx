@@ -1,11 +1,10 @@
-
-
+import { Outlet } from "react-router-dom";
 
 const Order = () => {
 
   return (
     <div className="">
-      Order
+      <Outlet/>
     </div>
   );
 };

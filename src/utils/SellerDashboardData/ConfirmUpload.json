@@ -1,0 +1,13 @@
+[
+  {
+    "title": "Products Ready",
+    "value": 140,
+    "icon": "box"
+  },
+  {
+    "title": "Total Inventory Value",
+    "value": 30142,
+    "icon": "dollar",
+    "currency": "USD"
+  }
+]
