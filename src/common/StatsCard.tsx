@@ -54,6 +54,7 @@ export function StatsCard({ item }: StatCardProps) {
     buttonText,
     buttonAction,
     icon,
+       
   } = item;
 
   const formatValue = (val: number, currency?: string) => {
@@ -68,7 +69,7 @@ export function StatsCard({ item }: StatCardProps) {
       {/* Header Row with optional icon */}
       <div className="flex items-center gap-2">
         {icon && <div className={`p-3 rounded-lg text-2xl ${iconColor[icon as "box" | "check" | "alert" | "plus" ]} `}>{cardIcon[icon]}</div>}
-        <p className="text-light-gray">{title}</p>
+        <p className={`text-light-gray `}>{title}</p>
       </div>
 
       {/* Value */}

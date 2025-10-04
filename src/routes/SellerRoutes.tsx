@@ -1,7 +1,6 @@
 import Dashboard from "@/pages/Seller-Dashboard/Dashboard/Dashboard";
 import { RiDashboardFill } from "react-icons/ri";
 import { AiOutlineShoppingCart, AiOutlineDollarCircle, AiOutlineMessage, AiOutlineSetting, AiOutlineQuestionCircle } from "react-icons/ai";
-import Order from "@/pages/Seller-Dashboard/Order/Order";
 import Earnings from "@/pages/Seller-Dashboard/Earnings/Earnings";
 import Message from "@/pages/Seller-Dashboard/Message/Message";
 import Settings from "@/pages/Seller-Dashboard/Settings/Settings";
@@ -12,6 +11,8 @@ import ProductsLandingPage from "@/pages/Seller-Dashboard/components/Products/Pr
 import BulkValidation from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/BulkValidation";
 import ConfirmUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/ConfirmUpload";
 import CompleteUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/CompleteUpload";
+import OrderLandingPage from "@/pages/Seller-Dashboard/components/Order/OrderLandingPage";
+import OrderTracking from "@/pages/Seller-Dashboard/components/Order/OrderTracking";
 
 export const sellerRoutes = [
   {
@@ -57,7 +58,17 @@ export const sellerRoutes = [
     path: "orders",
     icon: <AiOutlineShoppingCart />,
     name: "Orders",
-    element: <Order />,
+    // element: <Order />,
+    children:[
+      {
+        index:true,
+        element:<OrderLandingPage/>
+      },
+      {
+        path:"order-status",
+        element:<OrderTracking />
+      }
+    ]
   },
   {
     path: "earnings",
