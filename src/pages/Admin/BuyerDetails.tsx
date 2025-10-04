@@ -6,35 +6,7 @@ import { useEffect } from "react"
 
 export default function BuyerDetails() {
   const { id } = useParams()
-  const location = useLocation()
-  const navigate = useNavigate()
-  
-  // Get buyer data from navigation state
-  const buyer = location.state?.buyer
-
-  // Redirect if no buyer data (optional: fetch from API instead)
-  useEffect(() => {
-    if (!buyer) {
-      // Optionally fetch buyer data from API here
-      // For now, redirect back to users page
-      console.warn("No buyer data found in navigation state")
-    }
-  }, [buyer])
-
-  // Fallback if no buyer data
-  if (!buyer) {
-    return (
-      <div className="space-y-6">
-        <div className="bg-white rounded-lg border p-6 text-center">
-          <p className="text-gray-600 mb-4">Buyer data not found</p>
-          <Button onClick={() => navigate("/admin/users")}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Users
-          </Button>
-        </div>
-      </div>
-    )
-  }
+  console.log(id)
 
   return (
     <div className="space-y-6">
