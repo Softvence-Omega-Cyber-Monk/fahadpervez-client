@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
           {/* nav icon */}
           <div className="flex items-baseline gap-4">
             <Search className="text-[#455058]" />
-            <ShoppingCart className="text-[#455058]" />
+            <Link to={`/my-cart/${10}`}><ShoppingCart className="text-[#455058]" /></Link>
             <CircleUserRound className="text-[#455058]" />
           </div>
         </div>
