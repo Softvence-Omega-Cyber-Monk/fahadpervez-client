@@ -1,35 +1,10 @@
-import { RiDeleteBin7Line } from 'react-icons/ri';
-import RevenueOverviewChart from '../components/Dashboard/RevenueOverviewChart';
-import { MdOutlineModeEditOutline } from 'react-icons/md';
+import React, { DragEvent, ChangeEvent, useState } from "react";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { MdOutlineModeEditOutline } from "react-icons/md";
+import RevenueOverviewChart from "../components/Dashboard/RevenueOverviewChart";
 
 // --- Mock Data ---
-const earningsSummary = [
-  { title: "Total Earning", amount: "$50,000", subtitle: "This month", titleColor: "text-primary-yellow", },
-  { title: "Pending Earning", amount: "$12,000", subtitle: "Needs attention",  titleColor: "text-primary-purple-new", },
-  { title: "Available Balance", amount: "$6,500", action: "Withdraw Fund", titleColor: "text-primary-orange", },
-];
-
-const transactions = [
-  { id: "INQ-235345", date: "17/06/2025", amount: "$89.99" },
-  { id: "INQ-235346", date: "15/08/2025", amount: "$79.99" },
-  { id: "INQ-235347", date: "22/11/2024", amount: "$59.99" },
-  { id: "INQ-235348", date: "03/05/2025", amount: "$69.99" },
-  { id: "INQ-235349", date: "09/12/2022", amount: "$49.99" },
-  { id: "INQ-235350", date: "09/12/2022", amount: "$99.99" },
-  { id: "INQ-235351", date: "09/12/2022", amount: "$89.99" },
-  { id: "INQ-235352", date: "09/12/2022", amount: "$79.99" },
-  { id: "INQ-235353", date: "09/12/2022", amount: "$69.99" },
-  { id: "INQ-235354", date: "09/12/2022", amount: "$89.99" },
-];
-
-const paymentMethods = [
-  { type: "VISA", lastFour: "2241", issuer: "Emperies", expiry: "07/2027", isDefault: true },
-  { type: "Mastercard", lastFour: "1234", issuer: "Emperies", expiry: "05/2026", isDefault: false },
-];
-
-// --- Sub-Components ---
-
-interface EarningCardProps {
+interface EarningSummaryType {
   title: string;
   amount: string;
   subtitle?: string;
@@ -39,22 +14,28 @@ interface EarningCardProps {
   titleColor?: string;
 }
 
-const EarningCard = ({ title, amount, subtitle, action, color, bgColor, titleColor }: EarningCardProps) => (
-  <div className={`p-4 rounded-lg shadow flex flex-col justify-between ${bgColor}`}>
-    <div>
-        <p className={`text-sm font-medium ${titleColor ? titleColor : 'text-gray-500'}`}>{title}</p>
-        <h2 className={`text-3xl font-bold mt-1 ${color}`}>{amount}</h2>
-    </div>
-    {subtitle && <p className="text-sm text-gray-400 mt-2">{subtitle}</p>}
-    {action && (
-      <button className="mt-4 w-[183px] bg-[#0082FA] text-white py-2 px-4 rounded-lg text-[18px] font-medium ">
-        {action}
-      </button>
-    )}
-  </div>
-);
+const earningsSummary: EarningSummaryType[] = [
+  { title: "Total Earning", amount: "$50,000", subtitle: "This month", titleColor: "text-primary-yellow" },
+  { title: "Pending Earning", amount: "$12,000", subtitle: "Needs attention", titleColor: "text-primary-purple-new" },
+  { title: "Available Balance", amount: "$6,500", action: "Withdraw Fund", titleColor: "text-primary-orange" },
+];
 
-interface PaymentCardProps {
+interface TransactionType {
+  id: string;
+  date: string;
+  amount: string;
+}
+
+const transactions: TransactionType[] = [
+  { id: "INQ-235345", date: "17/06/2025", amount: "$89.99" },
+  { id: "INQ-235346", date: "15/08/2025", amount: "$79.99" },
+  { id: "INQ-235347", date: "22/11/2024", amount: "$59.99" },
+  { id: "INQ-235348", date: "03/05/2025", amount: "$69.99" },
+  { id: "INQ-235349", date: "09/12/2022", amount: "$49.99" },
+  { id: "INQ-235350", date: "09/12/2022", amount: "$99.99" },
+];
+
+interface PaymentMethodType {
   type: string;
   lastFour: string;
   issuer: string;
@@ -62,38 +43,55 @@ interface PaymentCardProps {
   isDefault: boolean;
 }
 
-const PaymentCard = ({ type, lastFour, issuer, expiry, isDefault }: PaymentCardProps) => (
+const paymentMethods: PaymentMethodType[] = [
+  { type: "VISA", lastFour: "2241", issuer: "Emperies", expiry: "07/2027", isDefault: true },
+  { type: "Mastercard", lastFour: "1234", issuer: "Emperies", expiry: "05/2026", isDefault: false },
+];
+
+// --- Sub-Components ---
+const EarningCard: React.FC<EarningSummaryType> = ({ title, amount, subtitle, action, color, bgColor, titleColor }) => (
+  <div className={`p-4 rounded-lg shadow flex flex-col justify-between ${bgColor || ""}`}>
+    <div>
+      <p className={`text-sm font-medium ${titleColor || "text-gray-500"}`}>{title}</p>
+      <h2 className={`text-3xl font-bold mt-1 ${color || ""}`}>{amount}</h2>
+    </div>
+    {subtitle && <p className="text-sm text-gray-400 mt-2">{subtitle}</p>}
+    {action && (
+      <button className="mt-4 w-[183px] bg-[#0082FA] text-white py-2 px-4 rounded-lg text-[18px] font-medium">
+        {action}
+      </button>
+    )}
+  </div>
+);
+
+const PaymentCard: React.FC<PaymentMethodType> = ({ type, lastFour, issuer, expiry, isDefault }) => (
   <div className="flex items-center justify-between p-3 mb-3 bg-white border border-gray-200 rounded-lg">
     <div className="flex items-center">
-      {/* Icon Placeholder for Card Type (using first letter and color) */}
-      <div className={`p-2 rounded mr-3 w-8 h-8 flex items-center justify-center font-bold text-sm 
-        ${type === 'VISA' ? 'bg-indigo-100 text-indigo-600' : 'bg-red-100 text-red-600'}`}>
+      <div
+        className={`p-2 rounded mr-3 w-8 h-8 flex items-center justify-center font-bold text-sm ${
+          type === "VISA" ? "bg-indigo-100 text-indigo-600" : "bg-red-100 text-red-600"
+        }`}
+      >
         {type[0]}
       </div>
       <div>
-        <p className="font-semibold text-gray-800">{type} in ****{lastFour}</p>
+        <p className="font-semibold text-gray-800">{type} ****{lastFour}</p>
         <p className="text-xs text-gray-500">Exp: {expiry} ({issuer})</p>
       </div>
     </div>
     <div className="flex flex-col space-y-2">
-      <div className='flex space-x-2'>
-      <button className="text-red-500 hover:text-red-700" title="Delete">
-        {/* Trash Icon Placeholder */}
-        <span className="text-lg">
-          {/* <ClipboardEdit /> */}
-          <RiDeleteBin7Line />
-        </span>
-      </button>
-      <button className="text-green-500 hover:text-green-700" title="Delete">
-        {/* Trash Icon Placeholder */}
-        <span className="text-lg">
-          {/* <RiDeleteBin7Line /> */}
-          <MdOutlineModeEditOutline  />
-        </span>
-      </button>
+      <div className="flex space-x-2">
+        <button className="text-red-500 hover:text-red-700" title="Delete">
+          <RiDeleteBin7Line className="text-lg" />
+        </button>
+        <button className="text-green-500 hover:text-green-700" title="Edit">
+          <MdOutlineModeEditOutline className="text-lg" />
+        </button>
       </div>
       {isDefault ? (
-        <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-gray-200 text-gray-700 rounded-full">Default</span>
+        <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-gray-200 text-gray-700 rounded-full">
+          Default
+        </span>
       ) : (
         <button className="ml-2 px-3 py-1 text-xs font-semibold text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition duration-150">
           Set as Default
@@ -103,89 +101,124 @@ const PaymentCard = ({ type, lastFour, issuer, expiry, isDefault }: PaymentCardP
   </div>
 );
 
-
 // --- Main Component ---
-const Earnings = () => {
+const Earnings: React.FC = () => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => setIsDragging(false);
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10">
       <h1 className="text-3xl font-semibold text-gray-800 mb-6">EARNING</h1>
 
-      {/* 1. Earnings Summary Cards */}
+      {/* Earnings Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-        {earningsSummary.map((card, index) => (
-          <EarningCard key={index} {...card} />
+        {earningsSummary.map((card, i) => (
+          <EarningCard key={i} {...card} />
         ))}
       </div>
 
-      {/* --- Horizontal Line Separator --- */}
       <hr className="my-8 border-gray-200" />
-      
-      {/* 2. Revenue Overview Chart */}
+
       <div className="mb-6">
         <RevenueOverviewChart />
       </div>
 
-      {/* 3. Transaction History & Payment Methods */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Transactions */}
         <div>
-          {/* Transaction History */}
           <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
             <div className="flex justify-between items-center mb-4">
-                 <h2 className="text-xl font-semibold text-gray-800">Transaction History</h2>
-                 <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                    View All
-                 </button>
+              <h2 className="text-xl font-semibold text-gray-800">Transaction History</h2>
+              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">View All</button>
             </div>
-            
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    {['Transaction ID', 'Date', 'Amount', 'Action'].map((header) => (
-                      <th key={header} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {["Transaction ID", "Date", "Amount", "Action"].map((header) => (
+                      <th key={header} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                         {header}
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {transactions.slice(0, 10).map((tx, index) => (
-                    <tr key={index}>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{tx.id}</td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{tx.date}</td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 font-semibold">{tx.amount}</td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-blue-600 font-medium cursor-pointer hover:text-blue-800">
-                        View
-                      </td>
+                  {transactions.map((tx, i) => (
+                    <tr key={i}>
+                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{tx.id}</td>
+                      <td className="px-4 py-3 text-sm text-gray-500">{tx.date}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 font-semibold">{tx.amount}</td>
+                      <td className="px-4 py-3 text-sm text-blue-600 cursor-pointer hover:text-blue-800">View</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-
-            {/* Pagination Placeholder */}
             <div className="flex justify-center items-center mt-4 pt-4 border-t border-gray-100">
               <p className="text-sm text-gray-500">Showing 1 to 10 of 24 transactions</p>
             </div>
           </div>
         </div>
 
+        {/* Payment Methods + Drag & Drop */}
         <div>
           <div className="bg-white p-6 rounded-lg shadow border border-gray-100 sticky top-4">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Payment Methods</h2>
-            
+
             <div className="space-y-3">
-              {paymentMethods.map((method, index) => (
-                <PaymentCard key={index} {...method} />
+              {paymentMethods.map((m, i) => (
+                <PaymentCard key={i} {...m} />
               ))}
             </div>
 
-            {/* Add New Payment Method Button */}
-            <div className="mt-6 border border-dashed border-gray-300 p-4 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition duration-150">
-              <div className="text-3xl text-gray-400 font-light">+</div>
-              <p className="text-sm text-gray-500 text-center">
-               Add new payment method (Credit card , Bank account or Paypal)
-              </p>
+            {/* Drag & Drop Upload */}
+            <div
+              className={`mt-6 border-2 ${
+                isDragging ? "border-blue-400 bg-blue-50" : "border-dashed border-gray-300"
+              } p-4 rounded-lg flex flex-col items-center justify-center cursor-pointer transition duration-150`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => document.getElementById("fileInput")?.click()}
+            >
+              {imagePreview ? (
+                <img src={imagePreview} alt="Preview" className="w-40 h-40 object-cover rounded-lg mb-2" />
+              ) : (
+                <>
+                  <div className="text-3xl text-gray-400 font-light">+</div>
+                  <p className="text-sm text-gray-500 text-center mt-2">
+                    Drag & drop or click to upload payment proof / card image
+                  </p>
+                </>
+              )}
+              <input type="file" id="fileInput" accept="image/*" className="hidden" onChange={handleFileSelect} />
             </div>
           </div>
         </div>
