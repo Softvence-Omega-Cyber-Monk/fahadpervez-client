@@ -3,10 +3,10 @@ import React, { ReactElement } from "react";
 import { sellerRoutes } from "@/routes/SellerRoutes";
 
 interface SidebarItemProps {
-  icon:ReactElement;
+  icon: ReactElement;
   label: string;
   active?: boolean;
-  onClick?: () => void; 
+  onClick?: () => void;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, onClick }) => (
@@ -33,31 +33,31 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Overlay (Mobile) */}
+      {/* Overlay for Mobile */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300 min-h-screen ${
+        className={`fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300 md:hidden ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        } md:hidden`}
+        }`}
         onClick={onClose}
       ></div>
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 h-full md:h-[calc(100vh-64px)] min-h-screen rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        } `}
+        }`}
       >
         <nav className="flex flex-col gap-3 mt-2">
-           {sellerRoutes.map((item) => (
-                      <Link key={item.path} to={item.path}>
-                        <SidebarItem
-                          icon={item.icon}
-                          label={item.name}
-                          active={location.pathname === item.path}
-                          onClick={onClose}
-                        />
-                      </Link>
-                    ))}
+          {sellerRoutes.map((item) => (
+            <Link key={item.path} to={item.path}>
+              <SidebarItem
+                icon={item.icon}
+                label={item.name}
+                active={location.pathname === item.path}
+                onClick={onClose}
+              />
+            </Link>
+          ))}
         </nav>
       </div>
     </>
