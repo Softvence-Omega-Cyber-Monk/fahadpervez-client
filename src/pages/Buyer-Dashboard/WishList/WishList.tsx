@@ -97,7 +97,7 @@ const WishlistGrid = () => {
               />
               {/* Heart icon top-right */}
               <button className="absolute top-2 right-2 bg-gray-400 p-1 rounded-lg shadow-sm">
-                <Heart className="w-5 h-5 text-gray-500 text-white" />
+                <Heart className="w-5 h-5 text-white" />
               </button>
             </div>
 

@@ -22,9 +22,9 @@ export default function HelpSupport() {
 
   return (
  <div>
- <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-5">
+ <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800 mb-5">
   Help & support
-</h1>
+</h2>
 
      <div className="w-full bg-white p-2 sm:p-6 lg:p-8 rounded-lg">
       <div>
