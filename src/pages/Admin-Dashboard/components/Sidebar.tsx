@@ -1,25 +1,30 @@
 import {
   FaTachometerAlt,
-  FaClipboardList,
   FaHeart,
   FaCog,
-  FaHeadset,
   FaUser,
-} from 'react-icons/fa';
-import { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
-type SidebarItemProps = {
-  icon: ReactElement;
+  FaClipboardList,
+} from "react-icons/fa";
+import { TbReportSearch } from "react-icons/tb";
+import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { MdLocalShipping, MdOutlinePayments } from "react-icons/md";
+import { BiSupport } from "react-icons/bi";
+
+interface SidebarItemProps {
+  icon: React.ReactNode;
   label: string;
   active?: boolean;
-};
+  onClick?: () => void; 
+}
 
-const SidebarItem = ({ icon, label, active = false }: SidebarItemProps) => (
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, onClick }) => (
   <div
+    onClick={onClick}
     className={`flex items-center px-4 py-2 rounded-lg cursor-pointer transition-colors ${
       active
-        ? 'bg-blue-600 text-white'
-        : 'text-gray-600 hover:bg-gray-200'
+        ? "bg-blue-600 text-white"
+        : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
     }`}
   >
     <div className="mr-3 text-lg">{icon}</div>
@@ -27,52 +32,56 @@ const SidebarItem = ({ icon, label, active = false }: SidebarItemProps) => (
   </div>
 );
 
-const SideBar = () => {
-  return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <div className="w-64 bg-gray-100 border-r p-4 flex flex-col">
-        {/* Logo */}
-        <div className="flex items-center space-x-2 mb-10 px-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-            <span>⟳</span>
-          </div>
-          <h1 className="text-blue-600 font-bold text-xl">Logoipsum</h1>
-        </div>
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-        {/* Navigation */}
-        <nav className="flex flex-col gap-3">
-          <Link to='/admin-dashboard'>
-          <SidebarItem icon={<FaTachometerAlt />} label="Dashboard" active />
-          </Link>
-          <Link to='/admin-dashboard/users'>
-          <SidebarItem icon={<FaUser />} label="Users" />
-          </Link>
-          <Link to='/admin-dashboard/orders'>
-          <SidebarItem icon={<FaClipboardList />} label="Orders" />
-          </Link>
-          <Link to='/admin-dashboard/product'>
-          <SidebarItem icon={<FaHeart />} label="Product" />
-          </Link>
-          <Link to='/admin-dashboard/sales-reports'>
-          <SidebarItem icon={<FaCog />} label="Sales & Reports" />
-          </Link>
-          <Link to='/admin-dashboard/payments'>
-          <SidebarItem icon={<FaHeadset />} label="Payments" />
-          </Link>
-          <Link to='/admin-dashboard/shipping'>
-          <SidebarItem icon={<FaHeadset />} label="Shipping" />
-          </Link>
-          <Link to='/admin-dashboard/support'>
-          <SidebarItem icon={<FaHeadset />} label="Support" />
-          </Link>
-          <Link to='/admin-dashboard/settings'>
-          <SidebarItem icon={<FaHeadset />} label="Settings" />
-          </Link>
+const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+  const location = useLocation();
+
+  const routes = [
+    { path: "/admin-dashboard", icon: <FaTachometerAlt />, label: "Dashboard" },
+    { path: "/admin-dashboard/users", icon: <FaUser/>, label: "Users" },
+    { path: "/admin-dashboard/orders", icon: <FaClipboardList />, label: "Orders" },
+    { path: "/admin-dashboard/product", icon: <FaHeart />, label: "Product" },
+    { path: "/admin-dashboard/sales-reports", icon: <TbReportSearch />, label: "Sales & Reports" },
+    { path: "/admin-dashboard/payments", icon: <MdOutlinePayments/>, label: "Payments" },
+    { path: "/admin-dashboard/shipping", icon: <MdLocalShipping />, label: "Shipping" },
+    { path: "/admin-dashboard/support", icon: <BiSupport />, label: "Support" },
+    { path: "/admin-dashboard/settings", icon: <FaCog />, label: "Settings" },
+  ];
+
+  return (
+    <>
+      {/* Overlay (Mobile) */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300 min-h-screen ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        } md:hidden`}
+        onClick={onClose}
+      ></div>
+
+      {/* Sidebar */}
+      <div
+        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 h-full md:h-[calc(100vh-64px)] min-h-screen rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 ${
+          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        } `}
+      >
+        <nav className="flex flex-col gap-3 mt-2">
+          {routes.map(({ path, icon, label }) => (
+            <Link key={path} to={path}>
+              <SidebarItem
+                icon={icon}
+                label={label}
+                active={location.pathname === path}
+                onClick={onClose} // closes sidebar on mobile when clicked
+              />
+            </Link>
+          ))}
         </nav>
       </div>
-     
-    </div>
+    </>
   );
 };
 
