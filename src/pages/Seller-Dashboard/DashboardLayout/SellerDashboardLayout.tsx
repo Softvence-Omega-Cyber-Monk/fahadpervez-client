@@ -1,22 +1,24 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import DashboardNav from "./SellerDashboardNav";
 import SideBar from "./Sidebar";
-import SellerDashboardNav from "./SellerDashboardNav";
 
+const SellerDashboardLayout: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
-const SellerDashboardLayout = () => {
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar on the left */}
-      <SideBar/>
+    <div className="flex w-full min-h-screen bg-[#F1F5F8]">
+      {/* Sidebar */}
+      <SideBar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Right side: full width from Sidebar's end */}
-      <div className="flex-1 flex flex-col bg-gray-50 min-h-screen">
-        {/* Topbar */}
-        <SellerDashboardNav />
-        {/* Main content below the topbar */}
-        <div className="p-10 bg-primary-background min-h-screen">
-        <Outlet/>
-          {/* Add more content here */}
+      {/* Main content */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Navbar */}
+        <DashboardNav onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+
+        {/* Page content */}
+        <div className="flex-1 p-4 md:p-8 mt-20 md:mt-16">
+          <Outlet />
         </div>
       </div>
     </div>
