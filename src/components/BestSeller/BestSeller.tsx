@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -98,7 +99,7 @@ const BestSeller: React.FC = () => {
             }}
           >
             {products.map((product) => (
-              <div
+              <Link to={`/product-details/${10}`}
                 key={product.id}
                 className="flex-none w-[calc(33.333%-16px)]"
               >
@@ -143,7 +144,7 @@ const BestSeller: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
