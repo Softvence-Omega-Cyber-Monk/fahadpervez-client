@@ -1,12 +1,61 @@
-import { useParams, Link, useLocation, useNavigate } from "react-router-dom"
-import { ChevronRight, MapPin, Mail, Phone, MapPinned, ArrowLeft } from "lucide-react"
+import { useParams, Link } from "react-router-dom"
+import { ChevronRight, MapPin, Mail, Phone, MapPinned } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+
+interface Buyer {
+  id: string
+  name: string
+  joinDate: string
+  status: string
+  address: string
+  email: string
+  phone: string
+  totalBuy: number
+  avatar: string
+}
 
 export default function BuyerDetails() {
-  const { id } = useParams()
-  console.log(id)
+  const { id } = useParams<{ id: string }>()
+  const [buyer, setBuyer] = useState<Buyer | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    setLoading(true)
+    setError(null)
+    // Simulate fetching data
+    setTimeout(() => {
+      if (id === "1") {
+        setBuyer({
+          id: "1",
+          name: "John Doe",
+          joinDate: "2023-01-15",
+          status: "Active",
+          address: "123 Main St, Anytown, USA",
+          email: "john.doe@example.com",
+          phone: "555-123-4567",
+          totalBuy: 1250.75,
+          avatar: "JD",
+        })
+      } else {
+        setError("Buyer not found")
+      }
+      setLoading(false)
+    }, 1000)
+  }, [id])
+
+  if (loading) {
+    return <div className="text-center py-8">Loading buyer details...</div>
+  }
+
+  if (error) {
+    return <div className="text-center py-8 text-red-600">{error}</div>
+  }
+
+  if (!buyer) {
+    return <div className="text-center py-8">No buyer data available.</div>
+  }
 
   return (
     <div className="space-y-6">
