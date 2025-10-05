@@ -9,11 +9,11 @@ export interface StatCardTypes {
   type?: StatType["type"]
   currency?: string
   icon?: string
-  iconColor?: string
   buttonText?: string
-  buttonAction?: () => void
+  buttonAction?: () => void,
+
 }
 
 export interface StatCardProps {
-  item: StatCardTypes
+  item: StatCardTypes,
 }

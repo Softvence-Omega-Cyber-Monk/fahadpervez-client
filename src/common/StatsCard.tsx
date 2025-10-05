@@ -7,10 +7,13 @@ import { Button } from "@/components/ui/button";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoAlert } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
+import { FaDollarSign } from "react-icons/fa6";
+
 
 
 const cardStyle: Record<string, string> = {
   up: "text-primary-green",
+  dollar: "text-primary-green",
   warning: "text-primary-yellow",
   down: "text-primary-red",
   box: "text-primary-purple",
@@ -22,6 +25,8 @@ const cardStyle: Record<string, string> = {
 const iconColor = {
   box: "bg-primary-purple/10 text-primary-purple",
   check: "bg-primary-green/10 text-primary-green",
+  dollar: "bg-primary-green/10 text-primary-green",
+  warning: "bg-primary-yellow/10 text-primary-yellow",
   error: "bg-primary-red/10 text-primary-red",
   plus: "bg-primary-orange/10 text-primary-orange",
   alert: "bg-primary-red/10 text-primary-red",
@@ -29,10 +34,12 @@ const iconColor = {
 
 const cardIcon: Record<string, ReactNode> = {
   up: <BiTrendingUp  />,
+  dollar: <FaDollarSign />,
   warning: <AiFillWarning  />,
   down: <BiTrendingDown  />,
   box: <BsFillBoxSeamFill />,
-  check: <FaCircleCheck />,
+  check: <
+    FaCircleCheck />,
   alert: <IoAlert />,
   plus: <FaPlus />,
 };
@@ -47,6 +54,7 @@ export function StatsCard({ item }: StatCardProps) {
     buttonText,
     buttonAction,
     icon,
+       
   } = item;
 
   const formatValue = (val: number, currency?: string) => {
@@ -61,7 +69,7 @@ export function StatsCard({ item }: StatCardProps) {
       {/* Header Row with optional icon */}
       <div className="flex items-center gap-2">
         {icon && <div className={`p-3 rounded-lg text-2xl ${iconColor[icon as "box" | "check" | "alert" | "plus" ]} `}>{cardIcon[icon]}</div>}
-        <p className="text-light-gray">{title}</p>
+        <p className={`text-light-gray `}>{title}</p>
       </div>
 
       {/* Value */}
