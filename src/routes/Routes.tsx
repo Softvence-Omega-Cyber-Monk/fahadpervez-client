@@ -29,6 +29,9 @@ import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetail
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
 import ProductDetail from "@/pages/ProductDetail";
+import MyCartHome from "@/pages/My-Cart/MyCartHome";
+import CheckOut from "@/pages/Checkout/CheckOut";
+import StoreHome from "@/pages/Store-Profile/StoreHome";
 
 
 
@@ -50,8 +53,20 @@ const routes = createBrowserRouter([
         element: <SingleProduct />,
       },
       {
-        path:'/product-details',
-        element:<ProductDetail/>
+        path: '/product-details/:id',
+        element: <ProductDetail />
+      },
+      {
+        path: "/my-cart/:id",
+        element: <MyCartHome />
+      },
+      {
+        path: "/checkout/:id",
+        element: <CheckOut />
+      },
+      {
+        path: "/store-profile/:id",
+        element: <StoreHome />
       },
       {
         path: "/login",
@@ -86,8 +101,8 @@ const routes = createBrowserRouter([
             element: <HelpSupport />,
           },
           {
-            path:'product-details/:productId',
-            element:<ProductDetails/>
+            path: 'product-details/:productId',
+            element: <ProductDetails />
           }
         ],
       },
