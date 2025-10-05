@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FaTachometerAlt,
   FaHeart,
@@ -6,16 +7,15 @@ import {
   FaClipboardList,
 } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
-import { Link, useLocation } from "react-router-dom";
-import React from "react";
 import { MdLocalShipping, MdOutlinePayments } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
+import { Link, useLocation } from "react-router-dom";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
   label: string;
   active?: boolean;
-  onClick?: () => void; 
+  onClick?: () => void;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, onClick }) => (
@@ -37,16 +37,16 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
 
   const routes = [
     { path: "/admin-dashboard", icon: <FaTachometerAlt />, label: "Dashboard" },
-    { path: "/admin-dashboard/users", icon: <FaUser/>, label: "Users" },
+    { path: "/admin-dashboard/users", icon: <FaUser />, label: "Users" },
     { path: "/admin-dashboard/orders", icon: <FaClipboardList />, label: "Orders" },
     { path: "/admin-dashboard/product", icon: <FaHeart />, label: "Product" },
     { path: "/admin-dashboard/sales-reports", icon: <TbReportSearch />, label: "Sales & Reports" },
-    { path: "/admin-dashboard/payments", icon: <MdOutlinePayments/>, label: "Payments" },
+    { path: "/admin-dashboard/payments", icon: <MdOutlinePayments />, label: "Payments" },
     { path: "/admin-dashboard/shipping", icon: <MdLocalShipping />, label: "Shipping" },
     { path: "/admin-dashboard/support", icon: <BiSupport />, label: "Support" },
     { path: "/admin-dashboard/settings", icon: <FaCog />, label: "Settings" },
@@ -54,19 +54,19 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Overlay (Mobile) */}
+      {/* Overlay for Mobile */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300 min-h-screen ${
+        className={`fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300 md:hidden ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        } md:hidden`}
+        }`}
         onClick={onClose}
       ></div>
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 h-full md:h-[calc(100vh-64px)] min-h-screen rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 ${
+        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        } `}
+        }`}
       >
         <nav className="flex flex-col gap-3 mt-2">
           {routes.map(({ path, icon, label }) => (
@@ -85,4 +85,4 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default SideBar;
+export default Sidebar;
