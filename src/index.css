@@ -97,7 +97,7 @@
   }
 
   h3 {
-    @apply font-semibold;
+    @apply font-medium;
     font-size: clamp(1rem, 2vw + 0.25rem, 1.25rem); /* 16px -> 20px */
     line-height: 1.4;
   }

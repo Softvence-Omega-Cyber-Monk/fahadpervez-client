@@ -1,7 +1,12 @@
+import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord"
 
 const Payments = () => {
   return (
-    <div>Payments</div>
+   <div>
+      <PaymentsDasbord/>
+      
+   </div>
+     
   )
 }
 
