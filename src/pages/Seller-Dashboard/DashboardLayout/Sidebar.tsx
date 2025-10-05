@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { sellerRoutes } from "@/routes/SellerRoutes";
 
 interface SidebarItemProps {
@@ -30,6 +30,12 @@ interface SidebarProps {
 
 const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const [clickedPath, setClickedPath] = useState<string>("");
+
+  const handleItemClick = (path: string) => {
+    setClickedPath(path); // store clicked item
+    onClose(); // close sidebar on mobile
+  };
 
   return (
     <>
@@ -43,18 +49,18 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        }`}
+        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 mt-12
+          ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+          h-screen md:h-auto
+        `}
       >
         <nav className="flex flex-col gap-3 mt-2">
           {sellerRoutes.map((item) => (
-            <Link key={item.path} to={item.path}>
+            <Link key={item.path} to={item.path} onClick={() => handleItemClick(item.path)}>
               <SidebarItem
                 icon={item.icon}
                 label={item.name}
-                active={location.pathname === item.path}
-                onClick={onClose}
+                active={location.pathname === item.path || clickedPath === item.path}
               />
             </Link>
           ))}
