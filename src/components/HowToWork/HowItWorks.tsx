@@ -40,7 +40,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <div className="min-h-screen py-16 px-4">
+    <div className="py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Steps */}

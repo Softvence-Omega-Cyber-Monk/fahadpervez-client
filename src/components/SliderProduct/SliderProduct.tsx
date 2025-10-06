@@ -13,8 +13,7 @@ const SliderProduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 18;
   
-  // Generate products data
-  const totalProducts = 234; // Example total
+  const totalProducts = 234;
   const allProducts: Product[] = Array.from({ length: totalProducts }, (_, i) => ({
     id: i + 1,
     name: 'Harmony biotic digestive tablets',
@@ -31,30 +30,21 @@ const SliderProduct = () => {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
-    
     if (totalPages <= maxVisible + 2) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
     } else {
       if (currentPage <= 3) {
-        for (let i = 1; i <= maxVisible; i++) {
-          pages.push(i);
-        }
+        for (let i = 1; i <= maxVisible; i++) pages.push(i);
         pages.push('...');
         pages.push(totalPages);
       } else if (currentPage >= totalPages - 2) {
         pages.push(1);
         pages.push('...');
-        for (let i = totalPages - maxVisible + 1; i <= totalPages; i++) {
-          pages.push(i);
-        }
+        for (let i = totalPages - maxVisible + 1; i <= totalPages; i++) pages.push(i);
       } else {
         pages.push(1);
         pages.push('...');
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
-        }
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
         pages.push('...');
         pages.push(totalPages);
       }
@@ -63,17 +53,18 @@ const SliderProduct = () => {
   };
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="p-4 sm:p-6 md:p-8">
       <div className="max-w-6xl mx-auto">
+
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8">
           {currentProducts.map((product) => (
             <div
               key={product.id}
-              className=" rounded-lg p-6 relative"
+              className="rounded-lg relative"
             >
               {/* Favorite Button */}
-              <button className="absolute top-[-20px] right-10 w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
+              <button className="absolute top-2 sm:top-3 right-2 sm:right-3 w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors z-10">
                 <svg
                   className="w-4 h-4 text-white"
                   fill="none"
@@ -89,25 +80,25 @@ const SliderProduct = () => {
                 </svg>
               </button>
 
-              {/* Product Images */}
-              <div className="flex justify-center items-center mb-4 h-40">
+              {/* Product Image */}
+              <div className="flex justify-center items-center mb-4 ">
                 <img 
-                  src="/bestsell.png" 
+                  src={product.image} 
                   alt={product.name}
-                  className="w-full object-contain"
+                  className="w-full h-full object-contain"
                 />
               </div>
 
               {/* Product Info */}
-              <div className="mt-18 mb-5">
-                <h3 className="text-sm font-medium text-website-color-blue mb-2">
+              <div className="mt-2 sm:mt-4 mb-2">
+                <h3 className="text-sm sm:text-base font-medium text-website-color-blue mb-2">
                   {product.name}
                 </h3>
-                <div className="flex items-center  gap-2">
-                  <span className="text-lg font-semibold text-website-color-blue">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg sm:text-lg font-semibold text-website-color-blue">
                     ${product.price.toFixed(2)}
                   </span>
-                  <span className="text-sm text-gray-500 line-through">
+                  <span className="text-sm sm:text-sm text-gray-500 line-through">
                     ${product.originalPrice.toFixed(2)}
                   </span>
                 </div>
@@ -117,7 +108,7 @@ const SliderProduct = () => {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex flex-wrap justify-center items-center gap-2">
           <button
             onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
@@ -132,12 +123,11 @@ const SliderProduct = () => {
               onClick={() => typeof page === 'number' && setCurrentPage(page)}
               disabled={page === '...'}
               className={`w-8 h-8 flex items-center justify-center rounded border text-sm font-medium transition-colors
-                ${
-                  page === currentPage
-                    ? 'bg-[#E6F3FF] text-website-color-blue border-blue-600'
-                    : page === '...'
-                    ? 'border-transparent cursor-default'
-                    : 'border-gray-300 bg-white hover:bg-gray-50'
+                ${page === currentPage
+                  ? 'bg-[#E6F3FF] text-website-color-blue border-blue-600'
+                  : page === '...'
+                  ? 'border-transparent cursor-default'
+                  : 'border-gray-300 bg-white hover:bg-gray-50'
                 }`}
             >
               {page}
@@ -152,6 +142,7 @@ const SliderProduct = () => {
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
+
       </div>
     </div>
   );
