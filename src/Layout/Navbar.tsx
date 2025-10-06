@@ -11,7 +11,6 @@ const Navbar: React.FC = () => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
 
-    // Close when clicking outside
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
@@ -28,7 +27,7 @@ const Navbar: React.FC = () => {
   return (
     <nav>
       <div
-        className={`flex justify-center fixed z-50 w-full py-8 transition-all duration-300 ${
+        className={`flex justify-center fixed top-0 z-50 w-full py-8 transition-all duration-300 ${
           scrolled ? "backdrop-blur-md bg-white/30 shadow-sm" : "bg-transparent"
         }`}
       >
