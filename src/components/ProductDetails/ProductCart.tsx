@@ -1,6 +1,19 @@
 import ProductCartImg from "../../assets/ProductDetailsCartimg.png"
 
-export default function ProductCard() {
+interface ProductData {
+    id: string;
+    name: string;
+    sku: string;
+    price: number;
+    sale: number; // percentage
+    seller: string;
+    revenue: number;
+    stock: number;
+    maxStock: number; 
+    image: string; // Placeholder for product icon/image
+  }
+
+export default function ProductCard({ product }: { product: ProductData }) {
   return (
     <div className="w-full rounded-lg overflow-hidden">
       {/* Product Image Container */}
@@ -27,8 +40,8 @@ export default function ProductCard() {
 
         {/* Product Image */}
         <img 
-          src={ProductCartImg} 
-          alt="Harmony biotic digestive tablets"
+          src={product.image || ProductCartImg} 
+          alt={product.name}
           className="w-full h-full object-contain"
         />
       </div>
@@ -36,15 +49,15 @@ export default function ProductCard() {
       {/* Product Info */}
       <div className="py-[14px]">
         <h3 className="text-[20px] text-gray-900 mb-2 leading-tight">
-          Harmony biotic digestive tablets
+          {product.name}
         </h3>
         
         <div className="flex items-center gap-2">
           <span className="text-base font-semibold text-gray-900">
-            $7.99
+            ${product.price}
           </span>
           <span className="text-sm text-gray-400 line-through">
-            $12.99
+            ${product.price + 5}
           </span>
         </div>
       </div>

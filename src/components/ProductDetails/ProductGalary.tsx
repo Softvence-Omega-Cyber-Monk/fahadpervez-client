@@ -1,30 +1,39 @@
 import { useState } from "react"
 import { Heart, Share2, ShoppingCart, MessageSquare, Minus, Plus } from "lucide-react";
-import ProductDetailsImg1 from "../../assets/productDetails1.png"
-import ProductDetailsImg2 from "../../assets/productDetails2.png"
-import ProductDetailsImg3 from "../../assets/productDetails3.png"
-import ProductDetailsImg4 from "../../assets/productDetails4.png"
 
-const ProductGalary = () => {
+interface ProductData {
+    id: string;
+    name: string;
+    sku: string;
+    price: number;
+    sale: number; // percentage
+    seller: string;
+    revenue: number;
+    stock: number;
+    maxStock: number; 
+    image: string; // Placeholder for product icon/image
+  }
+
+const ProductGalary = ({ product }: { product: ProductData }) => {
 
     const [selectedImage, setSelectedImage] = useState(0)
     const [quantity, setQuantity] = useState(0)
 
     const images = [
-        ProductDetailsImg1,
-        ProductDetailsImg2,
-        ProductDetailsImg3,
-        ProductDetailsImg4,
+        product.image,
+        product.image,
+        product.image,
+        product.image,
     ]
 
     const productInfo = [
         "100% authentic",
         "Best by: 03/2027",
         "First available: 11/2016",
-        "Shipping weight: 0.07 kg",
-        "Product code: HYB-11377",
+        `Shipping weight: ${product.revenue} kg`,
+        `Product code: ${product.sku}`,
         "UPC: 364586766785",
-        "Package quantity: 60 Count",
+        `Package quantity: ${product.stock} Count`,
         "Dimensions: 9.7 x 5.1 x 5 cm , 0.07 kg",
     ]
 
@@ -39,9 +48,7 @@ const ProductGalary = () => {
                             <button
                                 key={index}
                                 onClick={() => setSelectedImage(index)}
-                                className={`relative flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index ? "border-blue-500" : "border-transparent"
-                                    }`}
-                            >
+                                className={`relative flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index ? "border-blue-500" : "border-transparent"}`}>
                                 <img
                                     src={img || "/placeholder.svg"}
                                     alt={`Product thumbnail ${index + 1}`}
@@ -77,13 +84,13 @@ const ProductGalary = () => {
 
             {/* Middle Section - Product Info */}
             <div className="lg:col-span-4">
-                <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-4">Harmony biotic digestive tablets</h1>
+                <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-4">{product.name}</h1>
 
                 <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3">
                     <div className="flex items-center gap-2">
                         <span className="text-gray-600 text-sm sm:text-base">By:</span>
                         <a href="#" className="text-blue-600 font-medium text-sm sm:text-base hover:underline">
-                            Shop Owner Name
+                            {product.seller}
                         </a>
                     </div>
                     <div className="text-sm sm:text-base text-gray-600">
@@ -119,7 +126,7 @@ const ProductGalary = () => {
 
                 <div className="inline-block mb-6">
                     <span className="px-3 py-1 bg-white border-2 border-blue-500 text-blue-600 rounded-md text-sm font-medium">
-                        In Stock - 3 left
+                        In Stock - {product.stock} left
                     </span>
                 </div>
 
@@ -138,8 +145,8 @@ const ProductGalary = () => {
                 <div className="bg-white rounded-lg p-6 shadow-sm sticky top-6">
                     <div className="">
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="text-3xl sm:text-4xl font-bold text-gray-900">$7.99</span>
-                            <span className="text-xl sm:text-2xl text-gray-400 line-through">$12.99</span>
+                            <span className="text-3xl sm:text-4xl font-bold text-gray-900">${product.price}</span>
+                            <span className="text-xl sm:text-2xl text-gray-400 line-through">${product.price + 5}</span>
                         </div>
 
                         <div className="flex items-center justify-center gap-4 mb-4">
@@ -158,7 +165,6 @@ const ProductGalary = () => {
                             </button>
                         </div>
                     </div>
-
                     <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 mb-3 transition-colors">
                         <ShoppingCart className="h-5 w-5" />
                         Add To Cart
