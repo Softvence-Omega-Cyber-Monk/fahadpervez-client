@@ -57,7 +57,7 @@ const EarningCard: React.FC<EarningSummaryType> = ({ title, amount, subtitle, ac
     </div>
     {subtitle && <p className="text-sm text-gray-400 mt-2">{subtitle}</p>}
     {action && (
-      <button className="mt-4 w-[183px] bg-[#0082FA] text-white py-2 px-4 rounded-lg text-[18px] font-medium">
+      <button className="mt-4 w-full sm:w-[183px] bg-[#0082FA] text-white py-2 px-4 rounded-lg text-[18px] font-medium">
         {action}
       </button>
     )}
@@ -65,8 +65,8 @@ const EarningCard: React.FC<EarningSummaryType> = ({ title, amount, subtitle, ac
 );
 
 const PaymentCard: React.FC<PaymentMethodType> = ({ type, lastFour, issuer, expiry, isDefault }) => (
-  <div className="flex items-center justify-between p-3 mb-3 bg-white border border-gray-200 rounded-lg">
-    <div className="flex items-center">
+  <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 mb-3 bg-white border border-gray-200 rounded-lg">
+    <div className="flex items-center mb-2 sm:mb-0">
       <div
         className={`p-2 rounded mr-3 w-8 h-8 flex items-center justify-center font-bold text-sm ${
           type === "VISA" ? "bg-indigo-100 text-indigo-600" : "bg-red-100 text-red-600"
@@ -79,8 +79,8 @@ const PaymentCard: React.FC<PaymentMethodType> = ({ type, lastFour, issuer, expi
         <p className="text-xs text-gray-500">Exp: {expiry} ({issuer})</p>
       </div>
     </div>
-    <div className="flex flex-col space-y-2">
-      <div className="flex space-x-2">
+    <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:space-y-2">
+      <div className="flex space-x-2 order-2 sm:order-1">
         <button className="text-red-500 hover:text-red-700" title="Delete">
           <RiDeleteBin7Line className="text-lg" />
         </button>
@@ -89,11 +89,11 @@ const PaymentCard: React.FC<PaymentMethodType> = ({ type, lastFour, issuer, expi
         </button>
       </div>
       {isDefault ? (
-        <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-gray-200 text-gray-700 rounded-full">
+        <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-gray-200 text-gray-700 rounded-full order-1 sm:order-2">
           Default
         </span>
       ) : (
-        <button className="ml-2 px-3 py-1 text-xs font-semibold text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition duration-150">
+        <button className="ml-2 px-3 py-1 text-xs font-semibold text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition duration-150 order-1 sm:order-2">
           Set as Default
         </button>
       )}
@@ -134,36 +134,36 @@ const Earnings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 md:p-10">
-      <h1 className="text-3xl font-semibold text-gray-800 mb-6">EARNING</h1>
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 md:p-10">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6">EARNING</h1>
 
       {/* Earnings Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-10">
         {earningsSummary.map((card, i) => (
           <EarningCard key={i} {...card} />
         ))}
       </div>
 
-      <hr className="my-8 border-gray-200" />
+      <hr className="my-6 sm:my-8 border-gray-200" />
 
       <div className="mb-6">
         <RevenueOverviewChart />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Transactions */}
         <div>
-          <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">Transaction History</h2>
-              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">View All</button>
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-100">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2 sm:mb-0">Transaction History</h2>
+              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium self-start sm:self-auto">View All</button>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
                     {["Transaction ID", "Date", "Amount", "Action"].map((header) => (
-                      <th key={header} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      <th key={header} className="px-3 py-2 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                         {header}
                       </th>
                     ))}
@@ -172,25 +172,27 @@ const Earnings: React.FC = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {transactions.map((tx, i) => (
                     <tr key={i}>
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{tx.id}</td>
-                      <td className="px-4 py-3 text-sm text-gray-500">{tx.date}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 font-semibold">{tx.amount}</td>
-                      <td className="px-4 py-3 text-sm text-blue-600 cursor-pointer hover:text-blue-800">View</td>
+                      <td className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium text-gray-900 truncate max-w-[120px] sm:max-w-none">
+                        {tx.id}
+                      </td>
+                      <td className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-gray-500">{tx.date}</td>
+                      <td className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-gray-700 font-semibold">{tx.amount}</td>
+                      <td className="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-blue-600 cursor-pointer hover:text-blue-800">View</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
             <div className="flex justify-center items-center mt-4 pt-4 border-t border-gray-100">
-              <p className="text-sm text-gray-500">Showing 1 to 10 of 24 transactions</p>
+              <p className="text-xs sm:text-sm text-gray-500">Showing 1 to 10 of 24 transactions</p>
             </div>
           </div>
         </div>
 
         {/* Payment Methods + Drag & Drop */}
         <div>
-          <div className="bg-white p-6 rounded-lg shadow border border-gray-100 sticky top-4">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Payment Methods</h2>
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-100 sticky top-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Payment Methods</h2>
 
             <div className="space-y-3">
               {paymentMethods.map((m, i) => (
@@ -209,11 +211,11 @@ const Earnings: React.FC = () => {
               onClick={() => document.getElementById("fileInput")?.click()}
             >
               {imagePreview ? (
-                <img src={imagePreview} alt="Preview" className="w-40 h-40 object-cover rounded-lg mb-2" />
+                <img src={imagePreview} alt="Preview" className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg mb-2" />
               ) : (
                 <>
                   <div className="text-3xl text-gray-400 font-light">+</div>
-                  <p className="text-sm text-gray-500 text-center mt-2">
+                  <p className="text-xs sm:text-sm text-gray-500 text-center mt-2">
                     Drag & drop or click to upload payment proof / card image
                   </p>
                 </>
