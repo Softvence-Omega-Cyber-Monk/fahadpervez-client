@@ -4,7 +4,7 @@ import Button from '../Button/Button';
 import { Link, NavLink } from 'react-router-dom';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   originalPrice: number;
@@ -13,18 +13,18 @@ interface Product {
 
 const AllProducts: React.FC = () => {
   const products: Product[] = [
-    { id: 1, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
-    { id: 2, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
-    { id: 3, name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
-    { id: 4, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
-    { id: 5, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 14.20, image: '' },
-    { id: 6, name: 'Organic herbal tea blend', price: 9.99, originalPrice: 14.99, image: '' },
-    { id: 7, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 10.99, image: '' },
-    { id: 8, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
-    { id: 9, name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
-    { id: 10, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 11.49, image: '' },
-    { id: 11, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
-    { id: 12, name: 'Organic herbal tea blend', price: 10.99, originalPrice: 13.99, image: '' },
+    { id: "1", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
+    { id: "2", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
+    { id: "3", name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
+    { id: "4", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
+    { id: "5", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 14.20, image: '' },
+    { id: "6", name: 'Organic herbal tea blend', price: 9.99, originalPrice: 14.99, image: '' },
+    { id: "7", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 10.99, image: '' },
+    { id: "8", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
+    { id: "9", name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
+    { id: "10", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 11.49, image: '' },
+    { id: "11", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
+    { id: "12", name: 'Organic herbal tea blend', price: 10.99, originalPrice: 13.99, image: '' },
   ];
 
   return (
@@ -34,7 +34,7 @@ const AllProducts: React.FC = () => {
         
         <div className="grid grid-cols-3 gap-6 mb-8">
           {products.map((product) => (
-            <Link to={`/product-details/${10}`} key={product.id} className="rounded-lg overflow-hidden relative">
+            <Link to={`/product-details/${product.id}`} key={product.id} className="rounded-lg overflow-hidden relative">
               <div className="absolute top-3 right-3 z-10">
                 <button className="w-8 h-8 bg-gray-400 bg-opacity-70 rounded-full flex items-center justify-center hover:bg-opacity-90 transition">
                   <Heart className="w-4 h-4 text-white" />
