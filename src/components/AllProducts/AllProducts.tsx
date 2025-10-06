@@ -28,11 +28,12 @@ const AllProducts: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-16">
-      <div className="max-w-6xl mx-auto">
+    <div className="pb-16">
+      <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue">ALL PRODUCTS</h1>
         
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        {/* Responsive Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           {products.map((product) => (
             <Link to={`/product-details/${product.id}`} key={product.id} className="rounded-lg overflow-hidden relative">
               <div className="absolute top-3 right-3 z-10">
@@ -41,15 +42,17 @@ const AllProducts: React.FC = () => {
                 </button>
               </div>
               
-              <div className="flex items-center justify-center">
+              {/* Product Image */}
+              <div className="flex items-center justify-center p-4">
                 <img 
                   src="./bestsell.png" 
                   alt={product.name}
-                  className="object-contain"
+                  className="object-contain w-full"
                 />
               </div>
               
-              <div>
+              {/* Product Info */}
+              <div className="px-4 pb-4">
                 <h3 className="text-md font-montserrat font-medium text-gray-800 my-2 mt-3">{product.name}</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-montserrat font-medium text-website-color-blue">
@@ -64,10 +67,11 @@ const AllProducts: React.FC = () => {
           ))}
         </div>
         
+        {/* Browse All Button */}
         <div className="flex justify-center">
           <NavLink to="/products/:id">
-              <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
-                  Browse All
+            <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
+              Browse All
               <MoveUpRight />
             </Button>
           </NavLink>

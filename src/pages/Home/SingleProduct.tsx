@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Search, X, Mic, Camera } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Search, X, Mic, Camera, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface Product {
@@ -27,6 +27,7 @@ const SingleProduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeMainCategory, setActiveMainCategory] = useState('Supplements');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const itemsPerPage = 18;
 
   const mainCategories = [
@@ -49,7 +50,6 @@ const SingleProduct = () => {
     'Omega-3 Fish Oils (EPA DHA)',
   ];
 
-  // All products data
   const allProductsData: Product[] = [
     ...Array.from({ length: 40 }, (_, i) => ({
       id: i + 1,
@@ -123,7 +123,6 @@ const SingleProduct = () => {
     })),
   ];
 
-  // Filter states
   const [filters, setFilters] = useState<{ [key: string]: FilterSection }>({
     brands: { title: 'Brands', expanded: true, items: [] },
     healthTopics: { title: 'Health topics', expanded: true, items: [] },
@@ -138,7 +137,6 @@ const SingleProduct = () => {
     flavour: { title: 'Flavour', expanded: false, items: [] },
   });
 
-  // Generate dynamic filter options
   useMemo(() => {
     const brandCounts: { [key: string]: number } = {};
     const healthConditionCounts: { [key: string]: number } = {};
@@ -181,45 +179,30 @@ const SingleProduct = () => {
     }));
   }, []);
 
-  // Filter products dynamically
   const filteredProducts = useMemo(() => {
     let filtered = [...allProductsData];
 
     if (searchTerm) {
-      filtered = filtered.filter(p => 
-        p.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
     }
 
     const selectedBrands = filters.brands.items.filter(i => i.checked).map(i => i.label);
-    if (selectedBrands.length > 0) {
-      filtered = filtered.filter(p => selectedBrands.includes(p.brand));
-    }
+    if (selectedBrands.length > 0) filtered = filtered.filter(p => selectedBrands.includes(p.brand));
 
     const selectedHealthTopics = filters.healthTopics.items.filter(i => i.checked).map(i => i.label);
-    if (selectedHealthTopics.length > 0) {
-      filtered = filtered.filter(p => selectedHealthTopics.includes(p.healthCondition));
-    }
+    if (selectedHealthTopics.length > 0) filtered = filtered.filter(p => selectedHealthTopics.includes(p.healthCondition));
 
     const selectedCertifications = filters.certification.items.filter(i => i.checked).map(i => i.label);
-    if (selectedCertifications.length > 0) {
-      filtered = filtered.filter(p => selectedCertifications.some(cert => p.certification.includes(cert)));
-    }
+    if (selectedCertifications.length > 0) filtered = filtered.filter(p => selectedCertifications.some(cert => p.certification.includes(cert)));
 
     const selectedProductForms = filters.productForm.items.filter(i => i.checked).map(i => i.label);
-    if (selectedProductForms.length > 0) {
-      filtered = filtered.filter(p => selectedProductForms.includes(p.productForm));
-    }
+    if (selectedProductForms.length > 0) filtered = filtered.filter(p => selectedProductForms.includes(p.productForm));
 
     const selectedAgeRanges = filters.ageRanges.items.filter(i => i.checked).map(i => i.label);
-    if (selectedAgeRanges.length > 0) {
-      filtered = filtered.filter(p => selectedAgeRanges.includes(p.ageRange));
-    }
+    if (selectedAgeRanges.length > 0) filtered = filtered.filter(p => selectedAgeRanges.includes(p.ageRange));
 
     const selectedRatings = filters.rating.items.filter(i => i.checked).map(i => parseInt(i.label));
-    if (selectedRatings.length > 0) {
-      filtered = filtered.filter(p => selectedRatings.includes(p.rating));
-    }
+    if (selectedRatings.length > 0) filtered = filtered.filter(p => selectedRatings.includes(p.rating));
 
     const selectedPrices = filters.price.items.filter(i => i.checked).map(i => i.label);
     if (selectedPrices.length > 0 && !selectedPrices.includes('All')) {
@@ -260,21 +243,19 @@ const SingleProduct = () => {
     setCurrentPage(1);
   };
 
-  const renderStars = (rating: number) => {
-    return (
-      <div className="flex gap-0.5">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <svg
-            key={star}
-            className={`w-3 h-3 ${star <= rating ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-300 text-gray-300'}`}
-            viewBox="0 0 20 20"
-          >
-            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-          </svg>
-        ))}
-      </div>
-    );
-  };
+  const renderStars = (rating: number) => (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map(star => (
+        <svg
+          key={star}
+          className={`w-3 h-3 ${star <= rating ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-300 text-gray-300'}`}
+          viewBox="0 0 20 20"
+        >
+          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+        </svg>
+      ))}
+    </div>
+  );
 
   const getPageNumbers = () => {
     const pages = [];
@@ -303,7 +284,7 @@ const SingleProduct = () => {
   };
 
   return (
-    <div className="min-h-screen pt-40 bg-[#F1F5F8]">
+    <div className="pt-40 bg-[#F1F5F8]">
       {/* Header */}
       <header className=" px-6 py-4">
         <div className="max-w-[1600px] mx-auto">
@@ -371,10 +352,10 @@ const SingleProduct = () => {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-6">
-        <div className="flex gap-6">
+      <div className="max-w-6xl mx-auto px-6 py-6 pb-16">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar Filters */}
-          <aside className="w-72 flex-shrink-0">
+          <aside className="w-full lg:w-72 flex-shrink-0">
             <div className='bg-white border border-gray-100 shadow-md rounded-lg mb-3 flex justify-between items-center py-3 px-4'>
               <p className='text-gray-500'>Available Items Only</p>
               <input type="checkbox"  className='w-5 h-5'/>
@@ -383,8 +364,68 @@ const SingleProduct = () => {
               <p className='text-gray-500'>Only at This Platform</p>
               <input type="checkbox"  className='w-5 h-5'/>
             </div>
-            <div className="sticky top-6 bg-white rounded-lg border border-gray-200 p-4">
-              {/* Filter Sections */}
+            {/* Mobile Filter Button */}
+            <div className="lg:hidden mb-4">
+              <button
+                onClick={() => setShowMobileFilters(prev => !prev)}
+                className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg font-semibold flex items-center justify-center gap-2"
+              >
+                <Filter className="w-5 h-5" />
+                {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
+              </button>
+            </div>
+
+            {/* Mobile Filter Drawer */}
+            {showMobileFilters && (
+              <div className="bg-white border border-gray-200 shadow-md rounded-lg mb-4 p-4 lg:hidden">
+                {/* Paste your existing filter JSX here */}
+                <div className="space-y-1">
+                  {Object.entries(filters).map(([key, section]) => (
+                    <div key={key} className="border-b border-gray-200 last:border-b-0">
+                      <button
+                        onClick={() => toggleFilterSection(key)}
+                        className="flex items-center justify-between w-full text-left py-3 hover:bg-gray-50 px-2 rounded"
+                      >
+                        <span className="font-semibold text-gray-900 text-sm">{section.title}</span>
+                        {section.expanded ? (
+                          <ChevronUp className="w-4 h-4 text-gray-500" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-gray-500" />
+                        )}
+                      </button>
+                      {section.expanded && section.items.length > 0 && (
+                        <div className="pb-3 px-2 space-y-2">
+                          {section.items.map((item, idx) => (
+                            <label key={idx} className="flex items-center gap-2 cursor-pointer group">
+                              <input
+                                type="checkbox"
+                                checked={item.checked}
+                                onChange={() => toggleFilterItem(key, idx)}
+                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                              />
+                              {key === 'rating' ? (
+                                <div className="flex items-center gap-2 flex-1">
+                                  {renderStars(parseInt(item.label))}
+                                  <span className="text-xs text-gray-500">({item.count})</span>
+                                </div>
+                              ) : (
+                                <>
+                                  <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-1">{item.label}</span>
+                                  <span className="text-xs text-gray-500">({item.count})</span>
+                                </>
+                              )}
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Desktop Filters */}
+            <div className="sticky top-6 bg-white rounded-lg border border-gray-200 p-4 hidden lg:block">
               <div className="space-y-1">
                 {Object.entries(filters).map(([key, section]) => (
                   <div key={key} className="border-b border-gray-200 last:border-b-0">
@@ -399,19 +440,8 @@ const SingleProduct = () => {
                         <ChevronDown className="w-4 h-4 text-gray-500" />
                       )}
                     </button>
-                    
                     {section.expanded && section.items.length > 0 && (
                       <div className="pb-3 px-2 space-y-2">
-                        {key === 'healthTopics' && (
-                          <div className="relative mb-2">
-                            <input
-                              type="text"
-                              placeholder="Search..."
-                              className="w-full px-3 py-1.5 pr-8 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            />
-                            <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                          </div>
-                        )}
                         {section.items.map((item, idx) => (
                           <label key={idx} className="flex items-center gap-2 cursor-pointer group">
                             <input
@@ -427,19 +457,12 @@ const SingleProduct = () => {
                               </div>
                             ) : (
                               <>
-                                <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-1">
-                                  {item.label}
-                                </span>
+                                <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-1">{item.label}</span>
                                 <span className="text-xs text-gray-500">({item.count})</span>
                               </>
                             )}
                           </label>
                         ))}
-                        {key === 'healthTopics' && (
-                          <button className="text-blue-600 text-sm hover:underline">
-                            +56 more
-                          </button>
-                        )}
                       </div>
                     )}
                   </div>
@@ -452,14 +475,11 @@ const SingleProduct = () => {
           <main className="flex-1">
             {currentProducts.length > 0 ? (
               <>
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                  {currentProducts.map((product) => (
-                    <Link to={`/product-details/${10}`}
-                      key={product.id}
-                      className=" rounded-lg p-6 relative"
-                    >
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                  {currentProducts.map(product => (
+                    <Link to={`/product-details/${product.id}`} key={product.id} className="rounded-lg  relative">
                       {/* Favorite Button */}
-                      <button className="absolute top-7 right-9 w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
+                      <button className="absolute top-3 right-3 w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
                         <svg
                           className="w-4 h-4 text-white"
                           fill="none"
@@ -476,7 +496,7 @@ const SingleProduct = () => {
                       </button>
 
                       {/* Product Images */}
-                      <div className="flex justify-center items-center mb-4 h-40">
+                      <div className="flex justify-center items-center mb-4">
                         <img 
                           src="/bestsell.png" 
                           alt={product.name}
@@ -485,17 +505,13 @@ const SingleProduct = () => {
                       </div>
 
                       {/* Product Info */}
-                      <div className=" ">
+                      <div>
                         <h3 className="text-sm font-medium text-website-color-blue mb-2">
                           {product.name}
                         </h3>
-                        <div className="flex items-center  gap-2">
-                          <span className="text-md font-semibold text-website-color-blue">
-                            ${product.price.toFixed(2)}
-                          </span>
-                          <span className="text-sm text-gray-500 line-through">
-                            ${product.originalPrice.toFixed(2)}
-                          </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-md font-semibold text-website-color-blue">${product.price.toFixed(2)}</span>
+                          <span className="text-sm text-gray-500 line-through">${product.originalPrice.toFixed(2)}</span>
                         </div>
                       </div>
                     </Link>
