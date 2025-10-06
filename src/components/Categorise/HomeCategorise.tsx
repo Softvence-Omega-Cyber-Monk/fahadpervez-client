@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 
 interface Category {
   id: number;
@@ -70,33 +71,35 @@ const HomeCategories = () => {
   ];
 
   return (
-    <div className="min-h-screen py-24 px-4">
+    <div className="py-24 px-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-montserrat font-semibold text-center text-website-color-blue mb-12">
           CATEGORISE
         </h1>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category) => (
-            <div
-              key={category.id}
-              className="rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
-            >
-              <div className="flex flex-col items-center justify-center h-full space-y-4">
-                <div className="flex items-center justify-center overflow-hidden">
-                  <img 
-                    src={category.imageUrl} 
-                    alt={category.title}
-                    className="w-full h-full object-contain"
-                  />
+            <NavLink to={`/categories/${category.id}`}>
+              <div
+                key={category.id}
+                className="rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                >
+                <div className="flex flex-col items-center justify-center h-full space-y-4">
+                  <div className="flex items-center justify-center overflow-hidden">
+                    <img 
+                      src={category.imageUrl} 
+                      alt={category.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="text-center text-sm font-semibold text-gray-800 leading-tight">
+                    {category.title}
+                  </h3>
                 </div>
-                <h3 className="text-center text-sm font-semibold text-gray-800 leading-tight">
-                  {category.title}
-                </h3>
               </div>
-            </div>
+            </NavLink>
           ))}
-        </div>
+         </div>
       </div>
     </div>
   );
