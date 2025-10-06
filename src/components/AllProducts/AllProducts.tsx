@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heart, MoveUpRight } from 'lucide-react';
 import Button from '../Button/Button';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -34,7 +34,7 @@ const AllProducts: React.FC = () => {
         
         <div className="grid grid-cols-3 gap-6 mb-8">
           {products.map((product) => (
-            <div key={product.id} className="rounded-lg overflow-hidden relative">
+            <Link to={`/product-details/${10}`} key={product.id} className="rounded-lg overflow-hidden relative">
               <div className="absolute top-3 right-3 z-10">
                 <button className="w-8 h-8 bg-gray-400 bg-opacity-70 rounded-full flex items-center justify-center hover:bg-opacity-90 transition">
                   <Heart className="w-4 h-4 text-white" />
@@ -60,7 +60,7 @@ const AllProducts: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         

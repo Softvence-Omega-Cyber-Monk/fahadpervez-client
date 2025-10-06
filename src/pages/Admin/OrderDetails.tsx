@@ -97,6 +97,9 @@ export default function OrderDetails() {
     const [phone, setPhone] = useState("(219) 555-0114");
 
     const orderData = mockOrderData; // Replace with: useLocation().state?.order    const subtotal = productDetails.reduce((sum, item) => sum + (item.quantity * item.pricePerUnit), 0);
+
+
+    const subtotal = productDetails.reduce((sum, item) => sum + (item.quantity * item.pricePerUnit), 0);
     const delivery = 2;
     const total = subtotal + delivery;
 

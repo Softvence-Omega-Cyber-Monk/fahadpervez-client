@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Search, X, Mic, Camera } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -453,7 +454,7 @@ const SingleProduct = () => {
               <>
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {currentProducts.map((product) => (
-                    <div
+                    <Link to={`/product-details/${10}`}
                       key={product.id}
                       className=" rounded-lg p-6 relative"
                     >
@@ -497,7 +498,7 @@ const SingleProduct = () => {
                           </span>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
 

@@ -1,56 +1,72 @@
-import { ReactElement } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import React, { ReactElement, useState } from "react";
 import { sellerRoutes } from "@/routes/SellerRoutes";
 
-type SidebarItemProps = {
+interface SidebarItemProps {
   icon: ReactElement;
   label: string;
-  path: string;
   active?: boolean;
-};
+  onClick?: () => void;
+}
 
-const SidebarItem = ({ icon, label, path }: SidebarItemProps) => (
-  <NavLink
-    to={path}
-    className={({
-      isActive,
-    }) => `flex items-center px-4 py-2 rounded-lg cursor-pointer transition-colors 
-        ${
-          isActive
-            ? "bg-blue-600 text-white transition-colors duration-300"
-            : "text-gray-600 hover:bg-gray-200"
-        }`}
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, onClick }) => (
+  <div
+    onClick={onClick}
+    className={`flex items-center px-4 py-2 rounded-lg cursor-pointer transition-colors ${
+      active
+        ? "bg-blue-600 text-white"
+        : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+    }`}
   >
     <div className="mr-3 text-lg">{icon}</div>
     <span className="text-sm font-medium">{label}</span>
-  </NavLink>
+  </div>
 );
 
-const SideBar = () => {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const SideBar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+  const location = useLocation();
+  const [clickedPath, setClickedPath] = useState<string>("");
+
+  const handleItemClick = (path: string) => {
+    setClickedPath(path); // store clicked item
+    onClose(); // close sidebar on mobile
+  };
+
   return (
-    <div className="flex min-h-screen">
+    <>
+      {/* Overlay for Mobile */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300 md:hidden ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={onClose}
+      ></div>
+
       {/* Sidebar */}
-      <div className="w-64 bg-light-background border-r border-border p-4 flex flex-col">
-        {/* Logo */}
-        <div className="flex items-center space-x-2 mb-10 px-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-            <span>⟳</span>
-          </div>
-          <h1 className="text-blue-600 font-bold text-xl">Logoipsum</h1>
-        </div>
-        <div className="space-y-5">
-          {sellerRoutes.map((item) => {
-            return (
+      <div
+        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 mt-12
+          ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+          h-screen md:h-auto
+        `}
+      >
+        <nav className="flex flex-col gap-3 mt-2">
+          {sellerRoutes.map((item) => (
+            <Link key={item.path} to={item.path} onClick={() => handleItemClick(item.path)}>
               <SidebarItem
                 icon={item.icon}
                 label={item.name}
-                path={item.path}
+                active={location.pathname === item.path || clickedPath === item.path}
               />
-            );
-          })}
-        </div>
+            </Link>
+          ))}
+        </nav>
       </div>
-    </div>
+    </>
   );
 };
 
