@@ -43,7 +43,7 @@ const AllProducts: React.FC = () => {
               </div>
               
               {/* Product Image */}
-              <div className="flex items-center justify-center p-4">
+              <div className="flex items-center justify-center">
                 <img 
                   src="./bestsell.png" 
                   alt={product.name}
@@ -52,7 +52,7 @@ const AllProducts: React.FC = () => {
               </div>
               
               {/* Product Info */}
-              <div className="px-4 pb-4">
+              <div className="pb-4">
                 <h3 className="text-md font-montserrat font-medium text-gray-800 my-2 mt-3">{product.name}</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-montserrat font-medium text-website-color-blue">
