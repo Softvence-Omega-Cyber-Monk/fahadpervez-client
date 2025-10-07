@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface ChatBubbleProps {
   message: string;
@@ -17,7 +16,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
         ? 'bg-blue-600 text-white rounded-xl rounded-br-sm'
         : 'bg-white text-gray-800 rounded-xl rounded-bl-sm border border-gray-200'
     }`}>
-      <p className="text-sm leading-relaxed break-words">{message}</p>
+      <p className={`text-sm leading-relaxed break-words ${isSender ? "text-white" : ""}`}>{message}</p>
       <div className={`text-[10px] mt-1 text-right ${
         isSender ? 'text-blue-200' : 'text-gray-500'
       }`}>
