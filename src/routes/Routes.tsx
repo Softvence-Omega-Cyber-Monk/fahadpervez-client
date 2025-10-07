@@ -22,9 +22,7 @@ import Signup from "@/pages/Signup/Signup";
 import Home from "@/pages/Home/Home";
 import Categories from "@/pages/Home/Categories";
 import SingleProduct from "@/pages/Home/SingleProduct";
-
 import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetails";
-
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
 import ProductDetail from "@/pages/ProductDetail";
@@ -40,6 +38,7 @@ import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 import CMSDashboard from "@/components/Admin/CMS/CMSDashboard";
 import AdminMessage from "@/pages/Admin-Dashboard/Message/AdminMessage";
 import { CMSEditPage } from "@/components/Admin/CMS/CMSEditPage";
+import  SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard"
 
 const routes = createBrowserRouter([
   {
@@ -196,7 +195,13 @@ const routes = createBrowserRouter([
   {
     path: "/seller-dashboard",
     element: <SellerDashboardLayout />,
-    children: sellerRoutes,
+    children: [
+      {
+        index:true,
+        element:<SellerDashboard/>
+      },
+      ...sellerRoutes
+    ],
   },
   {
     path: "*",
