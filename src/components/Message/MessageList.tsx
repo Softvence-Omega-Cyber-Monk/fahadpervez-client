@@ -1,4 +1,3 @@
-import React from 'react';
 import { Search } from 'lucide-react';
 import MessageListItem from './MessageListItem';
 import { Message as MessageType } from '@/types/messageTypes';
@@ -21,7 +20,7 @@ const MessageList: React.FC<MessageListProps> = ({
   handleMessageSelect,
 }) => {
   return (
-    <div className={`w-full md:w-[320px] lg:w-1/3 border-r border-gray-200 bg-white flex flex-col flex-shrink-0 transition-all duration-300 ${
+    <div className={`w-full md:w-[320px] lg:w-1/3 border-r border-gray-200 bg-white flex flex-col flex-shrink-0 transition-all duration-300 rounded-2xl ${
       isMobileChatOpen ? 'hidden md:flex' : 'flex'
     }`}>
 
