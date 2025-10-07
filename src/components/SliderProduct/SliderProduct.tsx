@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -59,6 +60,7 @@ const SliderProduct = () => {
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8">
           {currentProducts.map((product) => (
+           <Link to={`/product-details/${product.id}`} key={product.id}>
             <div
               key={product.id}
               className="rounded-lg relative"
@@ -104,6 +106,7 @@ const SliderProduct = () => {
                 </div>
               </div>
             </div>
+            </Link>
           ))}
         </div>
 
