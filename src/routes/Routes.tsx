@@ -12,7 +12,6 @@ import AdminDashboardLayout from "@/pages/Admin-Dashboard/DashboardLayout/AdminD
 import Users from "@/pages/Admin-Dashboard/Users/Users";
 import Order from "@/pages/Admin-Dashboard/Order/Order";
 import Product from "@/pages/Admin-Dashboard/Product/Product";
-import SalesReports from "@/pages/Admin-Dashboard/SalesReports";
 import Payments from "@/pages/Admin-Dashboard/Payments/Payments";
 import Shipping from "@/pages/Admin-Dashboard/Shipping/Shipping";
 import Support from "@/pages/Admin-Dashboard/Support/Support";
@@ -28,6 +27,17 @@ import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetail
 
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
+import ProductDetail from "@/pages/ProductDetail";
+import MyCartHome from "@/pages/My-Cart/MyCartHome";
+import CheckOut from "@/pages/Checkout/CheckOut";
+import StoreHome from "@/pages/Store-Profile/StoreHome";
+import Notifications from "@/pages/Buyer-Dashboard/Notifications/Notifications";
+import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
+import BuyerProfile from "@/pages/Buyer-Dashboard/BuyerProfile/BuyerProfile";
+import Message from "@/pages/Buyer-Dashboard/Message/Message";
+
+import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord";
+import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 
 
 const routes = createBrowserRouter([
@@ -50,6 +60,22 @@ const routes = createBrowserRouter([
         element: <SingleProduct />,
       },
       {
+        path: '/product-details/:id',
+        element: <ProductDetail />
+      },
+      {
+        path: "/my-cart/:id",
+        element: <MyCartHome />
+      },
+      {
+        path: "/checkout/:id",
+        element: <CheckOut />
+      },
+      {
+        path: "/store-profile/:id",
+        element: <StoreHome />
+      },
+      {
         path: "/login",
         element: <Login />,
       },
@@ -57,6 +83,8 @@ const routes = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
+    ]
+  },
       {
         path: "buyer-dashboard",
         element: <BuyerDashboardLayout />,
@@ -82,8 +110,28 @@ const routes = createBrowserRouter([
             element: <HelpSupport />,
           },
           {
-            path:'product-details/:productId',
+            path: 'product-details/:productId',
+            element: <ProductDetails />
+          },
+          {
+               path:'product-details/:productId',
             element:<ProductDetails/>
+          },
+          {
+            path:'notifications',
+            element:<Notifications/>
+          },
+          {
+            path:'dashboard-product-details/:productId',
+            element:<DashboardProductDetails/>
+          },
+          {
+            path:'buyer-profile',
+            element:<BuyerProfile/>
+          },
+          {
+            path:'message',
+            element:<Message/>
           }
         ],
       },
@@ -109,10 +157,6 @@ const routes = createBrowserRouter([
             element: <Product />,
           },
           {
-            path: "sales-reports",
-            element: <SalesReports />,
-          },
-          {
             path: "payments",
             element: <Payments />,
           },
@@ -128,10 +172,16 @@ const routes = createBrowserRouter([
             path: "settings",
             element: <AdminSettings />,
           },
+          {
+            path: "admin-payment",
+            element: <PaymentsDasbord />,
+          },
+          {
+            path: "sales-reports",
+            element: <SalesReportsPage />,
+          },
         ],
       },
-    ],
-  },
   {
     path: "/seller-dashboard",
     element: <SellerDashboardLayout />,

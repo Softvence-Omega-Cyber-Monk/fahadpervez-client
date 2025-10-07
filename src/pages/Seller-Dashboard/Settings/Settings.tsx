@@ -36,7 +36,7 @@ const Settings = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">SETTINGS</h1>
 
       <div className="flex space-x-8 px-4 overflow-x-auto">

@@ -1,23 +1,24 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import DashboardNav from "../components/DashboardNav";
-import SideBar from "../components/Sidebar";
+import Sidebar from "../components/Sidebar";
 
+const AdminDashboardLayout: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
-const AdminDashboardLayout = () => {
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar on the left */}
-      <SideBar/>
+    <div className="flex w-full min-h-screen bg-[#F1F5F8]">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Right side: full width from Sidebar's end */}
-      <div className="flex-1 flex flex-col bg-gray-50 min-h-screen">
-        {/* Topbar */}
-        <DashboardNav />
+      {/* Main content */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Navbar */}
+        <DashboardNav onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
 
-        {/* Main content below the topbar */}
-        <div className="p-6">
-          <Outlet/>
-          {/* Add more content here */}
+        {/* Page content */}
+        <div className="flex-1 p-4 md:p-8 mt-20 md:mt-16">
+          <Outlet />
         </div>
       </div>
     </div>

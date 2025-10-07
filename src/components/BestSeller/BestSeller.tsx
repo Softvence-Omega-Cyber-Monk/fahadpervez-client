@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -14,44 +15,21 @@ const BestSeller: React.FC = () => {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
 
   const products: Product[] = [
-    {
-      id: 1,
-      name: 'Harmony biotic digestive tablets',
-      price: '$7.99',
-      originalPrice: '$9.99',
-      image: './bestsell.png'
-    },
-    {
-      id: 2,
-      name: 'Eco-friendly reusable water bottle',
-      price: '$15.49',
-      originalPrice: '$19.99',
-      image: '/api/placeholder/200/200'
-    },
-    {
-      id: 3,
-      name: 'Organic herbal tea blend',
-      price: '$9.99',
-      originalPrice: '$12.99',
-      image: '/api/placeholder/200/200'
-    },
-    {
-      id: 4,
-      name: 'Natural vitamin supplement',
-      price: '$14.99',
-      originalPrice: '$18.99',
-      image: '/api/placeholder/200/200'
-    },
-    {
-      id: 5,
-      name: 'Premium protein powder',
-      price: '$29.99',
-      originalPrice: '$34.99',
-      image: '/api/placeholder/200/200'
-    }
+    { id: 1, name: 'Harmony biotic digestive tablets', price: '$7.99', originalPrice: '$9.99', image: './bestsell.png' },
+    { id: 2, name: 'Eco-friendly reusable water bottle', price: '$15.49', originalPrice: '$19.99', image: './bestsell.png' },
+    { id: 3, name: 'Organic herbal tea blend', price: '$9.99', originalPrice: '$12.99', image: './bestsell.png' },
+    { id: 4, name: 'Natural vitamin supplement', price: '$14.99', originalPrice: '$18.99', image: './bestsell.png' },
+    { id: 5, name: 'Premium protein powder', price: '$29.99', originalPrice: '$34.99', image: './bestsell.png' }
   ];
 
-  const itemsPerPage = 3;
+  // Mobile: 1 item, Tablet: 2, Desktop: 3
+  const getItemsPerPage = () => {
+    if (window.innerWidth < 640) return 1;   // mobile
+    if (window.innerWidth < 768) return 2;   // tablet
+    return 3;                                // desktop
+  };
+
+  const itemsPerPage = getItemsPerPage();
   const maxIndex = Math.max(0, products.length - itemsPerPage);
 
   const nextSlide = () => {
@@ -65,13 +43,33 @@ const BestSeller: React.FC = () => {
   const toggleFavorite = (id: number) => {
     setFavorites((prev) => {
       const newFavorites = new Set(prev);
-      if (newFavorites.has(id)) {
-        newFavorites.delete(id);
-      } else {
-        newFavorites.add(id);
-      }
+      if (newFavorites.has(id)) newFavorites.delete(id);
+      else newFavorites.add(id);
       return newFavorites;
     });
+  };
+
+  // --- Touch swipe support ---
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const swipeDistance = touchStartX - touchEndX;
+    const swipeThreshold = 50; // minimum distance in px to trigger slide
+
+    if (swipeDistance > swipeThreshold) {
+      nextSlide(); // swipe left → next
+    } else if (swipeDistance < -swipeThreshold) {
+      prevSlide(); // swipe right → prev
+    }
   };
 
   return (
@@ -79,11 +77,11 @@ const BestSeller: React.FC = () => {
       <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue">BEST SELLERS</h2>
       
       <div className="relative">
-        {/* Previous Button */}
+        {/* Previous Button - hidden on mobile */}
         <button
           onClick={prevSlide}
           disabled={currentIndex === 0}
-          className="absolute left-0 top-[50%] -translate-y-[100%] -translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="hidden sm:flex absolute top-1/3 translate-y-1/3 -translate-x-1/2 left-0 z-10 w-10 h-10 rounded-full bg-white shadow-lg items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           aria-label="Previous products"
         >
           <ChevronLeft className="w-6 h-6 text-gray-600" />
@@ -92,18 +90,19 @@ const BestSeller: React.FC = () => {
         {/* Products Container */}
         <div className="overflow-hidden">
           <div
-            className="flex transition-transform duration-300 ease-in-out gap-6"
-            style={{
-              transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)`
-            }}
+            className="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6"
+            style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {products.map((product) => (
-              <div
+              <Link
+                to={`/product-details/${product.id}`}
                 key={product.id}
-                className="flex-none w-[calc(33.333%-16px)]"
+                className={`flex-none w-[calc(100%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)]`}
               >
                 <div className="rounded-lg overflow-hidden group">
-                  {/* Image Container */}
                   <div className="relative flex flex-col items-center justify-start">
                     {/* Favorite Button */}
                     <button
@@ -122,37 +121,37 @@ const BestSeller: React.FC = () => {
 
                     {/* Product Image */}
                     <img
-                      src="./bestsell.png"
+                      src={product.image}
                       alt={product.name}
-                      className="w-full h-full object-contain"
+                      className="w-full sm:h-56 md:h-77 object-contain"
                     />
 
                     {/* Product Info */}
-                    <div className="w-full">
-                        <h3 className="text-md font-montserrat font-medium text-website-color-blue mb-2 mt-3">
+                    <div className="w-full text-center sm:text-left">
+                      <h3 className="text-md font-montserrat font-medium text-website-color-blue mb-2 mt-3">
                         {product.name}
-                        </h3>
-                        <div className="flex items-center gap-2">
+                      </h3>
+                      <div className="flex items-center justify-center sm:justify-start gap-2">
                         <span className="text-lg font-montserrat font-medium text-website-color-blue">
-                            {product.price}
+                          {product.price}
                         </span>
                         <span className="text-sm text-gray-400 line-through">
-                            {product.originalPrice}
+                          {product.originalPrice}
                         </span>
-                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* Next Button */}
+        {/* Next Button - hidden on mobile */}
         <button
           onClick={nextSlide}
           disabled={currentIndex === maxIndex}
-          className="absolute right-0 top-[50%] -translate-y-[100%] translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="hidden sm:flex absolute top-1/3 translate-y-1/3 translate-x-1/2 right-0 z-10 w-10 h-10 rounded-full bg-white shadow-lg items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           aria-label="Next products"
         >
           <ChevronRight className="w-6 h-6 text-gray-600" />
@@ -160,7 +159,7 @@ const BestSeller: React.FC = () => {
       </div>
 
       {/* Dots Indicator */}
-      <div className="flex justify-center gap-2 mt-6">
+      <div className="flex justify-center gap-2 mt-6 flex-wrap">
         {Array.from({ length: maxIndex + 1 }).map((_, index) => (
           <button
             key={index}
