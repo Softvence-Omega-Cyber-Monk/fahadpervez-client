@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom"
 export function CMSEditPage() {
  const navigate = useNavigate()
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="mx-auto max-w-4xl">
+    <div className="min-h-screen bg-background p-6 bg-white rounded-2xl">
+      <div className="mx-auto ">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>CMS</span>
+            <a href="/admin-dashboard/cms" className="text-blue-600 font-medium">CMS</a>
             <span>{">"}</span>
             <span className="text-foreground">Edit Page</span>
           </div>
@@ -72,7 +72,7 @@ export function CMSEditPage() {
             >
               Back
             </Button>
-            <Button className="min-w-[120px] bg-blue-600 hover:bg-blue-700">Save changes</Button>
+            <Button className="min-w-[120px] bg-blue-600 hover:bg-blue-700 text-white">Save changes</Button>
           </div>
         </div>
       </div>
