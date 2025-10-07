@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import React, { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Search, Edit3, Trash2, ChevronRight } from 'lucide-react';
 
 // --- TYPE DEFINITIONS & MOCK DATA ---

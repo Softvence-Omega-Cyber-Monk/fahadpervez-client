@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import { RefObject } from 'react';
 import ChatHeader from './ChatHeader';
 import ChatBubble from './ChatBubble';
 import ChatInput from './ChatInput';
@@ -36,7 +36,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   messagesEndRef,
 }) => {
   return (
-    <div className={`flex-1 flex-col bg-gray-50 transition-all duration-300 ${
+    <div className={`flex-1 flex-col bg-gray-50 transition-all duration-300 rounded-2xl ${
       isMobileChatOpen ? 'flex' : 'hidden md:flex'
     }`}>
 
@@ -46,7 +46,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       />
 
       {/* Chat Body */}
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 ">
         <div className="max-w-4xl mx-auto w-full">
           {selectedChat ? (
             <>

@@ -35,14 +35,13 @@ import Notifications from "@/pages/Buyer-Dashboard/Notifications/Notifications";
 import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
 import BuyerProfile from "@/pages/Buyer-Dashboard/BuyerProfile/BuyerProfile";
 import Message from "@/pages/Buyer-Dashboard/Message/Message";
-
 import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord";
 import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 import CMSDashboard from "@/components/Admin/CMS/CMSDashboard";
-
+import AdminMessage from "@/pages/Admin-Dashboard/Message/AdminMessage";
+import { CMSEditPage } from "@/components/Admin/CMS/CMSEditPage";
 
 const routes = createBrowserRouter([
-  
   {
     path: "/",
     element: <App />,
@@ -56,25 +55,24 @@ const routes = createBrowserRouter([
         element: <Categories />,
       },
       {
-        
         path: "/products/:id",
         element: <SingleProduct />,
       },
       {
-        path: '/product-details/:id',
-        element: <ProductDetail />
+        path: "/product-details/:id",
+        element: <ProductDetail />,
       },
       {
         path: "/my-cart/:id",
-        element: <MyCartHome />
+        element: <MyCartHome />,
       },
       {
         path: "/checkout/:id",
-        element: <CheckOut />
+        element: <CheckOut />,
       },
       {
         path: "/store-profile/:id",
-        element: <StoreHome />
+        element: <StoreHome />,
       },
       {
         path: "/login",
@@ -84,113 +82,117 @@ const routes = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
-    ]
+    ],
   },
+  {
+    path: "buyer-dashboard",
+    element: <BuyerDashboardLayout />,
+    children: [
       {
-        path: "buyer-dashboard",
-        element: <BuyerDashboardLayout />,
-        children: [
-          {
-            index: true,
-            element: <Dashboard />,
-          },
-          {
-            path: "my-orders",
-            element: <MyOrders />,
-          },
-          {
-            path: "wishlist",
-            element: <WishList />,
-          },
-          {
-            path: "settings",
-            element: <Settings />,
-          },
-          {
-            path: "help-support",
-            element: <HelpSupport />,
-          },
-          {
-            path: 'product-details/:productId',
-            element: <ProductDetails />
-          },
-          {
-               path:'product-details/:productId',
-            element:<ProductDetails/>
-          },
-          {
-            path:'notifications',
-            element:<Notifications/>
-          },
-          {
-            path:'dashboard-product-details/:productId',
-            element:<DashboardProductDetails/>
-          },
-          {
-            path:'buyer-profile',
-            element:<BuyerProfile/>
-          },
-          {
-            path:'message',
-            element:<Message/>
-          }
-        ],
+        index: true,
+        element: <Dashboard />,
       },
+      {
+        path: "my-orders",
+        element: <MyOrders />,
+      },
+      {
+        path: "wishlist",
+        element: <WishList />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+      {
+        path: "help-support",
+        element: <HelpSupport />,
+      },
+      {
+        path: "product-details/:productId",
+        element: <ProductDetails />,
+      },
+      {
+        path: "product-details/:productId",
+        element: <ProductDetails />,
+      },
+      {
+        path: "notifications",
+        element: <Notifications />,
+      },
+      {
+        path: "dashboard-product-details/:productId",
+        element: <DashboardProductDetails />,
+      },
+      {
+        path: "buyer-profile",
+        element: <BuyerProfile />,
+      },
+      {
+        path: "message",
+        element: <Message />,
+      },
+    ],
+  },
 
+  {
+    path: "admin-dashboard",
+    element: <AdminDashboardLayout />,
+    children: [
       {
-        path: "admin-dashboard",
-        element: <AdminDashboardLayout />,
-        children: [
-          {
-            index: true,
-            element: <AdmninDashboard />,
-          },
-          {
-            path: "users",
-            element: <Users />,
-          },
-          {
-            path: "orders",
-            element: <Order />,
-          },
-          {
-            path: "product",
-            element: <Product />,
-          },
-          {
-            path: "message",
-            element: <Message />,
-          },
-          {
-            path: "cms",
-            element: <CMSDashboard />,
-          },
-          {
-            path: "payments",
-            element: <Payments />,
-          },
-          {
-            path: "shipping",
-            element: <Shipping />,
-          },
-          {
-            path: "support",
-            element: <Support />,
-          },
-          {
-            path: "settings",
-            element: <AdminSettings />,
-          },
-          {
-            path: "admin-payment",
-            element: <PaymentsDasbord />,
-          },
-          {
-            path: "sales-reports",
-            element: <SalesReportsPage />,
-          },
-        ],
+        index: true,
+        element: <AdmninDashboard />,
       },
+      {
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "orders",
+        element: <Order />,
+      },
+      {
+        path: "product",
+        element: <Product />,
+      },
+      {
+        path: "message",
+        element: <AdminMessage />,
+      },
+      {
+        path: "cms",
+        element: <CMSDashboard />,
+      },
+      {
+        path: "edit-page",
+        element: <CMSEditPage />,
+      },
+      {
+        path: "payments",
+        element: <Payments />,
+      },
+      {
+        path: "shipping",
+        element: <Shipping />,
+      },
+      {
+        path: "support",
+        element: <Support />,
+      },
+      {
+        path: "settings",
+        element: <AdminSettings />,
+      },
+      {
+        path: "admin-payment",
+        element: <PaymentsDasbord />,
+      },
+      {
+        path: "sales-reports",
+        element: <SalesReportsPage />,
+      },
+    ],
+  },
   {
     path: "/seller-dashboard",
     element: <SellerDashboardLayout />,

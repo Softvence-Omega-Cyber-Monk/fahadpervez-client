@@ -1,3 +1,4 @@
+import { CMSTable } from "./CMSTable";
 
 
 
@@ -5,7 +6,7 @@ const CMSDashboard = () => {
 
   return (
     <div className="">
-      CMSDashboard
+      <CMSTable/>
     </div>
   );
 };
