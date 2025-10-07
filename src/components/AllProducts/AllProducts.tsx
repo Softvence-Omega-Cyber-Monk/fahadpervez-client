@@ -1,10 +1,10 @@
 import React from 'react';
 import { Heart, MoveUpRight } from 'lucide-react';
 import Button from '../Button/Button';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   originalPrice: number;
@@ -13,43 +13,46 @@ interface Product {
 
 const AllProducts: React.FC = () => {
   const products: Product[] = [
-    { id: 1, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
-    { id: 2, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
-    { id: 3, name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
-    { id: 4, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
-    { id: 5, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 14.20, image: '' },
-    { id: 6, name: 'Organic herbal tea blend', price: 9.99, originalPrice: 14.99, image: '' },
-    { id: 7, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 10.99, image: '' },
-    { id: 8, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
-    { id: 9, name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
-    { id: 10, name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 11.49, image: '' },
-    { id: 11, name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
-    { id: 12, name: 'Organic herbal tea blend', price: 10.99, originalPrice: 13.99, image: '' },
+    { id: "1", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
+    { id: "2", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
+    { id: "3", name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
+    { id: "4", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 12.99, image: '' },
+    { id: "5", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 14.20, image: '' },
+    { id: "6", name: 'Organic herbal tea blend', price: 9.99, originalPrice: 14.99, image: '' },
+    { id: "7", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 10.99, image: '' },
+    { id: "8", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
+    { id: "9", name: 'Organic herbal tea blend', price: 8.99, originalPrice: 11.99, image: '' },
+    { id: "10", name: 'Harmony biotic digestive tablets', price: 7.99, originalPrice: 11.49, image: '' },
+    { id: "11", name: 'Eco-friendly reusable water bottle', price: 10.49, originalPrice: 13.99, image: '' },
+    { id: "12", name: 'Organic herbal tea blend', price: 10.99, originalPrice: 13.99, image: '' },
   ];
 
   return (
-    <div className="min-h-screen pb-16">
-      <div className="max-w-6xl mx-auto">
+    <div className="pb-16">
+      <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue">ALL PRODUCTS</h1>
         
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        {/* Responsive Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           {products.map((product) => (
-            <div key={product.id} className="rounded-lg overflow-hidden relative">
+            <Link to={`/product-details/${product.id}`} key={product.id} className="rounded-lg overflow-hidden relative">
               <div className="absolute top-3 right-3 z-10">
                 <button className="w-8 h-8 bg-gray-400 bg-opacity-70 rounded-full flex items-center justify-center hover:bg-opacity-90 transition">
                   <Heart className="w-4 h-4 text-white" />
                 </button>
               </div>
               
-              <div className="flex items-center justify-center">
+              {/* Product Image */}
+              <div className="flex items-center justify-center p-4">
                 <img 
                   src="./bestsell.png" 
                   alt={product.name}
-                  className="object-contain"
+                  className="object-contain w-full"
                 />
               </div>
               
-              <div>
+              {/* Product Info */}
+              <div className="px-4 pb-4">
                 <h3 className="text-md font-montserrat font-medium text-gray-800 my-2 mt-3">{product.name}</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-montserrat font-medium text-website-color-blue">
@@ -60,14 +63,15 @@ const AllProducts: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         
+        {/* Browse All Button */}
         <div className="flex justify-center">
           <NavLink to="/products/:id">
-              <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
-                  Browse All
+            <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
+              Browse All
               <MoveUpRight />
             </Button>
           </NavLink>

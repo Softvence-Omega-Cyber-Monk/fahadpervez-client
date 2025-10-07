@@ -11,7 +11,6 @@ import {
     Clock,
     Pen
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -97,19 +96,8 @@ export default function OrderDetails() {
     const [shippingMethod, setShippingMethod] = useState("dhl");
     const [phone, setPhone] = useState("(219) 555-0114");
 
-    const orderData = mockOrderData; // Replace with: useLocation().state?.order
+    const orderData = mockOrderData; // Replace with: useLocation().state?.order    const subtotal = productDetails.reduce((sum, item) => sum + (item.quantity * item.pricePerUnit), 0);
 
-    const getStatusIndex = (status: string) => {
-        switch(status) {
-            case "Order placed": return 1;
-            case "Preparing for Shipment": return 2;
-            case "Out of delivery": return 3;
-            case "Delivered": return 4;
-            default: return 1;
-        }
-    };
-
-    const actualStatus = orderData ? getStatusIndex(orderData.status) : currentStatus;
 
     const subtotal = productDetails.reduce((sum, item) => sum + (item.quantity * item.pricePerUnit), 0);
     const delivery = 2;
