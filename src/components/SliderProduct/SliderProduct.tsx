@@ -81,7 +81,7 @@ const SliderProduct = () => {
               </button>
 
               {/* Product Image */}
-              <div className="flex justify-center items-center mb-4 ">
+              <div className="flex justify-center items-center mb-4">
                 <img 
                   src={product.image} 
                   alt={product.name}
