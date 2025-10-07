@@ -38,6 +38,7 @@ import Message from "@/pages/Buyer-Dashboard/Message/Message";
 
 import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord";
 import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
+import CMSDashboard from "@/components/Admin/CMS/CMSDashboard";
 
 
 const routes = createBrowserRouter([
@@ -155,6 +156,14 @@ const routes = createBrowserRouter([
           {
             path: "product",
             element: <Product />,
+          },
+          {
+            path: "message",
+            element: <Message />,
+          },
+          {
+            path: "cms",
+            element: <CMSDashboard />,
           },
           {
             path: "payments",
