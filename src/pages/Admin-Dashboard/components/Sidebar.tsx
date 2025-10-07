@@ -46,6 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { path: "/admin-dashboard/orders", icon: <FaClipboardList />, label: "Orders" },
     { path: "/admin-dashboard/product", icon: <FaHeart />, label: "Product" },
     { path: "/admin-dashboard/sales-reports", icon: <TbReportSearch />, label: "Sales & Reports" },
+    { path: "/admin-dashboard/cms", icon: <TbReportSearch />, label: "CMS" },
     { path: "/admin-dashboard/payments", icon: <MdOutlinePayments />, label: "Payments" },
     { path: "/admin-dashboard/shipping", icon: <MdLocalShipping />, label: "Shipping" },
     { path: "/admin-dashboard/support", icon: <BiSupport />, label: "Support" },
