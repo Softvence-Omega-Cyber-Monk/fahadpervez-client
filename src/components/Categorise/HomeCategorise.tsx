@@ -82,7 +82,7 @@ const HomeCategories = () => {
             <NavLink to={`/categories/${category.id}`}>
               <div
                 key={category.id}
-                className="rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                className="rounded-2xl p-3 w-full h-full overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
                 >
                 <div className="flex flex-col items-center justify-center h-full space-y-4">
                   <div className="flex items-center justify-center overflow-hidden">
@@ -92,7 +92,7 @@ const HomeCategories = () => {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h3 className="text-center text-sm font-semibold text-gray-800 leading-tight">
+                  <h3 className="text-center text-sm font-semibold p-2 text-gray-800 leading-tight">
                     {category.title}
                   </h3>
                 </div>
