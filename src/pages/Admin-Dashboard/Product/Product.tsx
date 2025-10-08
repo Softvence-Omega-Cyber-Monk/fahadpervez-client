@@ -122,7 +122,7 @@ const ProductList: React.FC = () => {
   }
 
   return (
-    <div className="p-4 sm:p-8 bg-gray-50 min-h-screen font-sans">
+    <div className="p-4 sm:p-8 min-h-screen font-sans">
       <h1 className="text-3xl font-semibold text-gray-800 mb-6">Products</h1>
       
       {/* Search and Action Bar */}
@@ -169,7 +169,8 @@ const ProductList: React.FC = () => {
       </div>
 
       {/* Product Table */}
-      <div className="bg-white rounded-xl shadow-md overflow-x-auto border border-gray-100">
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-xl shadow-md overflow-x-auto border border-gray-100">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-100">
             <tr>
@@ -235,6 +236,51 @@ const ProductList: React.FC = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {filteredProducts.map(product => {
+          const isSelected = selectedProducts.includes(product.id);
+          return (
+            <div key={product.id} className={`bg-white rounded-xl shadow-md border p-4 space-y-4 transition-colors duration-150 ${isSelected ? 'bg-blue-50 border-blue-200' : 'border-gray-100'}`}>
+              {/* Top section: Checkbox, Image, Name, SKU, Price */}
+              <div className="flex justify-between items-start">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => handleSelectProduct(product.id)}
+                    className="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer mt-1"
+                  />
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">{product.image}</span>
+                    <div>
+                      <p className="font-medium text-gray-900">{product.name}</p>
+                      <p className="text-xs text-gray-500">SKU: {product.sku}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-gray-800">{formatCurrency(product.price)}</p>
+                  <p className="text-xs text-gray-500">{product.sale}% off</p>
+                </div>
+              </div>
+
+              {/* Middle section: Seller, Revenue, Stock */}
+              <div className="grid grid-cols-3 gap-4 text-center border-t border-b border-gray-100 py-3">
+                <div><p className="text-xs text-gray-500">Seller</p><p className="text-sm font-medium text-blue-600 mt-1">{product.seller}</p></div>
+                <div><p className="text-xs text-gray-500">Revenue</p><p className="text-sm font-medium text-gray-800 mt-1">{formatRevenue(product.revenue)}</p></div>
+                <div><p className="text-xs text-gray-500">Stock</p><div className="mt-1 flex justify-center"><StockIndicator stock={product.stock} max={product.maxStock} /></div></div>
+              </div>
+
+              {/* Bottom section: Action */}
+              <div className="flex justify-end">
+                <Link to={`/product-details/${product.id}`} className="text-blue-600 hover:text-blue-800 font-medium transition text-sm">View Details</Link>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Pagination */}

@@ -6,7 +6,7 @@ import { PlatformCommissionTable } from "./PlatformCommissionTable";
 
 export default function PaymentsDasbord() {
   return (
-    <div className="min-h-screen bg-gray-50 pl-4">
+    <div className="min-h-screen pl-4">
   <h2 className="text-3xl font-bold text-[#1C2A33] mb-6">Payment</h2>
 
       <div className=" mx-auto space-y-8">
