@@ -78,11 +78,11 @@ const HomeCategories = () => {
         </h1>
         
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category) => (
-            <NavLink to={`/categories/${category.id}`}>
+          {categories.map((category , idx) => (
+            <NavLink key={idx} to='/products/:id'>
               <div
                 key={category.id}
-                className="rounded-2xl p-3 w-full h-full overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+                className="rounded-2xl p-3 w-full h-full overflow-hidden cursor-pointer"
                 >
                 <div className="flex flex-col items-center justify-center h-full space-y-4">
                   <div className="flex items-center justify-center overflow-hidden">
@@ -92,7 +92,7 @@ const HomeCategories = () => {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h3 className="text-center text-sm font-semibold p-2 text-gray-800 leading-tight">
+                  <h3 className="text-center text-sm font-bold p-1 text-gray-800 leading-tight">
                     {category.title}
                   </h3>
                 </div>
