@@ -65,20 +65,20 @@ export function StatsCard({ item }: StatCardProps) {
   };
 
   return (
-    <div className="w-full pl-8 pr-10 py-6 flex flex-col space-y-4 border border-border rounded-2xl bg-light-background">
+    <div className="w-full p-4 sm:p-6 md:p-8 flex flex-col space-y-4 border border-border rounded-2xl bg-light-background">
       {/* Header Row with optional icon */}
       <div className="flex items-center gap-2">
-        {icon && <div className={`p-3 rounded-lg text-2xl ${iconColor[icon as "box" | "check" | "alert" | "plus" ]} `}>{cardIcon[icon]}</div>}
-        <p className={`text-light-gray `}>{title}</p>
+        {icon && <div className={`p-3 rounded-lg text-xl sm:text-2xl ${iconColor[icon as "box" | "check" | "alert" | "plus" ]} `}>{cardIcon[icon]}</div>}
+        <p className={`text-sm sm:text-base text-light-gray `}>{title}</p>
       </div>
 
       {/* Value */}
-      <h5 className={`text-3xl font-semibold ${icon? `${cardStyle[icon]}` :""}`}>{formatValue(value, currency)}</h5>
+      <h5 className={`text-2xl sm:text-3xl md:text-4xl font-semibold ${icon? `${cardStyle[icon]}` :""}`}>{formatValue(value, currency)}</h5>
 
       {/* Status or Button */}
       {buttonText ? (
         <Button
-          className="w-full mt-2 bg-primary-green hover:bg-primary-green/80 text-white text-sm font-medium h-9"
+          className="w-full mt-2 bg-primary-green hover:bg-primary-green/80 text-white text-xs sm:text-sm font-medium h-9"
           onClick={buttonAction}
         >
           {buttonText}
@@ -86,7 +86,7 @@ export function StatsCard({ item }: StatCardProps) {
       ) : 
       (
         <p className={`${cardStyle[ icon || type as StatType["type"]]} flex items-center gap-1`}>
-          <span className="text-2xl">{cardIcon[type as string]}</span>
+          <span className="text-xl sm:text-2xl">{cardIcon[type as string]}</span>
           {status}
         </p>
       )}
