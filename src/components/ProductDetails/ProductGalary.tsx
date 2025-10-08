@@ -84,7 +84,7 @@ const ProductGalary = ({ product }: { product: ProductData }) => {
 
             {/* Middle Section - Product Info */}
             <div className="lg:col-span-4">
-                <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-4">{product.name}</h1>
+                <h1 className="text-2xl sm:text-3xl font-semibold text-[#1C2A33] mb-4">{product.name}</h1>
 
                 <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3">
                     <div className="flex items-center gap-2">
@@ -93,7 +93,7 @@ const ProductGalary = ({ product }: { product: ProductData }) => {
                             {product.seller}
                         </a>
                     </div>
-                    <div className="text-sm sm:text-base text-gray-600">
+                    <div className="text-[#70797E] text-[16px] font-[400] not-italic">
                         Sold: <span className="font-medium">335</span>
                     </div>
                 </div>
@@ -125,7 +125,7 @@ const ProductGalary = ({ product }: { product: ProductData }) => {
                 </div>
 
                 <div className="inline-block mb-6">
-                    <span className="px-3 py-1 bg-white border-2 border-blue-500 text-blue-600 rounded-md text-sm font-medium">
+                    <span className="px-3 py-1 bg-[#E6F3FF] border-2 border-blue-400 text-blue-600 rounded-md text-sm font-medium">
                         In Stock - {product.stock} left
                     </span>
                 </div>
@@ -134,7 +134,7 @@ const ProductGalary = ({ product }: { product: ProductData }) => {
                     {productInfo.map((info, index) => (
                         <li key={index} className="flex items-start">
                             <span className="mr-2">.</span>
-                            <span>{info}</span>
+                            <span className="text-[#455058] text-[14px] font-[500] not-italic">{info}</span>
                         </li>
                     ))}
                 </ul>
@@ -145,21 +145,21 @@ const ProductGalary = ({ product }: { product: ProductData }) => {
                 <div className="bg-white rounded-lg p-6 shadow-sm sticky top-6">
                     <div className="">
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="text-3xl sm:text-4xl font-bold text-gray-900">${product.price}</span>
-                            <span className="text-xl sm:text-2xl text-gray-400 line-through">${product.price + 5}</span>
+                            <span className="text-[24px] font-bold text-[#1C2A33]">${product.price}</span>
+                            <span className="text-[14px] text-gray-400 font-[400] line-through">${product.price + 5}</span>
                         </div>
 
-                        <div className="flex items-center justify-center gap-4 mb-4">
+                        <div className="flex  justify-around items-center mb-[80px] border border-white shadow p-2 rounded-full">
                             <button
                                 onClick={() => setQuantity(Math.max(0, quantity - 1))}
-                                className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                                className="w-10 h-10 cursor-pointer rounded-full bg-[#E6F3FF] flex items-center justify-center hover:bg-gray-50 transition-colors"
                             >
                                 <Minus className="h-5 w-5 text-gray-600" />
                             </button>
-                            <span className="text-2xl font-semibold text-gray-900 w-12 text-center">{quantity}</span>
+                            <span className="w-10 h-10 rounded-full bg-[#EAEAEA] border-2 border-[#BDBDBD] flex items-center justify-center transition-colors">{quantity}</span>
                             <button
                                 onClick={() => setQuantity(quantity + 1)}
-                                className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                                className="w-10 h-10 cursor-pointer rounded-full flex items-center justify-center bg-[#E6F3FF] hover:bg-gray-50 transition-colors"
                             >
                                 <Plus className="h-5 w-5 text-gray-600" />
                             </button>
@@ -170,7 +170,7 @@ const ProductGalary = ({ product }: { product: ProductData }) => {
                         Add To Cart
                     </button>
                 </div>
-                <button className="w-full bg-white hover:bg-gray-50 text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-600 flex items-center justify-center gap-2 transition-colors mt-[50px]">
+                <button className="w-full bg-[#E6F3FF] hover:bg-[#E6F3F0] text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-300 flex items-center justify-center gap-2 transition-colors mt-[50px]">
                     <MessageSquare className="h-5 w-5" />
                     Send Inquiry
                 </button>

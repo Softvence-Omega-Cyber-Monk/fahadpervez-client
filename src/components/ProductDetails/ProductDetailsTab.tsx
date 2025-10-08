@@ -8,10 +8,10 @@ const ProductDetailsTab: React.FC = () => {
     return (
         <div className="w-full">
             {/* Tab Navigation */}
-            <div className="flex border-b border-gray-200">
+            <div className="flex border-b items-center justify-between border-gray-200">
                 <button
                     onClick={() => setActiveTab('overview')}
-                    className={`px-6 py-3 text-lg font-medium transition-colors ${activeTab === 'overview'
+                    className={`px-6 py-3 w-full text-lg font-medium transition-colors ${activeTab === 'overview'
                             ? 'text-gray-900 border-b-2 border-blue-600'
                             : 'text-gray-500 hover:text-gray-700'
                         }`}
@@ -20,7 +20,7 @@ const ProductDetailsTab: React.FC = () => {
                 </button>
                 <button
                     onClick={() => setActiveTab('reviews')}
-                    className={`px-6 py-3 text-lg font-medium transition-colors ${activeTab === 'reviews'
+                    className={`px-6 py-3 w-full text-lg font-medium transition-colors ${activeTab === 'reviews'
                             ? 'text-gray-900 border-b-2 border-blue-600'
                             : 'text-gray-500 hover:text-gray-700'
                         }`}

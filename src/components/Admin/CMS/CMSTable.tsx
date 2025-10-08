@@ -27,7 +27,8 @@ export function CMSTable() {
       <div className="">
         <h1 className="mb-6 text-2xl font-bold">CMS PAGES</h1>
 
-        <div className="overflow-hidden rounded-lg border border-border bg-card">
+        {/* Desktop Table View */}
+        <div className="hidden sm:block overflow-x-auto rounded-lg border border-border bg-card">
           <table className="w-full">
             <thead className="bg-muted/50">
               <tr className="border-b border-border">
@@ -76,6 +77,45 @@ export function CMSTable() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="grid grid-cols-1 gap-4 sm:hidden">
+          {pages.map((page, index) => (
+            <div key={index} className="space-y-4 rounded-lg border border-border bg-card p-4">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-4">
+                  <Checkbox />
+                  <div>
+                    <p className="font-semibold">{page.title}</p>
+                    <p className="truncate text-sm text-muted-foreground">{page.url}</p>
+                  </div>
+                </div>
+                <div className="text-sm text-muted-foreground">ID: {page.id}</div>
+              </div>
+              <div className="flex items-center justify-end gap-2 border-t border-border pt-3">
+                <button
+                  className="rounded p-1.5 text-blue-600 transition-colors hover:bg-blue-50"
+                  aria-label="View"
+                >
+                  <Eye className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => navigate("/admin-dashboard/edit-page")}
+                  className="rounded p-1.5 text-blue-600 transition-colors hover:bg-blue-50"
+                  aria-label="Edit"
+                >
+                  <Pencil className="h-4 w-4" />
+                </button>
+                <button
+                  className="rounded p-1.5 text-red-600 transition-colors hover:bg-red-50"
+                  aria-label="Delete"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Pagination */}
