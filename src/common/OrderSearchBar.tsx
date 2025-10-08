@@ -13,8 +13,8 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
   const [orderStatus] = useState("Order Status");
 
   return (
-    <div className="w-full flex items-center justify-between gap-4">
-      <div className="flex  bg-light-background  rounded-2xl items-stretch  gap-3 w-full ">
+    <div className="w-full md:flex space-y-5 md:space-y-0 items-center justify-between gap-4">
+      <div className="flex bg-light-background  rounded-2xl items-stretch  gap-3 w-full ">
         {/* Search Input */}
         <div className="relative flex-1 min-w-0 h-full">
           <input
