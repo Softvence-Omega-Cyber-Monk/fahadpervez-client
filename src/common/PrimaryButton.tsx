@@ -22,9 +22,9 @@ const PrimaryButton: React.FC<ButtonProps> = ({
   return (
     <Button
       onClick={onClick}
-      className={`flex items-center justify-center gap-1 px-6 py-6 font-medium  capitalize rounded-xl focus:outline-none text-lg cursor-pointer ${
+      className={`flex items-center justify-center gap-1 px-6 py-6 font-medium  capitalize rounded-xl focus:outline-none lg:text-lg cursor-pointer ${
         type === "Primary"
-          ? "bg-primary-blue text-primary-background"
+          ? "bg-primary-blue text-primary-background "
           : type === "Outline" 
           ? "text-primary-blue border border-primary-blue"
           : type === "Badge"

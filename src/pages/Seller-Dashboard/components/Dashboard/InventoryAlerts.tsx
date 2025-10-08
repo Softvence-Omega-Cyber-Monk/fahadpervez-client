@@ -62,7 +62,7 @@ export default function InventoryAlerts() {
               <p className="p2">{alert.status}</p>
             </div>
             <button
-              className={`px-10 py-2.5 rounded-md text-sm font-medium text-white transition-colors ${actionStyle[alert.action as ActionKey].actionColor} `}
+              className={`px-5 sm:px-10 py-2.5 rounded-md text-xs font-medium text-white transition-colors ${actionStyle[alert.action as ActionKey].actionColor} `}
             >
               {alert.action}
             </button>
