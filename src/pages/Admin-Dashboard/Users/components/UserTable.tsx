@@ -33,7 +33,8 @@ const UserTable: React.FC<UserTableProps> = ({ users, type, onViewDetails }) => 
 
   return (
     <div className="mt-6">
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -111,7 +112,53 @@ const UserTable: React.FC<UserTableProps> = ({ users, type, onViewDetails }) => 
           </div>
         </div>
       </div>
+
+        {/* Mobile Card View */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+        {users.map((user) => (
+          <div key={user.id} className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 space-y-4">
+            {/* Top section: Avatar, Name, Status */}
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-3">
+                <UserAvatar url={user.avatarUrl} name={user.name} />
+                <div>
+                  <p className="font-medium text-gray-900">{user.name}</p>
+                  <p className="text-xs text-gray-500">Joined: {user.joinOn}</p>
+                </div>
+              </div>
+              <Badge status={user.status} />
+            </div>
+
+            {/* Middle section: Contact Info & Stats */}
+            <div className="border-t border-b border-gray-100 py-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+              <div className="truncate">
+                <p className="text-xs text-gray-500">Email</p>
+                <p className="font-medium text-gray-800 truncate">{user.email}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Phone</p>
+                <p className="font-medium text-gray-800">{user.phone}</p>
+              </div>
+              {type === 'Buyer' && (
+                <div><p className="text-xs text-gray-500">Total Buy</p><p className="font-semibold text-gray-900">{user.total}</p></div>
+              )}
+              {type === 'Seller' && (
+                <div><p className="text-xs text-gray-500">Products</p><p className="font-semibold text-gray-900">{user.products}</p></div>
+              )}
+              {type === 'Seller' && (
+                <div><p className="text-xs text-gray-500">Total Sell</p><p className="font-semibold text-gray-900">{user.total}</p></div>
+              )}
+            </div>
+
+            {/* Bottom section: Action */}
+            <div className="flex justify-end">
+              <button onClick={() => onViewDetails(user)} className="text-indigo-600 hover:text-indigo-800 font-medium transition text-sm flex items-center">View Details <ChevronRight className="w-4 h-4 ml-1" /></button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
+
   );
 };
 
