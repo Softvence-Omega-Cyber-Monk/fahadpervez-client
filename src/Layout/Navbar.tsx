@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
           scrolled ? "backdrop-blur-md bg-white/30 shadow-sm" : "bg-transparent"
         }`}
       >
-        <div className="flex items-center justify-between w-[1120px] px-4 sm:px-6">
+        <div className="flex items-center justify-between w-6xl px-4 sm:px-6">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="text-white text-2xl font-bold">

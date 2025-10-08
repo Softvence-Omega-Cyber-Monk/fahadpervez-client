@@ -66,7 +66,7 @@ const SliderProduct = () => {
               className="rounded-lg relative"
             >
               {/* Favorite Button */}
-              <button className="absolute top-2 sm:top-3 right-2 sm:right-3 w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors z-10">
+              <button className="absolute top-2 sm:top-3 right-2 sm:right-3 w-8 h-8 bg-gray-500 opacity-70 rounded-xl flex items-center justify-center hover:bg-gray-500 transition-colors z-10">
                 <svg
                   className="w-4 h-4 text-white"
                   fill="none"
