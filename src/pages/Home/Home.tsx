@@ -20,6 +20,11 @@ const Home = () => {
     {
       title: "Experience Top-Notch Healthcare Products with Ease",
       description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
+      image: "/hero-5.png"
+    },
+    {
+      title: "Experience Top-Notch Healthcare Products with Ease",
+      description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
       image: "/hero-1.png"
     },
     {
@@ -37,11 +42,7 @@ const Home = () => {
       description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
       image: "/hero-4.png"
     },
-    {
-      title: "Experience Top-Notch Healthcare Products with Ease",
-      description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
-      image: "/hero-5.png"
-    }
+    
   ]
 
   return (
@@ -55,9 +56,11 @@ const Home = () => {
         ]} >
           <CarouselContent>
             {
-              heroCarousel.map((item, idx) => (<CarouselItem key={idx}>
+              heroCarousel.map((item, idx) => (
+              <CarouselItem key={idx}>
                 <Hero data={item} />
-              </CarouselItem>))
+              </CarouselItem>
+              ))
             }
           </CarouselContent>
         </Carousel>
