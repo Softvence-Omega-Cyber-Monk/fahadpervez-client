@@ -9,11 +9,11 @@ const Dashboard = () => {
   return (
     <div className=" space-y-15">
       <Stats />
-      <div className="flex w-full gap-6 items-start">
-        <div className="flex-2">
+      <div className="flex flex-col md:flex-row w-full gap-6 items-start">
+        <div className="flex-2 w-full">
           <RecentOrders />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 w-full">
           <TopProducts />
         </div>
       </div>
