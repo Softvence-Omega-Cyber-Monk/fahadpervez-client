@@ -164,7 +164,7 @@ export default function OrderTable() {
                   </td>
                   <td className="py-4 px-4 text-md text-gray-900 font-medium">{order.amount}</td>
                   <td className="py-4 px-4">
-                  <Link to='/buyer-dashboard/product-details/1'>
+                  <Link to='/seller-dashboard'>
                     <button className="text-md text-blue-500 hover:text-blue-600 font-medium">
                       View
                     </button>
@@ -209,7 +209,7 @@ export default function OrderTable() {
                   </td>
                   <td className="py-3 px-3 text-xs text-gray-900 font-medium">{order.amount}</td>
                   <td className="py-3 px-3">
-                   <Link to='/buyer-dashboard/product-details/1'>
+                   <Link to='/seller-dashboard'>
                     <button className="text-xs text-blue-500 hover:text-blue-600 font-medium">
                       View
                     </button>
@@ -256,7 +256,7 @@ export default function OrderTable() {
               
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-900">{order.amount}</span>
-               <Link to='/buyer-dashboard/product-details/1'>
+               <Link to='/seller-dashboard'>
                 <button className="text-sm text-blue-500 hover:text-blue-600 font-medium">
                   View
                 </button>

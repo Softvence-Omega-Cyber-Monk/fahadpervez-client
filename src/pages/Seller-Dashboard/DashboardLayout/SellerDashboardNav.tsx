@@ -8,7 +8,7 @@ interface DashboardNavProps {
 }
 
 const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const handleToggle = () => {
     const newState = !menuOpen;
