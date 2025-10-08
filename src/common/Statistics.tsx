@@ -7,7 +7,7 @@ interface StatisticsProps {
 
 const Statistics: React.FC<StatisticsProps> = (props) => {
   return (
-    <div className="grid grid-cols-4 gap-8">
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
       {props?.items?.map((item) => (
         <StatsCard item={item}  />
       ))}
