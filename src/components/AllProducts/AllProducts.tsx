@@ -37,7 +37,7 @@ const AllProducts: React.FC = () => {
           {products.map((product) => (
             <Link to={`/product-details/${product.id}`} key={product.id} className="rounded-lg overflow-hidden relative">
               <div className="absolute top-3 right-3 z-10">
-                <button className="w-8 h-8 bg-gray-400 bg-opacity-70 rounded-full flex items-center justify-center hover:bg-opacity-90 transition">
+                <button className="w-8 h-8 bg-gray-500 rounded-xl flex items-center justify-center hover:bg-opacity-90 transition">
                   <Heart className="w-4 h-4 text-white" />
                 </button>
               </div>
@@ -69,10 +69,10 @@ const AllProducts: React.FC = () => {
         
         {/* Browse All Button */}
         <div className="flex justify-center">
-          <NavLink to="/products/:id">
+          <NavLink to="/categories/:categoryName">
             <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
               Browse All
-              <MoveUpRight />
+              <MoveUpRight className='w-5 h-5'/>
             </Button>
           </NavLink>
         </div>
