@@ -43,7 +43,7 @@ interface Category {
   name: string;
   value: number; // Percentage value
   color: string;
-  [key: string]: any; // Add index signature
+  [key: string]: string | number | boolean; // Add index signature
 }
 
 // --- 2. MOCK DATA & CUSTOM ICONS ---
@@ -319,53 +319,77 @@ const RecentActivityTable: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-x-auto">
-      <div className="p-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
-      </div>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            {['Type', 'Description', 'User', 'Amount', 'Status', 'Time'].map(header => (
-              <th
-                key={header}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {activityData.map((activity, index) => (
-            <tr key={index} className="hover:bg-gray-50 transition duration-150">
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeClasses(activity.type)}`}>
-                  {activity.type}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {activity.description}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {activity.user}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">
-                {activity.amount}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(activity.status)}`}>
-                  {activity.status}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {activity.time}
-              </td>
+    <>
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-xl shadow-lg border border-gray-100 overflow-x-auto">
+        <div className="p-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
+        </div>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              {['Type', 'Description', 'User', 'Amount', 'Status', 'Time'].map(header => (
+                <th
+                  key={header}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  {header}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {activityData.map((activity, index) => (
+              <tr key={index} className="hover:bg-gray-50 transition duration-150">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeClasses(activity.type)}`}>
+                    {activity.type}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {activity.description}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {activity.user}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">
+                  {activity.amount}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(activity.status)}`}>
+                    {activity.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {activity.time}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+        <h2 className="text-2xl font-semibold text-gray-800 sm:col-span-2">Recent Activity</h2>
+        {activityData.map((activity, index) => (
+          <div key={index} className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 space-y-3">
+            <div className="flex justify-between items-start">
+              <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeClasses(activity.type)}`}>{activity.type}</span>
+              <span className="text-xs text-gray-500">{activity.time}</span>
+            </div>
+            <p className="text-sm font-medium text-gray-900">{activity.description}</p>
+            <div className="border-t border-gray-100 pt-3 flex justify-between items-center text-sm">
+              <span className="text-gray-500">{activity.user}</span>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-700">{activity.amount}</span>
+                <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(activity.status)}`}>{activity.status}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

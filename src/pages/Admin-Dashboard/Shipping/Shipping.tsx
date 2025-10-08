@@ -234,7 +234,7 @@ const ShippingDashboard: React.FC = () => {
   const switchToListView = useCallback(() => setView('List'), []);
 
   return (
-    <div className="p-4 sm:p-8 bg-gray-50 min-h-screen font-sans">
+    <div className="p-4 sm:p-8 min-h-screen font-sans">
         <h1 className="text-3xl font-semibold text-gray-800 mb-8">
             {view === 'List' ? 'Shipping' : 'Add New Shipping Carrier'}
         </h1>
