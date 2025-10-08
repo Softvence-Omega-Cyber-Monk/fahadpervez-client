@@ -296,10 +296,10 @@ const SingleProduct = () => {
               <button
                 key={category}
                 onClick={() => setActiveMainCategory(category)}
-                className={`px-5 py-2 text-sm font-medium rounded-lg whitespace-nowrap duration-150 flex items-center gap-2 ${
+                className={`px-5 py-2 text-sm font-medium rounded-lg whitespace-nowrap duration-150 flex items-center gap-2 cursor-pointer ${
                   activeMainCategory === category
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-300 border border-gray-300 text-gray-700 hover:bg-gray-50'
+                    : 'bg-gray-200 border border-gray-300 text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 {category}
@@ -342,7 +342,7 @@ const SingleProduct = () => {
             {quickFilters.map(filter => (
               <button
                 key={filter}
-                className="px-4 py-1.5 border border-gray-400 text-gray-700 text-sm rounded-full hover:bg-gray-50"
+                className="px-4 py-1.5 border border-gray-400 text-gray-700 text-sm rounded-full hover:bg-gray-50 cursor-pointer"
               >
                 {filter}
               </button>
@@ -356,11 +356,11 @@ const SingleProduct = () => {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar Filters */}
           <aside className="w-full lg:w-72 flex-shrink-0">
-            <div className='bg-white border border-gray-100 shadow-md rounded-lg mb-3 flex justify-between items-center py-3 px-4'>
+            <div className='bg-white border border-gray-100 shadow-md rounded-lg mb-3 flex justify-between items-center py-3 px-4 cursor-pointer'>
               <p className='text-gray-500'>Available Items Only</p>
               <input type="checkbox"  className='w-5 h-5'/>
             </div>
-            <div className='bg-white border border-gray-100 shadow-md rounded-lg mb-7 flex justify-between items-center py-3 px-4'>
+            <div className='bg-white border border-gray-100 shadow-md rounded-lg mb-7 flex justify-between items-center py-3 px-4 cursor-pointer'>
               <p className='text-gray-500'>Only at This Platform</p>
               <input type="checkbox"  className='w-5 h-5'/>
             </div>
@@ -479,7 +479,7 @@ const SingleProduct = () => {
                   {currentProducts.map(product => (
                     <Link to={`/product-details/${product.id}`} key={product.id} className="rounded-lg  relative">
                       {/* Favorite Button */}
-                      <button className="absolute top-3 right-3 w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
+                      <button className="absolute top-3 right-3 w-6 h-6 bg-gray-500 rounded-lg flex items-center justify-center hover:bg-gray-500 transition-colors">
                         <svg
                           className="w-4 h-4 text-white"
                           fill="none"
