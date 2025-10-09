@@ -5,6 +5,9 @@ import HowItWorks from "@/components/HowToWork/HowItWorks";
 import Autoplay from "embla-carousel-autoplay"
 import Hero from "./Hero";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { useEffect } from "react";
+import { useRefreshTokenMutation } from "@/Redux/Features/auth/auth.api";
+import { toast } from "sonner";
 
 interface IHeroData {
   title: string,
@@ -13,9 +16,20 @@ interface IHeroData {
 }
 
 const Home = () => {
+
+  const [refreshToken] = useRefreshTokenMutation();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await refreshToken(null).unwrap();
+      } catch (error) {
+        toast.error("Please Login");
+      }
+    })()
+  }, []);
+
   // embla-carousel-autoplay
-
-
   const heroCarousel: IHeroData[] = [
     {
       title: "Experience Top-Notch Healthcare Products with Ease",
@@ -42,7 +56,7 @@ const Home = () => {
       description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
       image: "/hero-4.png"
     },
-    
+
   ]
 
   return (
@@ -57,9 +71,9 @@ const Home = () => {
           <CarouselContent>
             {
               heroCarousel.map((item, idx) => (
-              <CarouselItem key={idx}>
-                <Hero data={item} />
-              </CarouselItem>
+                <CarouselItem key={idx}>
+                  <Hero data={item} />
+                </CarouselItem>
               ))
             }
           </CarouselContent>
