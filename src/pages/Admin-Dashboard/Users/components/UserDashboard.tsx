@@ -12,7 +12,12 @@ interface UserDashboardProps {
   onViewSellerRequests: () => void;
 }
 
-const UserDashboard: React.FC<UserDashboardProps> = ({ currentTab, setCurrentTab, onViewDetails, onViewSellerRequests }) => {
+const UserDashboard: React.FC<UserDashboardProps> = ({ currentTab, setCurrentTab, onViewDetails , onViewSellerRequests }) => {
+
+  
+  // console.log(data)
+  // const {createdAt , email , name , isActive } = data?.data;
+
   const users = useMemo(() => DUMMY_USERS.filter(u => u.type === currentTab), [currentTab]);
   const newRequestsCount = DUMMY_REQUESTS.length;
 
