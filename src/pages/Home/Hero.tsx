@@ -45,9 +45,7 @@ const Hero : React.FC<IHeroProps> = ({ data }) => {
             </div>
 
             {/* Right Side */}
-            <div className="w-full md:w-1/2 md:mt-0">
-                {/* <img src="/hero.png" alt="hero" className="w-full h-auto" /> */}
-            </div>
+            <div className="w-full md:w-1/2 md:mt-0"></div>
         </div>
     )
 }
