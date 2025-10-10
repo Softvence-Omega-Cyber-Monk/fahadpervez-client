@@ -63,7 +63,6 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
         </div>
       </div>
       </div>
-   
     </div>
   );
 };
