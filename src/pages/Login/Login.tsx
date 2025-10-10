@@ -35,6 +35,31 @@ const Login: React.FC = () => {
         localStorage.setItem("user", res.data)
       }
 
+
+  const [logInUser] = useLogInUserMutation();
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+
+    if (!rememberMe) {
+      toast.error("Please check 'Remember Me' to continue.");
+      return;
+    }
+
+
+    const toastId = toast.loading("Signing you in.....");
+    e.preventDefault();
+    try {
+      const data = {
+        email,
+        password
+      };
+
+      const res = await logInUser(data).unwrap();
+
+      if (res.success) {
+        localStorage.setItem("user", res.data)
+      }
+
       toast.success("Logged In Successfully", { id: toastId });
       navigate("/");
     } catch (error) {
