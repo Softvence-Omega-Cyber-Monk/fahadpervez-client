@@ -17,9 +17,9 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
   };
 
   return (
-    <div className="w-full bg-white shadow-sm flex justify-between items-center px-4 md:px-6 py-2 fixed top-0 left-0 z-50">
+    <div className="w-full bg-white shadow-sm flex items-center px-4 md:px-6 py-2 fixed top-0 left-0 z-50">
       {/* Left: Hamburger + Logo */}
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-3 w-64">
         {/* Hamburger Menu (Mobile Only) */}
         <button
           className="md:hidden text-gray-700 text-2xl focus:outline-none"
@@ -39,8 +39,8 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
       </div>
 
       {/* Center: Notification + Cart (Always Visible) */}
-
-         <div className="flex items-center space-x-3">
+    <div className="flex items-center justify-between w-full px-4 md:px-6 ">
+         <div className="flex items-center space-x-3 pl-4">
         <Link to="/buyer-dashboard/buyer-profile">
           <img
             src="https://i.pravatar.cc/40?img=12"
@@ -62,6 +62,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
           </span>
         </div>
       </div>
+    </div>
    
     </div>
   );

@@ -1,5 +1,6 @@
 import Dashboard from "@/pages/Seller-Dashboard/Dashboard/Dashboard";
-import { RiDashboardFill } from "react-icons/ri";
+import { RiDashboardFill  } from "react-icons/ri";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { AiOutlineShoppingCart, AiOutlineDollarCircle, AiOutlineMessage, AiOutlineSetting, AiOutlineQuestionCircle } from "react-icons/ai";
 import Earnings from "@/pages/Seller-Dashboard/Earnings/Earnings";
 import Message from "@/pages/Seller-Dashboard/Message/Message";
@@ -13,6 +14,8 @@ import ConfirmUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkP
 import CompleteUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/CompleteUpload";
 import OrderLandingPage from "@/pages/Seller-Dashboard/components/Order/OrderLandingPage";
 import OrderTracking from "@/pages/Seller-Dashboard/components/Order/OrderTracking";
+import path from "path";
+import SellerCategory from "@/pages/Seller-Dashboard/components/SellerCategory/SellerCategory";
 
 export const sellerRoutes = [
   {
@@ -53,6 +56,12 @@ export const sellerRoutes = [
         element:<CompleteUpload/>
       },
     ]
+  },
+  {
+    path: "add-category",
+    icon: <IoAddCircleOutline  />,
+    name:"Add Category",
+    element:<SellerCategory/>
   },
   {
     path: "orders",
