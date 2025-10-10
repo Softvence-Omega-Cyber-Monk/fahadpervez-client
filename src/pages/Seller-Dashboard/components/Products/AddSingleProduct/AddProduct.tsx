@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "./ProductPreview";
 import MediaUpload from "./MediaUpload";
-import CategoryManager from "../CategoryManager/CategoryManager";
+import CategoryManager from "@/pages/Seller-Dashboard/components/Products/CategoryManager/CategoryManager.tsx";
 import { useGetCategoriesQuery } from "@/store/Slices/categoryApi";
 const AddProduct = () => {
   const navigate = useNavigate();

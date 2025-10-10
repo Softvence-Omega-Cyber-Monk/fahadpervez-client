@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "./BaseApi";
+import { categoryApi } from "../store/Slices/categoryApi";
 
 export const store = configureStore({
     reducer: {
-        [baseApi.reducerPath]: baseApi.reducer
+        [baseApi.reducerPath]: baseApi.reducer,
+        [categoryApi.reducerPath]: categoryApi.reducer
     },
     middleware: (getDefaultMiddleware) => {
-        return getDefaultMiddleware().concat(baseApi.middleware);
+        return getDefaultMiddleware().concat(baseApi.middleware, categoryApi.middleware);
     }
 });
 

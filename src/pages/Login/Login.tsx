@@ -17,10 +17,10 @@ const Login: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 
-    if (!rememberMe) {
-      toast.error("Please check 'Remember Me' to continue.");
-      return;
-    }
+    // if (!rememberMe) {
+    //   toast.error("Please check 'Remember Me' to continue.");
+    //   return;
+    // }
 
 
     const toastId = toast.loading("Signing you in.....");

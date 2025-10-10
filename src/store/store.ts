@@ -3,7 +3,7 @@ import counterReducer from "./Slices/counterSlice/counterSlice";
 import authReducer from "./Slices/AuthSlice/authSlice";
 import formReducer from "./Slices/FormSlice/FormSlice";
 import { productApi } from "./Slices/productApi";
-import { categoryApi } from "./Slices/categoryApi";
+import { categoryApi } from "./Slices/categoryApi"; // Added to ensure RTK-Query middleware is correctly registered
 
 const store = configureStore({
   reducer: {

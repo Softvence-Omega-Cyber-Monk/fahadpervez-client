@@ -3,6 +3,7 @@ export interface StatType {
 }
 
 export interface StatCardTypes {
+  id: string;
   title: string
   value: number
   status?: string

@@ -5,6 +5,7 @@ import { StatCardTypes } from "@/types/SellerDashboardTypes/StatsCardTypes";
 const AdminDashboardStats = () => {
   const mockStats: StatCardTypes[] = [
     {
+      id: "1",
       title: "Total Sales",
       value: 12345,
       type: "up",
@@ -12,6 +13,7 @@ const AdminDashboardStats = () => {
       icon: "dollar",
     },
     {
+      id: "2",
       title: "Total Orders",
       value: 5678,
       type: "down",
@@ -19,6 +21,7 @@ const AdminDashboardStats = () => {
       icon: "box",
     },
     {
+      id: "3",
       title: "Pending Orders",
       value: 123,
       type: "warning",
@@ -26,6 +29,7 @@ const AdminDashboardStats = () => {
       icon: "alert",
     },
     {
+      id: "4",
       title: "New Customers",
       value: 456,
       type: "up",
