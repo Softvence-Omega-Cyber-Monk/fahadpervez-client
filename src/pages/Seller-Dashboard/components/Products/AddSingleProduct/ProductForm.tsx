@@ -45,8 +45,7 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit }, 
   if(isLoading){
     return <div>Loading...</div>
   }
-  console.log(categories)
-
+  
  const fields = [
     { name: "productName", label: "Product Name*", type: "text", placeholder: "Your product name" },
     { name: "productCategory", label: "Product Category*", type: "select", placeholder: "Select a category", options:categories?.data?.map((category:{categoryName:string}) => category?.categoryName) },

@@ -31,10 +31,26 @@ const AddProduct = () => {
       toast.error("Please select at least a main image.");
       return;
     }
-
-    console.log(mediaData)
-
     const category= categories?.data?.find((item : {_id:string,categoryName:string})=>item.categoryName === data.productCategory)
+
+      
+      //  const formData = new FormData()
+      // formData.append("mainImageUrl",mediaData.images.mainImage)
+      // formData.append("productName",data.productName)
+      // formData.append("productCategory",category?._id)
+      // formData.append("productSKU",data.sku)
+      // formData.append("companyName",data?.brandName)
+      // formData.append("gender",data.gender)
+      // formData.append("availableSize",data.availableSize)
+      // formData.append("productDescription",data.description)
+      // formData.append("stock",Number(data.quantity))
+      // formData.append("currency",data.currency)
+      // formData.append("pricePerUnit",Number(data.pricePerUnit))
+      // formData.append("specialPrice",data.specialPrice ? Number(data.specialPrice) : undefined)
+      // formData.append("specialPriceStartingDate",data.specialPriceFrom)
+      // formData.append("specialPriceEndingDate",data.specialPriceTo)
+      // formData.append("weight",data.weight ? Number(data.weight) : undefined)
+
     const formData ={
     productName: data.productName,
     productCategory: category?._id,
@@ -56,8 +72,6 @@ const AddProduct = () => {
     videoUrl: mediaData.video,
     weight: data.weight ? Number(data.weight) : undefined,
     }
-
-console.log(formData)
 
     try {
       toast.loading("Adding product...", { id: "addProduct" });
