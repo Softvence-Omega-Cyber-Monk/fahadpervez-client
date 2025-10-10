@@ -73,6 +73,8 @@ const MyCart: React.FC = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const total = subtotal + shipping - discount + tax;
 
+  const [selectedItemId, setSelectedItemId] = useState<Number | null>(null);
+
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
     setCartItems(cartItems.map(item =>
@@ -110,14 +112,22 @@ const MyCart: React.FC = () => {
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center shadow-sm"
+                  className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center border-b-2 border-[#C9CCCE]"
                 >
-                  {/* Radio Button */}
-                  <div className="flex-shrink-0">
-                    <div className="w-5 h-5 rounded-full border-[3px] border-[#0066FF] bg-white relative">
-                      <div className="absolute inset-[3px] rounded-full bg-[#0066FF]"></div>
+                  {/* Real Radio Button */}
+                  <label className="flex-shrink-0 relative cursor-pointer bottom-[68px] right-3">
+                    <input
+                      type="radio"
+                      name="selectedCartItem"
+                      value={item.id}
+                      checked={selectedItemId === item.id}
+                      onChange={() => setSelectedItemId(item.id)}
+                      className="sr-only checked:bg-blue-500"
+                    />
+                    <div className="w-6 h-6 rounded-full border-[3px] border-[#0066FF] bg-white relative peer-checked:border-[#0066FF] checked:bg-blue-500">
+                      <div className="absolute inset-[3px] rounded-full bg-[#0066FF] opacity-0 peer-checked:opacity-100 transition-opacity"></div>
                     </div>
-                  </div>
+                  </label>
 
                   {/* Product Image */}
                   <div className="flex-shrink-0 w-full sm:w-[120px] md:w-[160px]">
@@ -141,10 +151,10 @@ const MyCart: React.FC = () => {
 
                     {/* Quantity Controls */}
                     <div className="flex items-center gap-3 flex-wrap">
-                      <div className="flex items-center gap-2 bg-[#F1F5F8] rounded-full px-2 py-1">
+                      <div className="flex  justify-around items-center gap-4 shadow p-2 rounded-full">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-8 h-8 flex items-center justify-center text-[#0066FF] hover:bg-white rounded-full transition-colors"
+                          className="w-10 h-10 cursor-pointer rounded-full bg-[#E6F3FF] flex items-center justify-center hover:bg-gray-50 transition-colors"
                           aria-label="Decrease quantity"
                         >
                           <Minus size={16} />
@@ -153,11 +163,11 @@ const MyCart: React.FC = () => {
                           type="text"
                           value={item.quantity}
                           readOnly
-                          className="w-12 text-center bg-transparent text-[#1C2A33] font-[500] text-[16px] outline-none"
+                          className="w-10 h-10 rounded-full bg-[#EAEAEA] border border-[#BDBDBD] text-center text-[#1C2A33] font-[500] text-[16px] outline-none"
                         />
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center text-[#0066FF] hover:bg-white rounded-full transition-colors"
+                          className="w-10 h-10 cursor-pointer rounded-full flex items-center justify-center bg-[#E6F3FF] hover:bg-gray-50 transition-colors"
                           aria-label="Increase quantity"
                         >
                           <Plus size={16} />
@@ -175,8 +185,8 @@ const MyCart: React.FC = () => {
                   </div>
 
                   {/* Price */}
-                  <div className="flex-shrink-0 self-start sm:self-center">
-                    <p className="text-[24px] sm:text-[28px] font-[600] text-[#0066FF]">
+                  <div className="flex-shrink-0 self-start sm:self-center relative bottom-[58px]">
+                    <p className="font-[600] text-[#0082FA] text-[24px] not-italic">
                       ${item.price.toFixed(2)}
                     </p>
                   </div>

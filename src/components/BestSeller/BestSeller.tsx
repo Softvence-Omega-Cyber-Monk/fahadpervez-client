@@ -107,14 +107,14 @@ const BestSeller: React.FC = () => {
                     {/* Favorite Button */}
                     <button
                       onClick={() => toggleFavorite(product.id)}
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+                      className="absolute top-3 right-3 w-8 h-8 rounded-xl cursor-pointer bg-gray-500 flex items-center justify-center"
                       aria-label="Add to favorites"
                     >
                       <Heart
                         className={`w-5 h-5 ${
                           favorites.has(product.id)
                             ? 'fill-red-500 text-red-500'
-                            : 'text-gray-400'
+                            : 'text-white'
                         }`}
                       />
                     </button>
