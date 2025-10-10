@@ -2,7 +2,7 @@ import OrderTabs from "@/common/OrderTabs";
 import ProductsHeader from "./ProductsHeader";
 import ProductStats from "./ProductStats";
 import OrderSearchBar from "@/common/OrderSearchBar";
-import OrderTable from "@/common/OrderTable";
+import ProductTable from "./ProductTable";
 
 
 
@@ -14,7 +14,7 @@ const ProductsLandingPage = () => {
       <ProductStats/>
       <OrderTabs/>
       <OrderSearchBar tableType="Button"/>
-      <OrderTable />
+      <ProductTable/>
     </div>
   );
 };
