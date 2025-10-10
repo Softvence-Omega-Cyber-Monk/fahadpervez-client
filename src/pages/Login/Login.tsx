@@ -13,61 +13,35 @@ const Login: React.FC = () => {
   const [logInUser] = useLogInUserMutation();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
+    // optional remember me validation
     // if (!rememberMe) {
     //   toast.error("Please check 'Remember Me' to continue.");
     //   return;
     // }
 
-
     const toastId = toast.loading("Signing you in.....");
-    e.preventDefault();
-    try {
-      const data = {
-        email,
-        password
-      };
 
+    try {
+      const data = { email, password };
       const res = await logInUser(data).unwrap();
+
       console.log(res);
 
       if (res.success) {
-        localStorage.setItem("user", res.data)
+        localStorage.setItem("user", res.data);
+        toast.success("Logged In Successfully", { id: toastId });
+        navigate("/");
+      } else {
+        toast.error("Login failed. Please check your credentials", { id: toastId });
       }
 
-
-  const [logInUser] = useLogInUserMutation();
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-
-    if (!rememberMe) {
-      toast.error("Please check 'Remember Me' to continue.");
-      return;
-    }
-
-
-    const toastId = toast.loading("Signing you in.....");
-    e.preventDefault();
-    try {
-      const data = {
-        email,
-        password
-      };
-
-      const res = await logInUser(data).unwrap();
-
-      if (res.success) {
-        localStorage.setItem("user", res.data)
-      }
-
-      toast.success("Logged In Successfully", { id: toastId });
-      navigate("/");
     } catch (error) {
       console.log(error);
-      toast.error("Login faild. Please check your creadiential", { id: toastId })
+      toast.error("Login failed. Please check your credentials", { id: toastId });
     }
-  }
-
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F1F5F8]">
