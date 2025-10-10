@@ -17,6 +17,21 @@ export interface UserData {
   products?: number; // Only for sellers
 }
 
+export interface IBayersData {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  isActive: boolean;
+  isVerified: boolean;
+  createdAt: string;
+  updatedAt: string;
+  productCategory: string[];
+  shippingLocation: string[];
+  __v: number;
+}
+
 export interface SellerRequest {
   id: string;
   applicantName: string;

@@ -1,17 +1,28 @@
 
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
-import { UserData, UserType } from '../types';
+import {  IBayersData, UserData, UserType } from '../types';
 import Badge from './Badge';
 import UserAvatar from './UserAvatar';
+import { useGetAllBuyersQuery } from '@/Redux/Features/user/aure.api';
 
 interface UserTableProps {
   users: UserData[];
   type: UserType;
   onViewDetails: (user: UserData) => void;
-}
+};
+
 
 const UserTable: React.FC<UserTableProps> = ({ users, type, onViewDetails }) => {
+
+  const {data} = useGetAllBuyersQuery(null);
+  
+    console.log(data);
+  
+    const allUsersData : IBayersData[] = data?.data;
+
+    console.log(allUsersData);
+  
   const columnHeaders = [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
@@ -30,6 +41,8 @@ const UserTable: React.FC<UserTableProps> = ({ users, type, onViewDetails }) => 
     if (type === 'Buyer' && h.key === 'totalSell') return false; // Remove 'Total Sell' for buyers
     return true;
   });
+
+
 
   return (
     <div className="mt-6">
@@ -51,35 +64,35 @@ const UserTable: React.FC<UserTableProps> = ({ users, type, onViewDetails }) => 
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
+              {allUsersData?.map((user) => (
+                <tr key={user._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <UserAvatar url={user.avatarUrl} name={user.name} />
+                        <UserAvatar url={"/user-placeholder-profile.jpg"} name={user?.name} />
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">{user.name}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.phone}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{"User Email"}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{"User Phone Number"}</td>
                   {type === 'Buyer' && (
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{user.total}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{user.name}</td>
                   )}
                   {type === 'Seller' && (
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{user.products}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{"Demo Products"}</td>
                   )}
                   {type === 'Seller' && (
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{user.total}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{"Demo User Total"}</td>
                   )}
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Badge status={user.status} />
+                    <Badge status={user.isActive ? "Active" : "Inactive"} />
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.joinOn}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(user?.createdAt).toLocaleString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onClick={() => onViewDetails(user)} className="text-indigo-500 hover:text-indigo-700">
+                    <button  className="text-indigo-500 hover:text-indigo-700">
                       <ChevronRight className="w-5 h-5" />
                     </button>
                   </td>
