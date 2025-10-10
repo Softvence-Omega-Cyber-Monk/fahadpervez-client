@@ -1,33 +1,48 @@
+import { useLogInUserMutation } from '@/Redux/Features/auth/auth.api';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
+
+  const [logInUser] = useLogInUserMutation();
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+
+    // if (!rememberMe) {
+    //   toast.error("Please check 'Remember Me' to continue.");
+    //   return;
+    // }
+
+
+    const toastId = toast.loading("Signing you in.....");
     e.preventDefault();
-    setError('');
+    try {
+      const data = {
+        email,
+        password
+      };
 
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      return;
+      const res = await logInUser(data).unwrap();
+      console.log(res);
+
+      if (res.success) {
+        localStorage.setItem("user", res.data)
+      }
+
+      toast.success("Logged In Successfully", { id: toastId });
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Login faild. Please check your creadiential", { id: toastId })
     }
+  }
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email address');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
-
-    // Simulate login attempt
-    setError('Invalid email or password');
-  };
 
   return (
     <div className="flex min-h-screen bg-[#F1F5F8]">
@@ -42,13 +57,7 @@ const Login: React.FC = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit}>
-            {/* Error Message */}
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-red-600 text-sm">{error}</p>
-              </div>
-            )}
+          <form onSubmit={handleLogin} >
 
             {/* Email Field */}
             <div className="mb-6">
@@ -102,7 +111,7 @@ const Login: React.FC = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors"
             >
               Create Account
             </button>
@@ -112,13 +121,13 @@ const Login: React.FC = () => {
 
       {/* Right Side - Pharmacy Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: 'linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1))',
           }}
         >
-          <img src="/login-img.png" alt="" className='w-full h-full'/>
+          <img src="/login-img.png" alt="" className='w-full h-full' />
         </div>
       </div>
     </div>

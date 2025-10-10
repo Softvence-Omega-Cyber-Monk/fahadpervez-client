@@ -134,38 +134,38 @@ export default function OrderTable() {
           <table className="w-full">
             <thead>
               <tr className="bg-gray-200 rounded-lg p-2">
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Order ID</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Seller</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Product</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Quantity</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Date</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Status</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Amount</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-md">Action</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Order ID</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Seller</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Product</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Quantity</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Date</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Status</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Amount</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm lg:text-md">Action</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order, index) => (
                 <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
-                  <td className="py-4 px-4 text-md text-gray-900">{order.id}</td>
-                  <td className="py-4 px-4 text-md text-gray-900">{order.seller}</td>
+                  <td className="py-4 px-4 text-sm lg:text-md text-gray-900">{order.id}</td>
+                  <td className="py-4 px-4 text-sm lg:text-md text-gray-900">{order.seller}</td>
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">{order.productIcon}</span>
-                      <span className="text-md text-gray-900">{order.product}</span>
+                      <span className="text-base lg:text-lg">{order.productIcon}</span>
+                      <span className="text-sm lg:text-md text-gray-900">{order.product}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-4 text-md text-gray-900">{order.quantity}</td>
-                  <td className="py-4 px-4 text-md text-gray-900">{order.date}</td>
+                  <td className="py-4 px-4 text-sm lg:text-md text-gray-900">{order.quantity}</td>
+                  <td className="py-4 px-4 text-sm lg:text-md text-gray-900">{order.date}</td>
                   <td className="py-4 px-4">
-                    <span className={`inline-block px-3 py-1 rounded-full text-md font-medium ${getStatusClasses(order.statusColor)}`}>
+                    <span className={`inline-block px-3 py-1 rounded-full text-sm lg:text-md font-medium ${getStatusClasses(order.statusColor)}`}>
                       {order.status}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-md text-gray-900 font-medium">{order.amount}</td>
+                  <td className="py-4 px-4 text-sm lg:text-md text-gray-900 font-medium">{order.amount}</td>
                   <td className="py-4 px-4">
-                  <Link to='/seller-dashboard'>
-                    <button className="text-md text-blue-500 hover:text-blue-600 font-medium">
+                  <Link to='/buyer-dashboard/product-details/1'>
+                    <button className="text-sm lg:text-md text-blue-500 hover:text-blue-600 font-medium">
                       View
                     </button>
                   </Link>
@@ -181,19 +181,19 @@ export default function OrderTable() {
           <table className="w-full">
             <thead>
               <tr className="bg-gray-200">
-                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs">Order ID</th>
-                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs">Seller</th>
-                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs">Product</th>
-                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs">Date</th>
-                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs">Status</th>
-                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs">Amount</th>
-                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs">Action</th>
+                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs md:text-sm">Order ID</th>
+                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs md:text-sm">Seller</th>
+                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs md:text-sm">Product</th>
+                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs md:text-sm">Date</th>
+                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs md:text-sm">Status</th>
+                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs md:text-sm">Amount</th>
+                <th className="text-left py-3 px-3 font-medium text-gray-700 text-xs md:text-sm">Action</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order, index) => (
                 <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
-                  <td className="py-3 px-3 text-xs text-gray-900">{order.id}</td>
+                  <td className="py-3 px-3 text-xs md:text-sm text-gray-900">{order.id}</td>
                   <td className="py-3 px-3 text-xs text-gray-900">{order.seller}</td>
                   <td className="py-3 px-3">
                     <div className="flex items-center gap-2">
@@ -209,8 +209,8 @@ export default function OrderTable() {
                   </td>
                   <td className="py-3 px-3 text-xs text-gray-900 font-medium">{order.amount}</td>
                   <td className="py-3 px-3">
-                   <Link to='/seller-dashboard'>
-                    <button className="text-xs text-blue-500 hover:text-blue-600 font-medium">
+                   <Link to='/buyer-dashboard/product-details/1'>
+                    <button className="text-xs md:text-sm text-blue-500 hover:text-blue-600 font-medium">
                       View
                     </button>
                    </Link>
