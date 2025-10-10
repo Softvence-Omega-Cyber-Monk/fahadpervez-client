@@ -4,9 +4,12 @@ import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "./ProductPreview";
 import MediaUpload from "./MediaUpload";
-
+import CategoryManager from "../CategoryManager/CategoryManager";
+import { useGetCategoriesQuery } from "@/store/Slices/categoryApi";
 const AddProduct = () => {
   const navigate = useNavigate();
+  const { data: categories, isLoading: areCategoriesLoading } = useGetCategoriesQuery();
+
   return (
     <div className="space-y-10">
       <div className="flex items-center justify-between ">
@@ -17,7 +20,7 @@ const AddProduct = () => {
           rightIcon={<FaPlus />}
           className="px-12"
           onClick={() =>
-            navigate("/seller-dashboard/products/add-bulk-product")
+            navigate("/Products/post_products")
           }
         />
       </div>
@@ -27,11 +30,11 @@ const AddProduct = () => {
         </div>
         <div className=" space-y-10 flex-2">
           <MediaUpload/>
-          <ProductForm />
-          <div className="flex gap-6 justify-end">
-            <PrimaryButton type="Outline" title="Cancel" className="" />
-            <PrimaryButton type="Primary" title="Save & Changes" />
-          </div>
+          <CategoryManager />
+          <ProductForm 
+            categories={categories || []} 
+            areCategoriesLoading={areCategoriesLoading} 
+          />
         </div>
       </div>
     </div>
