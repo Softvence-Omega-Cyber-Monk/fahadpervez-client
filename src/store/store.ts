@@ -5,7 +5,7 @@ import formReducer from "./Slices/FormSlice/FormSlice";
 import { productApi } from "./Slices/productApi";
 import { categoryApi } from "./Slices/categoryApi";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
