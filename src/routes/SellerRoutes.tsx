@@ -14,7 +14,7 @@ import ConfirmUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkP
 import CompleteUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/CompleteUpload";
 import OrderLandingPage from "@/pages/Seller-Dashboard/components/Order/OrderLandingPage";
 import OrderTracking from "@/pages/Seller-Dashboard/components/Order/OrderTracking";
-import path from "path";
+
 import SellerCategory from "@/pages/Seller-Dashboard/components/SellerCategory/SellerCategory";
 
 export const sellerRoutes = [

@@ -18,7 +18,12 @@ const CategoryManager: React.FC = () => {
 
   const handleCreateCategory = async () => {
     if (newCategoryName.trim()) {
-      await createCategory({ name: newCategoryName, description: newCategoryDescription });
+      const formData = new FormData();
+      formData.append('name', newCategoryName);
+      if (newCategoryDescription.trim()) {
+        formData.append('description', newCategoryDescription);
+      }
+      await createCategory(formData);
       setNewCategoryName('');
       setNewCategoryDescription('');
     }
@@ -26,7 +31,12 @@ const CategoryManager: React.FC = () => {
 
   const handleUpdateCategory = async () => {
     if (editingCategory) {
-      await updateCategory(editingCategory);
+      const formData = new FormData();
+      formData.append('name', editingCategory.name);
+      if (editingCategory.description) {
+        formData.append('description', editingCategory.description);
+      }
+      await updateCategory({ id: editingCategory.id, formData });
       setEditingCategory(null);
     }
   };

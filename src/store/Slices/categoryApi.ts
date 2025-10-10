@@ -1,33 +1,53 @@
+// store/Slices/categoryApi.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export interface Category {
+  id: string;
+  name: string;
+  image: string;
+  createdAt: string;
+}
 
 export const categoryApi = createApi({
   reducerPath: 'categoryApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://fahadpervez-backend-803d.onrender.com' }),
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: 'https://fahadpervez-backend-803d.onrender.com/api/v1/',
+  }),
   tagTypes: ['Category'],
   endpoints: (builder) => ({
-    getCategories: builder.query<any[], void>({
-      query: () => 'categories',
+    // Try different endpoint variations
+    getCategories: builder.query<Category[], void>({
+      query: () => 'category', 
       providesTags: ['Category'],
+      transformResponse: (response: { data: Category[] } | Category[]) => {
+        if (response && typeof response === 'object' && 'data' in response) {
+          return response.data;
+        }
+        return response as Category[];
+      },
     }),
-    createCategory: builder.mutation<any, { name: string; description?: string }>({
-      query: (newCategory) => ({
-        url: 'categories',
+    
+    createCategory: builder.mutation<Category, FormData>({
+      query: (formData) => ({
+        url: 'category', 
         method: 'POST',
-        body: newCategory,
+        body: formData,
       }),
       invalidatesTags: ['Category'],
     }),
-    updateCategory: builder.mutation<any, { id: string; name: string; description?: string }>({
-      query: ({ id, ...patch }) => ({
-        url: `categories/${id}`,
+    
+    updateCategory: builder.mutation<Category, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `category/${id}`, 
         method: 'PUT',
-        body: patch,
+        body: formData,
       }),
       invalidatesTags: ['Category'],
     }),
+    
     deleteCategory: builder.mutation<void, string>({
       query: (id) => ({
-        url: `categories/${id}`,
+        url: `category/${id}`, 
         method: 'DELETE',
       }),
       invalidatesTags: ['Category'],
@@ -35,4 +55,9 @@ export const categoryApi = createApi({
   }),
 });
 
-export const { useGetCategoriesQuery, useCreateCategoryMutation, useUpdateCategoryMutation, useDeleteCategoryMutation } = categoryApi;
+export const { 
+  useGetCategoriesQuery, 
+  useCreateCategoryMutation, 
+  useUpdateCategoryMutation, 
+  useDeleteCategoryMutation 
+} = categoryApi;
