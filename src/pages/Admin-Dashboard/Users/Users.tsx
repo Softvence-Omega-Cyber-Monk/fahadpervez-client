@@ -1,94 +1,46 @@
-import React, { useState, useMemo } from 'react';
-import { UserType, View, UserData } from './types';
-import { DUMMY_APPLICATION_DETAIL, DUMMY_BUYER_DETAIL, DUMMY_REQUESTS } from './data';
-import UserDashboard from './components/UserDashboard';
-import BuyerDetailView from './components/BuyerDetailView';
-import SellerRequestList from './components/SellerRequestList';
-import SellerReviewDetail from './components/SellerReviewDetail';
+import { ArrowDownToLine } from "lucide-react"
+import { useState } from "react"
+import BuyersTable from "./components/BuyersTable";
+import SellersTable from "./components/SellersTable";
+import { useGetAllBuyersQuery, useGetAllSellersQuery } from "@/Redux/Features/user/aure.api";
 
-const Users: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<UserType>('Buyer');
-  const [currentView, setCurrentView] = useState<View>('Dashboard');
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-  const [selectedAppId, setSelectedAppId] = useState<string | null>(null);
+const Users = () => {
 
-  const handleViewDetails = (user: UserData) => {
-    setSelectedUserId(user.id);
-    setCurrentView('BuyerDetail'); // We only have a detailed view for a Buyer in the examples
-  };
+  const [curentUser, setCurentUser] = useState("buyers");
 
-  const handleViewSellerRequests = () => {
-    setCurrentView('SellerRequests');
-  };
-
-  const handleReviewApplication = (appId: string) => {
-    setSelectedAppId(appId);
-    setCurrentView('SellerReview');
-  };
-
-  const handleBackToDashboard = () => {
-    setSelectedUserId(null);
-    setSelectedAppId(null);
-    setCurrentView('Dashboard');
-  };
-
-  const applicationDetail = useMemo(() => {
-    if (currentView === 'SellerReview' && selectedAppId) {
-      // In a real app, you'd fetch the details by selectedAppId
-      return DUMMY_APPLICATION_DETAIL;
-    }
-    return null;
-  }, [currentView, selectedAppId]);
-
-  const buyerDetail = useMemo(() => {
-    if (currentView === 'BuyerDetail' && selectedUserId) {
-      // In a real app, you'd fetch the details by selectedUserId
-      return DUMMY_BUYER_DETAIL;
-    }
-    return null;
-  }, [currentView, selectedUserId]);
-
-
-  // Conditional Rendering of Views
-  let content;
-  switch (currentView) {
-    case 'Dashboard':
-      content = (
-        <UserDashboard
-          currentTab={currentTab}
-          setCurrentTab={setCurrentTab}
-          onViewDetails={handleViewDetails}
-          onViewSellerRequests={handleViewSellerRequests}
-        />
-      );
-      break;
-    case 'BuyerDetail':
-      content = buyerDetail ? <BuyerDetailView buyer={buyerDetail} onBack={handleBackToDashboard} /> : <div>Buyer not found.</div>;
-      break;
-    case 'SellerRequests':
-      content = <SellerRequestList requests={DUMMY_REQUESTS} onBack={handleBackToDashboard} onReview={handleReviewApplication} />;
-      break;
-    case 'SellerReview':
-      content = applicationDetail ? <SellerReviewDetail application={applicationDetail} onBack={handleViewSellerRequests} /> : <div>Application not found.</div>;
-      break;
-    default:
-      content = <div className="p-8 text-center text-xl text-gray-500">View Not Found</div>;
-  }
+  const {data : sellersData} = useGetAllSellersQuery(null);
+  const {data : buyersData} = useGetAllBuyersQuery(null);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans antialiased">
-      {/* Global Header (Optional, but helps context) */}
-      <header className="bg-white shadow-sm border-b border-gray-100">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-xl font-bold text-gray-900">User Management Dashboard</h1>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 px-4 py-6 md:px-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">User Management Dashboard</h1>
       </header>
-      
-      <main className="max-w-7xl mx-auto">
-        {content}
+
+      {/* Main Content */}
+      <main className="px-4 py-6 md:px-8 md:py-8">
+        {/* Tabs and Export Button */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div className="flex gap-2">
+            <button onClick={() => setCurentUser("buyers")} className="px-6 py-2.5 bg-white text-indigo-600 font-medium rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors">
+              Buyers
+            </button>
+            <button onClick={() => setCurentUser("sellers")} className="px-6 py-2.5 bg-white text-gray-600 font-medium rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors">
+              Sellers
+            </button>
+          </div>
+          <button className="flex items-center justify-center gap-2 px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg shadow-sm hover:bg-indigo-700 transition-colors">
+            <ArrowDownToLine size={20} />
+            Export
+          </button>
+        </div>
+
+        {curentUser === "buyers" ? <BuyersTable data={buyersData} /> : <SellersTable data={sellersData} />}
+
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default Users;
+export default Users
