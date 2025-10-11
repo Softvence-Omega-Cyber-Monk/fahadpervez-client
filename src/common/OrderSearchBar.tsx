@@ -4,13 +4,31 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
 import PrimaryButton from "./PrimaryButton";
+import { useDeleteProductByIdMutation } from "@/Redux/Features/products/products.api";
 interface OrderSearchBarProps {
   tableType: string;
+  selectedProduct?: string[];
+  setSelectedProduct?: React.Dispatch<React.SetStateAction<string[]>>;
+  refetch?: () => void;
 }
 export default function OrderSearchBar(props: OrderSearchBarProps) {
+    const [deleteProductById]=useDeleteProductByIdMutation({})
   const [searchValue, setSearchValue] = useState("");
   const [orderDate] = useState("Order date");
   const [orderStatus] = useState("Order Status");
+
+  const handleDelete =()=>{
+    console.log(props.selectedProduct)
+    deleteProductById(props.selectedProduct).unwrap()
+    .then((res)=>{
+      if(res.success){
+        props.refetch?.()
+      }  
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
 
   return (
     <div className="w-full md:flex space-y-5 md:space-y-0 items-center justify-between gap-4">
@@ -41,8 +59,8 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
                 <PrimaryButton
                   type="Outline"
                   title="Delete Select"
-                  rightIcon={<MdDelete className="size-5" />
-}
+                  rightIcon={<MdDelete className="size-5" />}
+                  onClick={handleDelete} 
                 />
 
             </div>
