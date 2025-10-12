@@ -14,10 +14,6 @@ import ConfirmUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkP
 import CompleteUpload from "@/pages/Seller-Dashboard/components/Products/AddBulkProduct/CompleteUpload";
 import OrderLandingPage from "@/pages/Seller-Dashboard/components/Order/OrderLandingPage";
 import OrderTracking from "@/pages/Seller-Dashboard/components/Order/OrderTracking";
-<<<<<<< HEAD
-
-=======
->>>>>>> 28278fa0cfbe779b04be53faa7f9d32fd1a9845f
 import SellerCategory from "@/pages/Seller-Dashboard/components/SellerCategory/SellerCategory";
 
 export const sellerRoutes = [

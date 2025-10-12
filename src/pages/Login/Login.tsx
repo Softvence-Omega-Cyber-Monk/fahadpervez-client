@@ -10,19 +10,10 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  
-
-
   const [logInUser] = useLogInUserMutation();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // optional remember me validation
-    // if (!rememberMe) {
-    //   toast.error("Please check 'Remember Me' to continue.");
-    //   return;
-    // }
 
     const toastId = toast.loading("Signing you in.....");
 
@@ -30,14 +21,6 @@ const Login: React.FC = () => {
       const data = { email, password };
       const res = await logInUser(data).unwrap();
 
-<<<<<<< HEAD
-      if (res.success) {
-        localStorage.setItem("user", res.data)
-      }
-
-      toast.success("Logged In Successfully", { id: toastId });
-      navigate("/");
-=======
       console.log(res);
 
       if (res.success) {
@@ -48,7 +31,6 @@ const Login: React.FC = () => {
         toast.error("Login failed. Please check your credentials", { id: toastId });
       }
 
->>>>>>> 28278fa0cfbe779b04be53faa7f9d32fd1a9845f
     } catch (error) {
       console.log(error);
       toast.error("Login failed. Please check your credentials", { id: toastId });
