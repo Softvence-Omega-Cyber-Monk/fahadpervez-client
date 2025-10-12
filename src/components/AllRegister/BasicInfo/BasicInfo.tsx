@@ -1,5 +1,6 @@
 import Button from '@/components/Button/Button';
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 interface BasicInfoProps {
   onNext: () => void;
@@ -73,8 +74,8 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-30">
-      <div className="bg-white border border-gray-100 rounded-lg shadow-sm w-full max-w-2xl p-8">
+    <div className="min-h-screen  flex items-center justify-center pt-30">
+      <div className="bg-white border border-gray-100 rounded-lg shadow-sm w-full max-w-6xl p-8">
 
         {/* Header */}
         <h1 className="text-2xl font-bold text-gray-900 mb-2">REGISTER AS A SELLER</h1>
@@ -85,9 +86,9 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
         {/* Login Link */}
         <p className="text-sm text-gray-600 mb-6">
           Already have an account?{' '}
-          <a href="#" className="text-blue-600 hover:underline">
+          <NavLink to="/login" className="text-blue-600 hover:underline">
             Log In
-          </a>
+          </NavLink>
         </p>
 
         {/* Name Field */}

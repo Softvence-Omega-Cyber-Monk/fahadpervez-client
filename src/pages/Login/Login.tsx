@@ -1,6 +1,6 @@
 import { useLogInUserMutation } from '@/Redux/Features/auth/auth.api';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Login: React.FC = () => {
@@ -52,7 +52,9 @@ const Login: React.FC = () => {
           {/* Register Link */}
           <div className="mb-8">
             <span className="text-gray-600">Don't have an account? </span>
-            <a href="#" className="text-blue-600 hover:underline">Register</a>
+            <NavLink to="/register" className="text-blue-600 hover:underline">
+               Register
+            </NavLink>
           </div>
 
           {/* Form */}
@@ -112,7 +114,7 @@ const Login: React.FC = () => {
               type="submit"
               className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors"
             >
-              Create Account
+              Login
             </button>
           </form>
         </div>
