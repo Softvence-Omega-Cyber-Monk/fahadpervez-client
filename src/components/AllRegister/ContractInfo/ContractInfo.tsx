@@ -168,7 +168,7 @@ const ContractInfo: React.FC<ContractInfoProps> = ({onPrevious, onNext}) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center pt-30">
-      <div className="bg-white border border-gray-100 rounded-lg shadow-sm w-full max-w-3xl p-8">
+      <div className="bg-white border border-gray-100 rounded-lg shadow-sm w-full max-w-6xl p-8">
 
         {/* Header */}
         <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">LET'S SETUP YOUR PROFILE</h1>
