@@ -14,7 +14,8 @@ const authApi = baseApi.injectEndpoints({
         getMe : builder.query({
             query : () =>({
                 url : "/users/profile"
-            })
+            }),
+            providesTags : ["USER"]
         }),
         refreshToken : builder.mutation({
             query : () => ({

@@ -15,7 +15,6 @@ interface IHeroProps {
 
 const Hero : React.FC<IHeroProps> = ({ data }) => {
 
-    console.log(data);
 
     return (
         <div className="flex w-full h-screen bg-center bg-cover bg-no-repeat flex-col md:flex-row justify-center" style={{backgroundImage : `url(${data.image})`}}>
