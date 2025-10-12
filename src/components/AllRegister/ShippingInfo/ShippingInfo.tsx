@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ProgressBar from '../Progressbar/ProgressBar';
 
 interface FormData {
   productCategories: string[];
@@ -136,6 +137,17 @@ const ShippingInfo: React.FC<ShippingInfoProps> = ({onPrevious, onNext}) => {
         <p className="text-gray-500 text-sm mb-8 text-center">
           Lorem ipsum dolor sit amet consectetur. Diam fermentum fusce in magna est fusce tellus vitae malesuada. A enim convallis eros gravida at id arcu venenatis.
         </p>
+
+        <ProgressBar
+          steps={[
+            { number: 1, label: "Basic Info" },
+            { number: 2, label: "Business Info" },
+            { number: 3, label: "Shipping Info" },
+            { number: 4, label: "Payment Info" },
+            { number: 5, label: "Contract Info" },
+          ]}
+          currentStep={3} // dynamically pass step from parent
+        />
 
         {/* Section Title */}
         <h2 className="text-lg font-bold text-gray-900 mb-6">PRODUCT & SHIPPING</h2>
