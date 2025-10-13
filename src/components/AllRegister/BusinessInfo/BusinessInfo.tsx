@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ProgressBar from '../Progressbar/ProgressBar';
 
 interface FormData {
   yourName: string;
@@ -178,23 +179,26 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-sm w-full max-w-3xl p-8">
-        {/* Logo */}
-        <div className="flex items-center mb-8">
-          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z" />
-            </svg>
-          </div>
-          <span className="ml-3 text-xl font-semibold text-blue-600">Logoipsum</span>
-        </div>
+    <div className="min-h-screen flex items-center justify-center pt-30">
+      <div className="bg-white border border-gray-100 rounded-lg shadow-sm w-full max-w-6xl p-8">
 
         {/* Header */}
         <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">LET'S SETUP YOUR PROFILE</h1>
         <p className="text-gray-500 text-sm mb-8 text-center">
           Lorem ipsum dolor sit amet consectetur. Diam fermentum fusce in magna est fusce tellus vitae malesuada. A enim convallis eros gravida at id arcu venenatis.
         </p>
+
+        {/* Progress Bar inside form */}
+        <ProgressBar
+          steps={[
+            { number: 1, label: "Basic Info" },
+            { number: 2, label: "Business Info" },
+            { number: 3, label: "Shipping Info" },
+            { number: 4, label: "Payment Info" },
+            { number: 5, label: "Contract Info" },
+          ]}
+          currentStep={2} // dynamically pass step from parent
+        />
 
         {/* Section Title */}
         <h2 className="text-lg font-bold text-gray-900 mb-6">BUSINESS INFORMATION</h2>
@@ -213,7 +217,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
             placeholder="Enter your name"
             className={`w-full px-4 py-2.5 border ${
               errors.yourName ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+            } rounded-md focus:outline-none `}
           />
           {errors.yourName && <p className="text-red-500 text-xs mt-1">{errors.yourName}</p>}
         </div>
@@ -232,7 +236,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
             placeholder="Enter your business name"
             className={`w-full px-4 py-2.5 border ${
               errors.businessName ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+            } rounded-md focus:outline-none  `}
           />
           {errors.businessName && <p className="text-red-500 text-xs mt-1">{errors.businessName}</p>}
         </div>
@@ -252,7 +256,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
               placeholder="Enter your business name"
               className={`w-full px-4 py-2.5 border ${
                 errors.businessCRNumber ? 'border-red-500' : 'border-gray-300'
-              } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              } rounded-md focus:outline-none  `}
             />
             {errors.businessCRNumber && <p className="text-red-500 text-xs mt-1">{errors.businessCRNumber}</p>}
           </div>
@@ -300,7 +304,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
             placeholder="Enter your business type"
             className={`w-full px-4 py-2.5 border ${
               errors.businessType ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+            } rounded-md focus:outline-none  `}
           />
           {errors.businessType && <p className="text-red-500 text-xs mt-1">{errors.businessType}</p>}
         </div>
@@ -319,7 +323,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
             rows={4}
             className={`w-full px-4 py-2.5 border ${
               errors.businessDescription ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
+            } rounded-md focus:outline-none   resize-none`}
           />
           {errors.businessDescription && <p className="text-red-500 text-xs mt-1">{errors.businessDescription}</p>}
         </div>
@@ -335,7 +339,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className={`w-full px-4 py-2.5 border ${
                 errors.country ? 'border-red-500' : 'border-gray-300'
-              } rounded-md bg-white text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              } rounded-md bg-white text-left flex items-center justify-between focus:outline-none `}
             >
               <span className="flex items-center">
                 {selectedCountry ? (
@@ -365,7 +369,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
                     placeholder="Search country..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
                   />
                 </div>
                 <div className="overflow-y-auto max-h-48">

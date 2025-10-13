@@ -34,8 +34,8 @@ const productsApi = baseApi.injectEndpoints({
             })
         }),
         getProductByIdAdmin:builder.query({
-            query:()=>({
-                url:`/products/admin/{id}`
+            query:(id)=>({
+                url:`/products/admin/${id}`
             })
         }),
         getMyProducts:builder.query({
