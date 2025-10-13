@@ -45,11 +45,11 @@ const AddProduct = () => {
 
     formData.append("productName", data.productName);
     formData.append("productCategory", category?._id);
-    formData.append("productSKU", data.productSKU);
-    formData.append("companyName", data?.companyName as string);
+    formData.append("productSKU", data.sku);
+    formData.append("companyName", data?.brandName as string);
     formData.append("gender", data.gender as string);
     formData.append("availableSize", data.availableSize as string);
-    formData.append("productDescription", data. productDescription as string);
+    formData.append("productDescription", data.description as string);
 
     if (mediaData.images.mainImage)
       formData.append("mainImage", mediaData.images.mainImage);
@@ -61,8 +61,8 @@ const AddProduct = () => {
       formData.append("lastImage", mediaData.images.lastImage);
     if (mediaData.video) formData.append("video", mediaData.video);
 
-    if (data?.stock !== undefined && data?.stock !== null) {
-      formData.append("stock", String(Number(data.stock)));
+    if (data?.quantity !== undefined && data?.quantity !== null) {
+      formData.append("stock", String(Number(data.quantity)));
     }
 
     if (data?.currency) {
@@ -77,12 +77,12 @@ const AddProduct = () => {
       formData.append("specialPrice", String(Number(data.specialPrice)));
     }
 
-    if (data?.specialPriceStartingDate) {
-      formData.append("specialPriceStartingDate", data.specialPriceStartingDate);
+    if (data?.specialPriceFrom) {
+      formData.append("specialPriceStartingDate", data.specialPriceFrom);
     }
 
-    if (data?.specialPriceEndingDate) {
-      formData.append("specialPriceEndingDate", data.specialPriceEndingDate);
+    if (data?.specialPriceTo) {
+      formData.append("specialPriceEndingDate", data.specialPriceTo);
     }
 
     if (data?.weight !== undefined && data?.weight !== null) {
