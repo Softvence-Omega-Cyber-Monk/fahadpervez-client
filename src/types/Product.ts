@@ -13,7 +13,7 @@ _id?: string;
   specialPrice?: number;
   specialPriceStartingDate?: string; 
   specialPriceEndingDate?: string;   
-  mainImage?: string;  
+  mainImage?: string; 
   sideImage?: string;  
   sideImage2?: string; 
   lastImage?: string;  

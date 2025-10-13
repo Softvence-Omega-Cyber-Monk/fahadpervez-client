@@ -9,6 +9,7 @@ interface FieldConfig {
   type: string;
   placeholder?: string;
   options?: string[];
+  defaultValue?: string;
 }
 
 interface Props<T extends Record<string, unknown>> {
@@ -51,6 +52,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
           {field.type === "select" ? (
             <select
               {...register(field.name as import("react-hook-form").Path<T>)}
+              defaultValue={field.defaultValue}
               className="border border-border px-3 py-2 rounded w-full "
             >
               <option value="">
@@ -72,6 +74,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
                     {...register(
                       field.name as import("react-hook-form").Path<T>
                     )}
+                    defaultValue={field.defaultValue}
                     className="hidden peer"
                   />
                   <span
@@ -86,6 +89,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
           ) : field.type === "description" ? (
             <textarea
               {...register(field.name as import("react-hook-form").Path<T>)}
+              defaultValue={field.defaultValue}
               placeholder={field.placeholder}
               className="border border-border px-3 py-2 rounded w-full h-28 "
             />
@@ -93,6 +97,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
             <input
               type={field.type}
               {...register(field.name as import("react-hook-form").Path<T>)}
+              defaultValue={field.defaultValue}
               placeholder={field.placeholder}
               className="border border-border px-3 py-2 rounded w-full"
             />
