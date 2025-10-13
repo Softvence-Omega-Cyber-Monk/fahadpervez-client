@@ -6,12 +6,10 @@ import PaymentInfo from "@/components/AllRegister/PaymentInfo/PaymentInfo";
 import ContractInfo from "@/components/AllRegister/ContractInfo/ContractInfo";
 import Agreement from "@/components/AllRegister/Agreement/Agreement";
 import Review from "@/components/AllRegister/Review/Review";  
+import ContractInstraction from "@/components/AllRegister/ContractInstraction/ContractInstraction";
 
 const Signup = () => {
-  const [step, setStep] = useState<
-    "basic" | "business" | "shipping" | "payment" | "contract" | "agreement" | "review"
-  >("basic");
-
+  const [step, setStep] = useState<"basic" | "business" | "shipping" | "payment" | "contract" | "agreement" | "review" | "instraction">("basic");
 
   return (
     <div>
@@ -21,6 +19,7 @@ const Signup = () => {
         {step === "payment" && <PaymentInfo onPrevious={() => setStep("shipping")} onNext={() => setStep("contract")} />}
         {step === "contract" && <ContractInfo onPrevious={() => setStep("payment")} onNext={() => setStep("agreement")} />}
         {step === "agreement" && <Agreement onNext={() => setStep("review")} />}
+        {step === "instraction" && <ContractInstraction onNext={() => setStep("instraction")} />}
         {step === "review" && <Review />}
     </div>
   );
