@@ -23,7 +23,7 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
     .then((res)=>{
       if(res.success){
         props.refetch?.()
-      }  
+      }
     })
     .catch((err)=>{
       console.log(err)

@@ -39,6 +39,10 @@ export const sellerRoutes = [
         element:<AddProduct/>
       },
       {
+        path:"add-single-product/:id",
+        element:<AddProduct/>
+      },
+      {
         path:"add-bulk-product",
         element:<AddBulkProduct/>
       },
