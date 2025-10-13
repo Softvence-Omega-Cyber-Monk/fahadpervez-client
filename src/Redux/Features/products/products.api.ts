@@ -2,10 +2,11 @@ import { baseApi } from "@/Redux/BaseApi";
 
 const productsApi = baseApi.injectEndpoints({
     endpoints:(builder)=>({
-        getProducts:builder.query({
+        getAllProducts:builder.query({
             query:()=>({
                 url:`/products`
-            })
+            }),
+            providesTags:["PRODUCTS"]
         }),
         getProductById:builder.query({
             query:(id)=>({
@@ -17,7 +18,8 @@ const productsApi = baseApi.injectEndpoints({
                 url:`/products`,
                 method:"POST",
                 body:data
-            })
+            }),
+            invalidatesTags:["PRODUCTS"]
         }),
         addBulkProduct:builder.mutation({
             query:(data)=>({
@@ -39,7 +41,8 @@ const productsApi = baseApi.injectEndpoints({
         getMyProducts:builder.query({
             query:()=>({
                 url:`/products/my/products`
-            })
+            }),
+            providesTags:["PRODUCTS"]
         }),
         updateProduct:builder.mutation({
             query:(data)=>({
@@ -52,12 +55,10 @@ const productsApi = baseApi.injectEndpoints({
             query:(id)=>({
                 url:`/products/${id}`,
                 method:"DELETE"
-            })
+            }),
+            invalidatesTags:["PRODUCTS"]
         })
-
-
-
     })})
 
 
-    export const {useGetProductsQuery,useGetProductByIdQuery,useAddProductMutation,useAddBulkProductMutation, useGetAllProductsAdminQuery,useGetProductByIdAdminQuery,useGetMyProductsQuery,useUpdateProductMutation,useDeleteProductByIdMutation} = productsApi
+    export const {useGetAllProductsQuery,useGetProductByIdQuery,useAddProductMutation,useAddBulkProductMutation, useGetAllProductsAdminQuery,useGetProductByIdAdminQuery,useGetMyProductsQuery,useUpdateProductMutation,useDeleteProductByIdMutation} = productsApi
