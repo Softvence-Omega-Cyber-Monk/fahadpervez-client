@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
+import { DefaultPreviewData } from "./AddProduct";
 
-export default function ProductPreview({ file }: { file?: File }) {
-  const [selectedSize, setSelectedSize] = useState("20 mg");
+export default function ProductPreview({
+  file,
+  defaultPreview,
+}: {
+  file?: File;
+  defaultPreview: DefaultPreviewData | undefined;
+}) {
+  const [selectedSize, setSelectedSize] = useState(
+    defaultPreview?.availableSize || "20 mg"
+  );
   const [preview, setPreview] = useState<string | null>(null);
-  const sizes = ["5mg", "10 mg", "20 mg", "50 mg"];
+  const sizes = ["5mg", "10mg", "20mg", "50mg"];
   useEffect(() => {
     if (file) {
       setPreview(URL.createObjectURL(file));
     }
   }, [file]);
-
   return (
     <div className="bg-light-background rounded-lg p-6">
       {/* Product Image */}
       <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4">
         <img
-          src={preview || "/medicine.png"}
+          src={preview || defaultPreview?.mainImage || "/medicine.png"}
           alt="Oxecone-8 medication"
           width={300}
           height={200}
@@ -26,17 +34,20 @@ export default function ProductPreview({ file }: { file?: File }) {
       {/* Product Info */}
       <div className="space-y-4">
         <h3 className="text-dark-blue font-semibold text-base leading-tight">
-          Gastroesophageal Reflux Disease (GERD): Acid from the stomach flows
-          back into the esophagus.
+          {defaultPreview?.name}
         </h3>
 
-        <p className="text-light-gray text-xs font-normal">SKU: GRD-00253A</p>
+        <p className="text-light-gray text-xs font-normal">
+          {defaultPreview?.productSKU}
+        </p>
 
         <div>
           <p className="text-light-gray text-xs font-normal mb-1">
             Price per unit
           </p>
-          <p className="text-dark-blue text-2xl font-bold">$100</p>
+          <p className="text-dark-blue text-2xl font-bold">
+            {defaultPreview?.pricePerUnit}
+          </p>
         </div>
 
         {/* Size Selection */}

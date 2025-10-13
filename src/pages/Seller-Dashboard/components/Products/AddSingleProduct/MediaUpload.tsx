@@ -1,54 +1,73 @@
+import { MediaData, MediaUploadProps, UploadedImage, UploadedVideo } from "@/types/SellerDashboardTypes/MediaUpload";
 import { Upload, X } from "lucide-react";
 import { useState, useRef, ChangeEvent, useEffect } from "react";
 
-interface UploadedImage {
-  id: string;
-  file: File;
-  preview: string;
-}
-
-interface UploadedVideo {
-  file: File;
-  preview: string;
-}
-
-export interface MediaData {
-  images: {
-    mainImage?: File;
-    sideImage?: File;
-    sideImage2?: File;
-    lastImage?: File;
-  };
-  video?: File;
-}
-
-interface MediaUploadProps {
-  onMediaChange: (mediaData: MediaData) => void;
-}
 
 
-export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
+export default function MediaUpload({ 
+  onMediaChange, 
+  defaultImages,
+  defaultVideo 
+}: MediaUploadProps) {
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [uploadedVideo, setUploadedVideo] = useState<UploadedVideo | null>(null);
+  const [removedDefaultImageIds, setRemovedDefaultImageIds] = useState<string[]>([]);
   const imageInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const videoInputRef = useRef<HTMLInputElement | null>(null);
 
+  // Load default images on mount or when defaultImages change
+useEffect(() => {
+  if (defaultImages) {
+    const defaultImagesList: UploadedImage[] = Object.entries(defaultImages)
+      .filter(([ , url]) => !!url)
+      .map(([key, url]) => ({
+        id: key,
+        preview: url as string,
+        isDefault: true,
+      }));
+
+    // Only update if defaults have actually changed
+    setUploadedImages((prev) => {
+      const sameLength = prev.length === defaultImagesList.length;
+      const sameItems = prev.every((img, i) => img.preview === defaultImagesList[i]?.preview);
+
+      if (sameLength && sameItems) return prev; // No change, skip re-render
+      return defaultImagesList;
+    });
+  }
+}, [defaultImages]);
+  // Load default video on mount or when defaultVideo changes
+  useEffect(() => {
+    if (defaultVideo) {
+      setUploadedVideo({
+        preview: defaultVideo,
+        isDefault: true,
+      });
+    }
+  }, [defaultVideo]);
+
+  // Notify parent of media changes
   useEffect(() => {
     const images: MediaData["images"] = {};
+    
     uploadedImages.forEach((img) => {
-      images[img.id as keyof MediaData["images"]] = img.file;
+      // Only include files that have been newly uploaded (not defaults)
+      if (img.file) {
+        images[img.id as keyof MediaData["images"]] = img.file;
+      }
     });
 
     onMediaChange({
       images,
       video: uploadedVideo?.file,
+      removedDefaultImageIds,
     });
-  }, [uploadedImages, uploadedVideo, onMediaChange]);
+  }, [uploadedImages, uploadedVideo, onMediaChange, removedDefaultImageIds]);
 
   const imageSlots = [
     { id: "mainImage", label: "Main image" },
     { id: "sideImage", label: "Side image" },
-    { id: "sideImage2", label: "Side" },
+    { id: "sideImage2", label: "Side image 2" },
     { id: "lastImage", label: "Last image" },
   ];
 
@@ -58,8 +77,8 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
     if (!file) return;
 
     // Validate file type
-    if (!file.type.match(/^image\/(png|jpg|jpeg|pdf)$/)) {
-      alert("Please upload PNG, JPG, or PDF files only");
+    if (!file.type.match(/^image\/(png|jpg|jpeg|webp)$/)) {
+      alert("Please upload PNG, JPG, or WEBP files only");
       return;
     }
 
@@ -69,15 +88,28 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
       return;
     }
 
+    const existing = uploadedImages.find((img) => img.id === slotId);
+    if (existing?.isDefault) {
+      setRemovedDefaultImageIds((prev) => [...prev, slotId]);
+    }
+
     // Create preview URL
     const preview = URL.createObjectURL(file);
 
     // Update uploaded images
     setUploadedImages((prev) => {
-      // Remove existing image for this slot if any
+      // Clean up old preview URL if exists
+      if (existing && !existing.isDefault) {
+        URL.revokeObjectURL(existing.preview);
+      }
+
+      // Remove existing image for this slot
       const filtered = prev.filter((img) => img.id !== slotId);
-      return [...filtered, { id: slotId, file, preview }];
+      return [...filtered, { id: slotId, file, preview, isDefault: false }];
     });
+
+    // Reset the input value to allow re-uploading the same file
+    event.target.value = "";
   };
 
   // Handle video upload
@@ -97,16 +129,27 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
       return;
     }
 
+    // Clean up old preview if exists
+    if (uploadedVideo && !uploadedVideo.isDefault) {
+      URL.revokeObjectURL(uploadedVideo.preview);
+    }
+
     // Create preview URL
     const preview = URL.createObjectURL(file);
-    setUploadedVideo({ file, preview });
+    setUploadedVideo({ file, preview, isDefault: false });
+
+    // Reset the input value
+    event.target.value = "";
   };
 
   // Remove image
   const removeImage = (slotId: string) => {
+    const image = uploadedImages.find((img) => img.id === slotId);
+    if (image?.isDefault) {
+      setRemovedDefaultImageIds((prev) => [...prev, slotId]);
+    }
     setUploadedImages((prev) => {
-      const image = prev.find((img) => img.id === slotId);
-      if (image) {
+      if (image && !image.isDefault) {
         URL.revokeObjectURL(image.preview);
       }
       return prev.filter((img) => img.id !== slotId);
@@ -115,10 +158,10 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
 
   // Remove video
   const removeVideo = () => {
-    if (uploadedVideo) {
+    if (uploadedVideo && !uploadedVideo.isDefault) {
       URL.revokeObjectURL(uploadedVideo.preview);
-      setUploadedVideo(null);
     }
+    setUploadedVideo(null);
   };
 
   // Get uploaded image for a slot
@@ -126,17 +169,31 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
     return uploadedImages.find((img) => img.id === slotId);
   };
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      uploadedImages.forEach((img) => {
+        if (!img.isDefault && img.preview) {
+          URL.revokeObjectURL(img.preview);
+        }
+      });
+      if (uploadedVideo && !uploadedVideo.isDefault && uploadedVideo.preview) {
+        URL.revokeObjectURL(uploadedVideo.preview);
+      }
+    };
+  });
+
   return (
     <div className="space-y-10">
       {/* Image Upload Section */}
       <div className="bg-gray-50 rounded-lg p-6 space-y-6">
         <div>
-          <div className="flex items-center justify-between gap-4 py-4 mb-6 border-b-2 border-gray-200">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 py-4 mb-6 border-b-2 border-gray-200">
             <h3 className="text-xl font-semibold">
               Add Image<span className="text-red-500 text-base">*</span>
             </h3>
             <p className="text-sm text-gray-600">
-              Upload an image or drag and drop PNG, JPG, PDF up to 2 mb.
+              Upload an image or drag and drop PNG, JPG, WEBP up to 2 mb.
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -148,7 +205,7 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
                   <input
                     ref={(el) => {imageInputRefs.current[slot.id] = el}}
                     type="file"
-                    accept="image/png,image/jpg,image/jpeg,application/pdf"
+                    accept="image/png,image/jpg,image/jpeg,image/webp"
                     onChange={(e) => handleImageUpload(slot.id, e)}
                     className="hidden"
                   />
@@ -160,13 +217,23 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
                         src={uploadedImage.preview}
                         alt={slot.label}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "https://via.placeholder.com/200?text=Image+Error";
+                        }}
                       />
                       <button
+                        type="button"
                         onClick={() => removeImage(slot.id)}
-                        className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        aria-label={`Remove ${slot.label}`}
                       >
                         <X className="w-4 h-4 text-white" />
                       </button>
+                      {uploadedImage.isDefault && (
+                        <div className="absolute top-2 left-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-md">
+                          Current
+                        </div>
+                      )}
                       <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs py-1 px-2 text-center">
                         {slot.label}
                       </div>
@@ -194,8 +261,8 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
 
       {/* Video Upload Section */}
       <div className="bg-gray-50 rounded-lg p-6 space-y-6">
-        <div className="flex items-center justify-between gap-4 py-4 mb-6 border-b-2 border-gray-200">
-          <h3 className="text-xl font-semibold">Add Video</h3>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 py-4 mb-6 border-b-2 border-gray-200">
+          <h3 className="text-xl font-semibold">Add Video (Optional)</h3>
           <p className="text-sm text-gray-600">Upload a video up to 10 mb.</p>
         </div>
 
@@ -216,11 +283,18 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
               className="max-w-full h-auto max-h-[400px]"
             />
             <button
+              type="button"
               onClick={removeVideo}
-              className="absolute top-4 right-4 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+              className="absolute top-4 right-4 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors z-10"
+              aria-label="Remove video"
             >
               <X className="w-5 h-5 text-white" />
             </button>
+            {uploadedVideo.isDefault && (
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-blue-500 text-white text-sm rounded-md">
+                Current Video
+              </div>
+            )}
           </div>
         ) : (
           // Show upload placeholder

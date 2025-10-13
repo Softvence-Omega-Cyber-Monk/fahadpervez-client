@@ -34,8 +34,8 @@ const productsApi = baseApi.injectEndpoints({
             })
         }),
         getProductByIdAdmin:builder.query({
-            query:()=>({
-                url:`/products/admin/{id}`
+            query:({id})=>({
+                url:`/products/admin/${id}`
             })
         }),
         getMyProducts:builder.query({
@@ -47,8 +47,8 @@ const productsApi = baseApi.injectEndpoints({
         updateProduct:builder.mutation({
             query:(data)=>({
                 url:`/products/${data.id}`,
-                method:"PUT",
-                body:data
+                method:"PATCH",
+                body:data.data
             })
         }),
         deleteProductById:builder.mutation({

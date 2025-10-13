@@ -52,7 +52,7 @@ const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTa
       <td className="px-4 py-4">
         <div className="flex items-center gap-3">
           <img
-            src={product.mainImage}
+            src={product.mainImageUrl}
             alt={product.productName}
             className="w-12 h-12 rounded-lg object-cover border border-gray-200"
           />
