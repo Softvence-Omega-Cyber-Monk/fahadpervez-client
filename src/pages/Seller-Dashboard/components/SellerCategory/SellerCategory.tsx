@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-
-interface Category {
-  id: string;
-  name: string;
-  image: string;
-  createdAt: Date;
-}
+import {
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  Category,
+} from '../../../../store/Slices/categoryApi';
 
 const SellerCategory: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  // RTK Query hooks
+  const { 
+    data: categories = [], 
+    isLoading, 
+    error: fetchError,
+    refetch 
+  } = useGetCategoriesQuery();
+  
+  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
+  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState({
@@ -127,51 +138,82 @@ const SellerCategory: React.FC = () => {
     setErrors({});
   };
 
-  // Create or update category
-  const handleSubmit = () => {
+  // Create or update category with RTK Query
+  const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    if (editingCategory) {
-      // Update existing category
-      setCategories(prev =>
-        prev.map(cat =>
-          cat.id === editingCategory.id
-            ? {
-                ...cat,
-                name: formData.name,
-                image: formData.imagePreview || cat.image
-              }
-            : cat
-        )
-      );
-      toast.success('Category updated successfully!')
-    } else {
-      // Create new category
-      const newCategory: Category = {
-        id: Date.now().toString(),
-        name: formData.name,
-        image: formData.imagePreview,
-        createdAt: new Date()
-      };
-      setCategories(prev => [...prev, newCategory]);
-      toast.success('Category updated successfully!')
-    }
+    try {
+      const categoryFormData = new FormData();
+      categoryFormData.append('name', formData.name.trim());
+      
+      if (formData.image) {
+        categoryFormData.append('image', formData.image);
+      }
 
-    closeModal();
+      if (editingCategory) {
+        await updateCategory({ 
+          id: editingCategory.id, 
+          formData: categoryFormData 
+        }).unwrap();
+        toast.success('Category updated successfully!');
+      } else {
+        await createCategory(categoryFormData).unwrap();
+        toast.success('Category created successfully!');
+      }
+      
+      closeModal();
+    } catch (error: any) {
+      console.error('API Error:', error);
+      const errorMessage = error.data?.message || 'Something went wrong!';
+      toast.error(errorMessage);
+    }
   };
 
-  // Delete category
-  const handleDelete = (e: React.MouseEvent, id: string) => {
+  // Delete category with RTK Query
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
     if (window.confirm('Are you sure you want to delete this category?')) {
-      setCategories(prev => prev.filter(cat => cat.id !== id));
-      alert('Category deleted successfully!');
+      try {
+        await deleteCategory(id).unwrap();
+        toast.success('Category deleted successfully!');
+      } catch (error: any) {
+        console.error('Delete Error:', error);
+        const errorMessage = error.data?.message || 'Failed to delete category!';
+        toast.error(errorMessage);
+      }
     }
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl font-medium">Loading categories...</p>
+      </div>
+    );
+  }
+
+  // Error state
+  if (fetchError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl font-medium text-red-600 mb-4">
+            Error loading categories
+          </p>
+          <button 
+            onClick={() => refetch()}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Categories Grid */}
@@ -206,7 +248,7 @@ const SellerCategory: React.FC = () => {
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-900 mb-1 truncate">{category.name}</h3>
                   <p className="text-xs text-gray-500">
-                    Created {category.createdAt.toLocaleDateString()}
+                    Created {new Date(category.createdAt).toLocaleDateString()}
                   </p>
 
                   {/* Actions */}
@@ -233,11 +275,25 @@ const SellerCategory: React.FC = () => {
                 </div>
               </div>
             ))}
+            
+            {/* Add New Category Card - Beautiful design from your version */}
+            <div 
+              className="bg-white rounded-lg shadow-sm border-2 border-dashed border-gray-300 hover:border-blue-500 transition-all duration-200 cursor-pointer flex items-center justify-center p-6"
+              onClick={openCreateModal}
+            >
+              <div className="text-center">
+                <svg className="w-12 h-12 text-blue-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span className="font-semibold text-blue-600 text-lg">Add New Category</span>
+                <p className="text-gray-500 text-sm mt-1">Click to create a new category</p>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Modal */}
+      {/* Modal - Using your beautiful modal design */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
@@ -272,7 +328,7 @@ const SellerCategory: React.FC = () => {
                   placeholder="Enter category name"
                   className={`w-full px-4 py-2.5 border ${
                     errors.name ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md focus:outline-none`}
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1">{errors.name}</p>
@@ -282,7 +338,7 @@ const SellerCategory: React.FC = () => {
               {/* Category Image */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Category Image <span className="text-red-500">*</span>
+                  Category Image {editingCategory ? '' : <span className="text-red-500">*</span>}
                 </label>
 
                 {formData.imagePreview ? (
@@ -305,7 +361,7 @@ const SellerCategory: React.FC = () => {
                 ) : (
                   <div className={`border-2 border-dashed ${
                     errors.image ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md p-6 text-center`}>
+                  } rounded-md p-6 text-center hover:border-blue-400 transition-colors duration-200`}>
                     <input
                       type="file"
                       id="image"
@@ -313,7 +369,7 @@ const SellerCategory: React.FC = () => {
                       onChange={handleImageChange}
                       className="hidden"
                     />
-                    <label htmlFor="image" className="cursor-pointer">
+                    <label htmlFor="image" className="cursor-pointer block">
                       <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
@@ -340,9 +396,20 @@ const SellerCategory: React.FC = () => {
               </button>
               <button
                 onClick={handleSubmit}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-md transition-colors duration-200 cursor-pointer"
+                disabled={isCreating || isUpdating}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-md transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                {editingCategory ? 'Update' : 'Create'}
+                {isCreating || isUpdating ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    {editingCategory ? 'Updating...' : 'Creating...'}
+                  </>
+                ) : (
+                  editingCategory ? 'Update' : 'Create'
+                )}
               </button>
             </div>
           </div>
