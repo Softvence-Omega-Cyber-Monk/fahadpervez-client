@@ -45,8 +45,8 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit }, 
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  const fields = [
+  
+ const fields = [
     { name: "productName", label: "Product Name*", type: "text", placeholder: "Your product name" },
     {
       name: "productCategory",
