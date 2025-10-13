@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { Product as ProductType } from "@/types/Product";
+import { useNavigate } from "react-router-dom";
 
 
 // --- Helper Functions (moved outside component) ---
@@ -35,6 +36,10 @@ interface ProductTableRowProps {
 }
 
 const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTableRowProps) => {
+  const nvaigate = useNavigate();
+  const handleProductUpdate = () => {
+    nvaigate(`/seller-dashboard/products/add-single-product/${product._id}`);
+  };
   return (
     <tr className="hover:bg-gray-50 transition-colors">
       <td className="px-4 py-4">
@@ -88,7 +93,7 @@ const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTa
         </span> */}
       </td>
       <td className="px-4 py-4">
-        <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 transition-colors">
+        <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 transition-colors" onClick={handleProductUpdate}>
           <Eye className="w-4 h-4" />
           View
         </button>
