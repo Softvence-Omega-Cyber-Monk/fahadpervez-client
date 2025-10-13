@@ -13,13 +13,17 @@ export interface UploadedVideo {
 
 export interface MediaData {
   images: {
-    mainImage?: File;
+    mainImage?: File ;
     sideImage?: File;
     sideImage2?: File;
     lastImage?: File;
+    mainImageUrl?: string;
+    sideImageUrl?: string;
+    sideImage2Url?: string;
+    lastImageUrl?: string;
   };
   video?: File;
-  removedDefaultImageIds?: string[];
+  videoUrl?: string;
 }
 
 export interface DefaultImages {
@@ -31,6 +35,5 @@ export interface DefaultImages {
 
 export interface MediaUploadProps {
   onMediaChange: (mediaData: MediaData) => void;
-  defaultImages?: DefaultImages;
-  defaultVideo?: string;
+  defaultMedia?: MediaData;
 }
