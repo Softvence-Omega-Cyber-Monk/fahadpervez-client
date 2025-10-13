@@ -1,8 +1,10 @@
+import { MediaData } from "@/types/SellerDashboardTypes/MediaUpload";
 import { useEffect, useState } from "react";
 
-export default function ProductPreview({ file }: { file?: File }) {
+export default function ProductPreview({ file, defaultMedia }: { file?: File, defaultMedia?: MediaData }) {
   const [selectedSize, setSelectedSize] = useState("20 mg");
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>();
+  console.log(defaultMedia?.images.mainImageUrl, preview)
   const sizes = ["5mg", "10 mg", "20 mg", "50 mg"];
   useEffect(() => {
     if (file) {
@@ -15,7 +17,7 @@ export default function ProductPreview({ file }: { file?: File }) {
       {/* Product Image */}
       <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4">
         <img
-          src={preview || "/medicine.png"}
+          src={defaultMedia?.images.mainImageUrl || preview || "/medicine.png"}
           alt="Oxecone-8 medication"
           width={300}
           height={200}

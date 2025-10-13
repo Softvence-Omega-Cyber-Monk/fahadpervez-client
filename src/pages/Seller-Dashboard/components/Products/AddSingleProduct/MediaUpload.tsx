@@ -1,43 +1,21 @@
+import { MediaData, MediaUploadProps, UploadedImage, UploadedVideo } from "@/types/SellerDashboardTypes/MediaUpload";
 import { Upload, X } from "lucide-react";
 import { useState, useRef, ChangeEvent, useEffect } from "react";
 
-interface UploadedImage {
-  id: string;
-  file: File;
-  preview: string;
-}
 
-interface UploadedVideo {
-  file: File;
-  preview: string;
-}
-
-export interface MediaData {
-  images: {
-    mainImage?: File;
-    sideImage?: File;
-    sideImage2?: File;
-    lastImage?: File;
-  };
-  video?: File;
-}
-
-interface MediaUploadProps {
-  onMediaChange: (mediaData: MediaData) => void;
-}
-
-
-export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
+export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploadProps) {
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [uploadedVideo, setUploadedVideo] = useState<UploadedVideo | null>(null);
   const imageInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const videoInputRef = useRef<HTMLInputElement | null>(null);
-
+  console.log(defaultMedia)
   useEffect(() => {
     const images: MediaData["images"] = {};
-    uploadedImages.forEach((img) => {
+      uploadedImages.forEach((img) => {
+    if (img.file) {
       images[img.id as keyof MediaData["images"]] = img.file;
-    });
+    }
+  });
 
     onMediaChange({
       images,
@@ -157,7 +135,7 @@ export default function MediaUpload({ onMediaChange }: MediaUploadProps) {
                     // Show uploaded image preview
                     <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden relative group">
                       <img
-                        src={uploadedImage.preview}
+                        src={defaultMedia?.images || uploadedImage.preview}
                         alt={slot.label}
                         className="w-full h-full object-cover"
                       />
