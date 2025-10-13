@@ -28,7 +28,6 @@ const formatCurrency = (amount: number, currency: string) => {
 };
 
 // --- Memoized Table Row Component ---
-
 interface ProductTableRowProps {
   product: ProductType;
   isSelected: boolean;
@@ -36,9 +35,9 @@ interface ProductTableRowProps {
 }
 
 const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTableRowProps) => {
-  const nvaigate = useNavigate();
+  const navigate = useNavigate();
   const handleProductUpdate = () => {
-    nvaigate(`/seller-dashboard/products/add-single-product/${product._id}`);
+    navigate(`/seller-dashboard/products/add-single-product/${product._id}`);
   };
   return (
     <tr className="hover:bg-gray-50 transition-colors">

@@ -1,16 +1,25 @@
 import ProductForm, { ProductFormValues, ProductFormRef } from "./ProductForm";
 import PrimaryButton from "@/common/PrimaryButton";
 import { FaPlus } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductPreview from "./ProductPreview";
 import MediaUpload, { MediaData } from "./MediaUpload";
-import { useAddProductMutation } from "@/Redux/Features/products/products.api";
-import { useState, useRef } from "react";
+import { useAddProductMutation, useGetProductByIdQuery } from "@/Redux/Features/products/products.api";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 
 const AddProduct = () => {
+  const {id} = useParams()
   const { data: categories } = useGetAllCategoriesQuery({});
+  useEffect(()=>{
+    if(id){
+      console.log(product,id)
+      
+    }
+  },)
+  const {data : product } = useGetProductByIdQuery({id:id as string})
+
   const [addProduct] = useAddProductMutation();
   const [mediaData, setMediaData] = useState<MediaData | null>(null);
   const productFormRef = useRef<ProductFormRef>(null);
@@ -36,11 +45,11 @@ const AddProduct = () => {
 
     formData.append("productName", data.productName);
     formData.append("productCategory", category?._id);
-    formData.append("productSKU", data.sku);
-    formData.append("companyName", data?.brandName as string);
+    formData.append("productSKU", data.productSKU);
+    formData.append("companyName", data?.companyName as string);
     formData.append("gender", data.gender as string);
     formData.append("availableSize", data.availableSize as string);
-    formData.append("productDescription", data.description as string);
+    formData.append("productDescription", data. productDescription as string);
 
     if (mediaData.images.mainImage)
       formData.append("mainImage", mediaData.images.mainImage);
@@ -52,8 +61,8 @@ const AddProduct = () => {
       formData.append("lastImage", mediaData.images.lastImage);
     if (mediaData.video) formData.append("video", mediaData.video);
 
-    if (data?.quantity !== undefined && data?.quantity !== null) {
-      formData.append("stock", String(Number(data.quantity)));
+    if (data?.stock !== undefined && data?.stock !== null) {
+      formData.append("stock", String(Number(data.stock)));
     }
 
     if (data?.currency) {
@@ -68,12 +77,12 @@ const AddProduct = () => {
       formData.append("specialPrice", String(Number(data.specialPrice)));
     }
 
-    if (data?.specialPriceFrom) {
-      formData.append("specialPriceStartingDate", data.specialPriceFrom);
+    if (data?.specialPriceStartingDate) {
+      formData.append("specialPriceStartingDate", data.specialPriceStartingDate);
     }
 
-    if (data?.specialPriceTo) {
-      formData.append("specialPriceEndingDate", data.specialPriceTo);
+    if (data?.specialPriceEndingDate) {
+      formData.append("specialPriceEndingDate", data.specialPriceEndingDate);
     }
 
     if (data?.weight !== undefined && data?.weight !== null) {

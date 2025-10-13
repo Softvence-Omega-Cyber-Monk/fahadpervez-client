@@ -9,7 +9,7 @@ const productsApi = baseApi.injectEndpoints({
             providesTags:["PRODUCTS"]
         }),
         getProductById:builder.query({
-            query:(id)=>({
+            query:({id})=>({
                 url:`/products/${id}`
             })
         }),
@@ -34,8 +34,8 @@ const productsApi = baseApi.injectEndpoints({
             })
         }),
         getProductByIdAdmin:builder.query({
-            query:(id)=>({
-                url:`/products/admin/${id}`
+            query:()=>({
+                url:`/products/admin/{id}`
             })
         }),
         getMyProducts:builder.query({
