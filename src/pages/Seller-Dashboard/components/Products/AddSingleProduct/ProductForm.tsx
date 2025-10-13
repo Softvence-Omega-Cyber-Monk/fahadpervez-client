@@ -1,196 +1,81 @@
+
 import CommonForm, { CommonFormRef } from "@/common/CommonForm";
 import { z } from "zod";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
-import { Product } from "@/types/Product";
 
 const productSchema = z.object({
   productName: z.string().min(1, "Product name is required"),
   productCategory: z.string().min(1, "Category is required"),
-  productSKU: z.string().min(1, "SKU is required"),
-  companyName: z.string().optional(),
+  sku: z.string().min(1, "SKU is required"),
+  brandName: z.string().optional(),
   gender: z.string().optional(),
   availableSize: z.string().optional(),
-  productDescription: z.string().min(1, "Description is required"),
-  stock: z.coerce.number().min(1, "Quantity is required"),
+  description: z.string().min(1, "Description is required"),
+  quantity: z.coerce.number().min(1, "Quantity is required"),
   weight: z.coerce.number().min(1, "Weight is required"),
   currency: z.string().min(1, "Currency is required"),
   pricePerUnit: z.coerce.number().min(1, "Price per unit is required"),
   specialPrice: z.coerce.number().optional(),
-  specialPriceStartingDate: z.string().optional(),
-  specialPriceEndingDate: z.string().optional(),
-  length: z.coerce.number().optional(),
-  width: z.coerce.number().optional(),
-  height: z.coerce.number().optional(),
+  specialPriceFrom: z.string().optional(),
+  specialPriceTo: z.string().optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productSchema>;
 
 interface ProductFormProps {
   onSubmit: (data: ProductFormValues) => void;
-  defaultProduct?: Product;
 }
 
 export interface ProductFormRef {
   submit: () => Promise<void>;
 }
 
-const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(
-  ({ onSubmit, defaultProduct }, ref) => {
-    const { data: categories, isLoading } = useGetAllCategoriesQuery({});
-    const formRef = useRef<CommonFormRef>(null);
-    useImperativeHandle(ref, () => ({
-      submit: async () => {
-        if (formRef.current) {
-          await formRef.current.submit();
-        }
-      },
-    }));
+const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit }, ref) => {
+  const { data: categories, isLoading } = useGetAllCategoriesQuery({});
+  const formRef = useRef<CommonFormRef>(null);
 
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-    const fields = [
-      {
-        name: "productName",
-        label: "Product Name*",
-        type: "text",
-        placeholder: "Your product name",
-        defaultValue: defaultProduct?.productName,
-      },
-      {
-        name: "productCategory",
-        label: "Product Category*",
-        type: "select",
-        placeholder: "Select a category",
-        options: categories?.data?.map(
-          (c: { categoryName: string }) => c.categoryName
-        ),
-        defaultValue: categories.data.find(
-          (item: { _id: string; categoryName: string; image: string }) =>
-            defaultProduct?.productCategory === item._id
-        )?.categoryName,
-      },
-      {
-        name: "productSKU",
-        label: "SKU*",
-        type: "text",
-        placeholder: "Enter SKU no",
-        defaultValue: defaultProduct?.productSKU,
-      },
-      {
-        name: "companyName",
-        label: "Brand/Company Name",
-        type: "text",
-        placeholder: "Brand name",
-        defaultValue: defaultProduct?.companyName,
-      },
-      {
-        name: "gender",
-        label: "Gender",
-        type: "select",
-        placeholder: "Select gender",
-        options: ["Male", "Female", "Unisex"],
-        defaultValue: defaultProduct?.gender,
-      },
-      {
-        name: "availableSize",
-        label: "Select Available Size",
-        type: "badge",
-        placeholder: "Choose size",
-        options: ["5mg", "10mg", "20mg", "50mg"],
-        defaultValue: defaultProduct?.availableSize,
-      },
-      {
-        name: "productDescription",
-        label: "Product Description*",
-        type: "description",
-        placeholder: "About product",
-        defaultValue: defaultProduct?.productDescription,
-      },
-      {
-        name: "stock",
-        label: "Total Product Quantity*",
-        type: "number",
-        placeholder: "00",
-        defaultValue: defaultProduct?.stock,
-      },
-      {
-        name: "weight",
-        label: "Weight*",
-        type: "number",
-        placeholder: "00",
-        defaultValue: defaultProduct?.weight,
-      },
-      {
-        name: "currency",
-        label: "Select Currency*",
-        type: "select",
-        placeholder: "Select currency",
-        options: ["USD", "EUR", "BDT"],
-        defaultValue: defaultProduct?.currency,
-      },
-      {
-        name: "pricePerUnit",
-        label: "Price Per Unit*",
-        type: "number",
-        placeholder: "$0.00",
-        defaultValue: defaultProduct?.pricePerUnit,
-      },
-      {
-        name: "specialPrice",
-        label: "Special Price",
-        type: "number",
-        placeholder: "$0.00",
-        defaultValue: defaultProduct?.specialPrice,
-      },
-      {
-        name: "specialPriceStartingDate",
-        label: "Special Price From",
-        type: "date",
-        defaultValue: defaultProduct?.specialPriceStartingDate,
-      },
-      {
-        name: "specialPriceEndingDate",
-        label: "Special Price To",
-        type: "date",
-        defaultValue: defaultProduct?.specialPriceEndingDate,
-      },
-      {
-        name: "length",
-        label: "Length",
-        type: "number",
-        placeholder: "00",
-        defaultValue: defaultProduct?.length,
-      },
-      {
-        name: "width",
-        label: "Width",
-        type: "number",
-        placeholder: "00",
-        defaultValue: defaultProduct?.width,
-      },
-      {
-        name: "height",
-        label: "Height",
-        type: "number",
-        placeholder: "00",
-        defaultValue: defaultProduct?.height,
-      },
-    ];
+  useImperativeHandle(ref, () => ({
+    submit: async () => {
+      if (formRef.current) {
+        await formRef.current.submit();
+      }
+    },
+  }));
 
-    return (
-      <div className="bg-white shadow rounded-lg p-6 space-y-6">
-        <h3 className="border-b-2 border-b-border pb-2">Product Information</h3>
-        <CommonForm
-          ref={formRef}
-          fields={fields}
-          schema={productSchema}
-          onSubmit={onSubmit}
-        />
-      </div>
-    );
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
-);
+  
+ const fields = [
+    { name: "productName", label: "Product Name*", type: "text", placeholder: "Your product name" },
+    {
+      name: "productCategory",
+      label: "Product Category*",
+      type: "select",
+      placeholder: "Select a category",
+      options: categories?.data?.map((category: { categoryName: string }) => category?.categoryName),
+    },
+    { name: "sku", label: "SKU*", type: "text", placeholder: "Enter SKU no" },
+    { name: "brandName", label: "Brand/Company Name*", type: "text", placeholder: "Brand name" },
+    { name: "gender", label: "Gender", type: "select", placeholder: "Select gender", options: ["Male", "Female", "Unisex"] },
+    { name: "availableSize", label: "Select Available Size (If available)", type: "badge", placeholder: "Choose size", options: ["5mg", "10mg", "20mg", "50mg"] },
+    { name: "description", label: "Product Description*", type: "description", placeholder: "About product" },
+    { name: "quantity", label: "Total Product Quantity*", type: "number", placeholder: "00" },
+    { name: "weight", label: "Weight*", type: "number", placeholder: "00" },
+    { name: "currency", label: "Select Currency*", type: "select", placeholder: "Select currency", options: ["USD", "EUR", "BDT"] },
+    { name: "pricePerUnit", label: "Price Per Unit*", type: "number", placeholder: "$0.00" },
+    { name: "specialPrice", label: "Special Price", type: "number", placeholder: "$0.00" },
+    { name: "specialPriceFrom", label: "Special Price From", type: "date" },
+    { name: "specialPriceTo", label: "Special Price To", type: "date" },
+  ];
+
+  return (
+    <div className="bg-white shadow rounded-lg p-6 space-y-6">
+      <h3 className="border-b-2 border-b-border pb-2">Product Information</h3>
+      <CommonForm ref={formRef} fields={fields} schema={productSchema} onSubmit={onSubmit} />
+    </div>
+  );
+});
 
 export default ProductForm;
