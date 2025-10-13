@@ -104,16 +104,16 @@ if (mediaData.video) formData.append("video", mediaData.video);
           title="Bulk Upload"
           rightIcon={<FaPlus />}
           className="px-12"
-          onClick={() =>
-            navigate("/seller-dashboard/products/add-bulk-product")
-          }
+          onClick={() => navigate("/Products/post_products")}
         />
       </div>
+
       <div className="flex gap-10">
         <div className="flex-1">
           <ProductCard />
         </div>
-        <div className=" space-y-10 flex-2">
+
+        <div className="space-y-10 flex-2">
           <MediaUpload onMediaChange={setMediaData} />
           <ProductForm ref={productFormRef} onSubmit={handleFormSubmit} />
           <div className="flex gap-6 justify-end">

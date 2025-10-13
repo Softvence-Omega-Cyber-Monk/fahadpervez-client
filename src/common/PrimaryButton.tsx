@@ -8,6 +8,7 @@ export interface ButtonProps {
   onClick?: () => void;
   type:string,
   className?: string;
+  disabled?: boolean;
 }
 
 
@@ -18,6 +19,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({
   onClick,
   type,
   className = "",
+  disabled,
 }) => {
   return (
     <Button
@@ -33,6 +35,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({
           ? " text-light-Gray size-12 rounded-full border border-light-Gray p-3"  
           : ""
       }  ${className}`}
+      disabled={disabled}
     >
       {leftIcon && <span className="flex items-center">{leftIcon}</span>}
       {title && <span>{title}</span>}

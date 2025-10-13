@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ProgressBar from '../Progressbar/ProgressBar';
 
 interface FormData {
   paymentMethod: 'bank' | 'paypal' | 'stripe';
@@ -95,23 +96,25 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-sm w-full max-w-3xl p-8">
-        {/* Logo */}
-        <div className="flex items-center mb-8">
-          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z" />
-            </svg>
-          </div>
-          <span className="ml-3 text-xl font-semibold text-blue-600">Logoipsum</span>
-        </div>
+    <div className="min-h-screen flex items-center justify-center pt-30">
+      <div className="bg-white border border-gray-100 rounded-lg shadow-sm w-full max-w-6xl p-8">
 
         {/* Header */}
         <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">LET'S SETUP YOUR PROFILE</h1>
         <p className="text-gray-500 text-sm mb-8 text-center">
           Lorem ipsum dolor sit amet consectetur. Diam fermentum fusce in magna est fusce tellus vitae malesuada. A enim convallis eros gravida at id arcu venenatis.
         </p>
+
+        <ProgressBar
+          steps={[
+            { number: 1, label: "Basic Info" },
+            { number: 2, label: "Business Info" },
+            { number: 3, label: "Shipping Info" },
+            { number: 4, label: "Payment Info" },
+            { number: 5, label: "Contract Info" },
+          ]}
+          currentStep={4} // dynamically pass step from parent
+        />
 
         {/* Section Title */}
         <h2 className="text-lg font-bold text-gray-900 mb-6">PAYMENT SETUP</h2>
@@ -130,7 +133,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
                 name="paymentMethod"
                 checked={formData.paymentMethod === 'bank'}
                 onChange={() => handlePaymentMethodChange('bank')}
-                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 "
               />
               <span className="ml-3 text-sm text-gray-900">Bank account</span>
             </div>
@@ -151,7 +154,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
                 name="paymentMethod"
                 checked={formData.paymentMethod === 'paypal'}
                 onChange={() => handlePaymentMethodChange('paypal')}
-                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 "
               />
               <span className="ml-3 text-sm text-gray-900">Paypal</span>
             </div>
@@ -169,7 +172,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
                 name="paymentMethod"
                 checked={formData.paymentMethod === 'stripe'}
                 onChange={() => handlePaymentMethodChange('stripe')}
-                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 "
               />
               <span className="ml-3 text-sm text-gray-900">Stripe</span>
             </div>
@@ -198,7 +201,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
                 placeholder="Enter your name"
                 className={`w-full px-4 py-2.5 border ${
                   errors.accountHolderName ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                } rounded-md focus:outline-none focus:ring-2  focus:border-transparent`}
               />
               {errors.accountHolderName && (
                 <p className="text-red-500 text-xs mt-1">{errors.accountHolderName}</p>
@@ -219,7 +222,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
                 placeholder="Enter your number"
                 className={`w-full px-4 py-2.5 border ${
                   errors.accountNumber ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                } rounded-md focus:outline-none focus:ring-2  focus:border-transparent`}
               />
               {errors.accountNumber && (
                 <p className="text-red-500 text-xs mt-1">{errors.accountNumber}</p>
@@ -240,7 +243,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
                 placeholder="Enter your number"
                 className={`w-full px-4 py-2.5 border ${
                   errors.roughingNumber ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                } rounded-md focus:outline-none focus:ring-2  focus:border-transparent`}
               />
               {errors.roughingNumber && (
                 <p className="text-red-500 text-xs mt-1">{errors.roughingNumber}</p>
@@ -261,7 +264,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
             value={formData.taxId}
             onChange={handleInputChange}
             placeholder="TAX ID or business registration number"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2  focus:border-transparent"
           />
         </div>
 
@@ -272,7 +275,7 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({onPrevious, onNext}) => {
               type="checkbox"
               checked={formData.acceptPrivacy}
               onChange={handleCheckboxChange}
-              className={`w-4 h-4 mt-0.5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 ${
+              className={`w-4 h-4 mt-0.5 text-blue-600 border-gray-300 rounded  ${
                 errors.acceptPrivacy ? 'border-red-500' : ''
               }`}
             />

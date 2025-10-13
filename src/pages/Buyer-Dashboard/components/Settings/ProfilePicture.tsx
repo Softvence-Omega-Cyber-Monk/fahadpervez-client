@@ -1,4 +1,12 @@
-export default function ProfilePicture() {
+import { IBuyerProfileType } from "../../PersonalInfo/PersonalInfo";
+
+interface IProps {
+  profileData: IBuyerProfileType
+}
+
+export default function ProfilePicture({ profileData } : IProps) {
+
+
   return (
     <div className="w-full bg-white  sm:p-6 lg:p-8 rounded-lg">
       <div>
@@ -20,8 +28,8 @@ export default function ProfilePicture() {
           {/* Profile Image */}
           <div className="flex-shrink-0">
             <img
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces"
-              alt="John Doe"
+              src={profileData?.profileImage || "/user-placeholder-profile.jpg"}
+              alt={profileData?.name}
               className="w-16 h-16 sm:w-28 sm:h-28 rounded-full object-cover bg-gray-100"
             />
           </div>
@@ -29,10 +37,10 @@ export default function ProfilePicture() {
           {/* User Info */}
           <div>
             <h3 className="text-lg sm:text-lg font-sm text-gray-900 mb-1">
-              John Doe
+              {profileData?.name}
             </h3>
             <p className="text-base sm:text-md text-gray-600 font-normal">
-              Buyer
+              {profileData?.role}
             </p>
           </div>
         </div>

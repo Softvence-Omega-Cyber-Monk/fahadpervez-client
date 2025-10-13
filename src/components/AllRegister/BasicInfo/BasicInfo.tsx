@@ -1,5 +1,7 @@
 import Button from '@/components/Button/Button';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Progressbar from '../Progressbar/ProgressBar';
 
 interface BasicInfoProps {
   onNext: () => void;
@@ -73,17 +75,8 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-sm w-full max-w-2xl p-8">
-        {/* Logo */}
-        <div className="flex items-center mb-6">
-          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z" />
-            </svg>
-          </div>
-          <span className="ml-3 text-xl font-semibold text-blue-600">Logoipsum</span>
-        </div>
+    <div className="min-h-screen  flex items-center justify-center pt-30">
+      <div className="bg-white border border-gray-100 rounded-lg shadow-sm w-full max-w-6xl p-8">
 
         {/* Header */}
         <h1 className="text-2xl font-bold text-gray-900 mb-2">REGISTER AS A SELLER</h1>
@@ -91,12 +84,26 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
           Lorem ipsum dolor sit amet consectetur. Diam fermentum fusce in magna est fusce tellus vitae malesuada. A enim convallis eros gravida at id arcu venenatis.
         </p>
 
+        {/* Progress Bar */}
+
+        {/* Progress Bar inside form */}
+        <Progressbar
+          steps={[
+            { number: 1, label: "Basic Info" },
+            { number: 2, label: "Business Info" },
+            { number: 3, label: "Shipping Info" },
+            { number: 4, label: "Payment Info" },
+            { number: 5, label: "Contract Info" },
+          ]}
+          currentStep={1} // dynamically pass step from parent
+        />
+
         {/* Login Link */}
         <p className="text-sm text-gray-600 mb-6">
           Already have an account?{' '}
-          <a href="#" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 hover:underline">
             Log In
-          </a>
+          </Link>
         </p>
 
         {/* Name Field */}
@@ -113,7 +120,7 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
             placeholder="Enter your name"
             className={`w-full px-4 py-2.5 border ${
               errors.name ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
           {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
         </div>
@@ -132,7 +139,7 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
             placeholder="Enter your email"
             className={`w-full px-4 py-2.5 border ${
               errors.email ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
         </div>
@@ -156,7 +163,7 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
               placeholder=""
               className={`w-full px-4 py-2.5 border ${
                 errors.phone ? 'border-red-500' : 'border-gray-300'
-              } rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              } rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
           {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
@@ -176,7 +183,7 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
             placeholder="Type password"
             className={`w-full px-4 py-2.5 border ${
               errors.password ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
           {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
         </div>
@@ -195,7 +202,7 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ onNext }) => {
             placeholder="Retype password"
             className={`w-full px-4 py-2.5 border ${
               errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
           {errors.confirmPassword && (
             <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>

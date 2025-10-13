@@ -1,6 +1,6 @@
 import { useLogInUserMutation } from '@/Redux/Features/auth/auth.api';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Login: React.FC = () => {
@@ -13,35 +13,29 @@ const Login: React.FC = () => {
   const [logInUser] = useLogInUserMutation();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-
-    if (!rememberMe) {
-      toast.error("Please check 'Remember Me' to continue.");
-      return;
-    }
-
+    e.preventDefault();
 
     const toastId = toast.loading("Signing you in.....");
-    e.preventDefault();
-    try {
-      const data = {
-        email,
-        password
-      };
 
+    try {
+      const data = { email, password };
       const res = await logInUser(data).unwrap();
 
+      console.log(res);
+
       if (res.success) {
-        localStorage.setItem("user", res.data)
+        localStorage.setItem("user", res.data);
+        toast.success("Logged In Successfully", { id: toastId });
+        navigate("/");
+      } else {
+        toast.error("Login failed. Please check your credentials", { id: toastId });
       }
 
-      toast.success("Logged In Successfully", { id: toastId });
-      navigate("/");
     } catch (error) {
       console.log(error);
-      toast.error("Login faild. Please check your creadiential", { id: toastId })
+      toast.error("Login failed. Please check your credentials", { id: toastId });
     }
-  }
-
+  };
 
   return (
     <div className="flex min-h-screen bg-[#F1F5F8]">
@@ -52,7 +46,9 @@ const Login: React.FC = () => {
           {/* Register Link */}
           <div className="mb-8">
             <span className="text-gray-600">Don't have an account? </span>
-            <a href="#" className="text-blue-600 hover:underline">Register</a>
+            <NavLink to="/register" className="text-blue-600 hover:underline">
+               Register
+            </NavLink>
           </div>
 
           {/* Form */}
@@ -112,7 +108,7 @@ const Login: React.FC = () => {
               type="submit"
               className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors"
             >
-              Create Account
+              Login
             </button>
           </form>
         </div>
@@ -131,6 +127,6 @@ const Login: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Login;
