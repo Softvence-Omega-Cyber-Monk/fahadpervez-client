@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
-import { useGetAllProductsAdminQuery } from "@/Redux/Features/products/products.api";
+import { Product as ProductType } from "@/types/Product";
+
 
 // --- Helper Functions (moved outside component) ---
 
@@ -10,10 +11,11 @@ const getStockColor = (stock: number) => {
   return "bg-gray-300";
 };
 
-const calculateRevenue = (product: Product) => {
-  const price = product.specialPrice || product.pricePerUnit;
-  return price * product.stock;
-};
+// const calculateRevenue = (product: Product) => {
+//   const price = product.specialPrice || product.pricePerUnit;
+//   return price * product.stock;
+// };
+
 
 const formatCurrency = (amount: number, currency: string) => {
   const symbols: Record<string, string> = {
@@ -24,24 +26,10 @@ const formatCurrency = (amount: number, currency: string) => {
   return `${symbols[currency] || currency} ${amount.toFixed(2)}`;
 };
 
-// --- Type Definitions ---
-
-interface Product {
-  _id: string;
-  productName: string;
-  productSKU: string;
-  companyName: string;
-  pricePerUnit: number;
-  specialPrice: number;
-  stock: number;
-  currency: string;
-  mainImageUrl: string;
-}
-
 // --- Memoized Table Row Component ---
 
 interface ProductTableRowProps {
-  product: Product;
+  product: ProductType;
   isSelected: boolean;
   onToggleSelect: (id: string) => void;
 }
@@ -53,14 +41,14 @@ const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTa
         <input
           type="checkbox"
           checked={isSelected}
-          onChange={() => onToggleSelect(product._id)}
+          onChange={() => onToggleSelect(product._id as string)}
           className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
       </td>
       <td className="px-4 py-4">
         <div className="flex items-center gap-3">
           <img
-            src={product.mainImageUrl}
+            src={product.mainImage}
             alt={product.productName}
             className="w-12 h-12 rounded-lg object-cover border border-gray-200"
           />
@@ -95,9 +83,9 @@ const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTa
         </div>
       </td>
       <td className="px-4 py-4">
-        <span className="text-sm font-medium text-gray-900">
+        {/* <span className="text-sm font-medium text-gray-900">
           {formatCurrency(calculateRevenue(product), product.currency)}
-        </span>
+        </span> */}
       </td>
       <td className="px-4 py-4">
         <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 transition-colors">
@@ -111,11 +99,16 @@ const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTa
 
 // --- Main Product Table Component ---
 
-export default function ProductTable() {
-  const { data, isLoading } = useGetAllProductsAdminQuery({});
-  const products = useMemo(() => data?.data || [], [data?.data]);
+interface ProductTableProps {
+  products: ProductType[];
+  totalProduct: number;
+  setSelectedProduct: React.Dispatch<React.SetStateAction<string[]>>
+  selectedProduct: string[]
+}
+
+
+export default function ProductTable({products,totalProduct,setSelectedProduct,selectedProduct}:ProductTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const itemsPerPage = 10;
 
   const currentProducts = useMemo(() => {
@@ -126,30 +119,37 @@ export default function ProductTable() {
   const totalPages = useMemo(() => Math.ceil(products.length / itemsPerPage), [products.length]);
 
   const toggleSelect = useCallback((id: string) => {
-    setSelectedProducts((prev) =>
+    setSelectedProduct((prev) =>
       prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
     );
-  }, []);
+  
+  }, [setSelectedProduct]);
 
   const toggleSelectAll = useCallback(() => {
-    const currentIds = currentProducts.map((p:{_id:string}) => p._id);
-    const allSelectedOnPage = currentIds.every((id:string) => selectedProducts.includes(id));
-    setSelectedProducts((prev) =>
-      allSelectedOnPage
-        ? prev.filter((id) => !currentIds.includes(id))
-        : [...new Set([...prev, ...currentIds])]
-    );
-  }, [currentProducts, selectedProducts]);
+  // Ensure all IDs are strings
+  const currentIds = currentProducts
+    .map((p) => p._id)
+    .filter((id): id is string => typeof id === "string"); // <-- type guard
 
-  if (isLoading) {
-    return (
-      <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-        <p className="text-gray-500">Loading products...</p>
-      </div>
-    );
-  }
+  const allSelectedOnPage = currentIds.every((id) => selectedProduct.includes(id));
 
-  if (products.length === 0) {
+  setSelectedProduct((prev) =>
+    allSelectedOnPage
+      ? prev.filter((id) => !currentIds.includes(id))
+      : [...new Set([...prev, ...currentIds])]
+  );
+}, [currentProducts, selectedProduct, setSelectedProduct]);
+
+
+  // if (isLoading) {
+  //   return (
+  //     <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+  //       <p className="text-gray-500">Loading products...</p>
+  //     </div>
+  //   );
+  // }
+
+  if (totalProduct === 0) {
     return (
       <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
         <p className="text-gray-500">No products found</p>
@@ -166,7 +166,7 @@ export default function ProductTable() {
               <th className="px-4 py-3 text-left">
                 <input
                   type="checkbox"
-                  checked={currentProducts.length > 0 && currentProducts.every((p :{_id:string}) => selectedProducts.includes(p._id))}
+                  checked={currentProducts.length > 0 && currentProducts.every((p) => selectedProduct.includes(p._id as string))}
                   onChange={toggleSelectAll}
                   className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
@@ -179,11 +179,11 @@ export default function ProductTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {currentProducts.map((product:Product) => (
+            {currentProducts.map((product:ProductType) => (
               <ProductTableRow
                 key={product._id}
                 product={product}
-                isSelected={selectedProducts.includes(product._id)}
+                isSelected={selectedProduct.includes(product._id as string)}
                 onToggleSelect={toggleSelect}
               />
             ))}

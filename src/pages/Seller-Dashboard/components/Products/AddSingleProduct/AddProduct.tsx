@@ -9,10 +9,8 @@ import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 
-
 const AddProduct = () => {
-    const {data:categories} = useGetAllCategoriesQuery({})
-
+  const { data: categories } = useGetAllCategoriesQuery({});
   const [addProduct] = useAddProductMutation();
   const [mediaData, setMediaData] = useState<MediaData | null>(null);
   const productFormRef = useRef<ProductFormRef>(null);
@@ -26,38 +24,59 @@ const AddProduct = () => {
   };
 
   const handleFormSubmit = async (data: ProductFormValues) => {
-
     if (!mediaData || !mediaData.images.mainImage) {
       toast.error("Please select at least a main image.");
       return;
     }
+    const category = categories?.data?.find(
+      (item: { _id: string; categoryName: string }) =>
+        item.categoryName === data.productCategory
+    );
 
-    console.log(mediaData)
+    const formData = new FormData();
+    
+    formData.append("productName", data.productName);
+    formData.append("productCategory", category?._id);
+    formData.append("productSKU", data.sku);
+    formData.append("companyName", data?.brandName as string);
+    formData.append("gender", data.gender as string);
+    formData.append("availableSize", data.availableSize as string);
+    formData.append("productDescription", data.description as string);
 
-    const category= categories?.data?.find((item : {_id:string,categoryName:string})=>item.categoryName === data.productCategory)
-    const formData ={
-    productName: data.productName,
-    productCategory: category?._id,
-    productSKU: data.sku,
-    companyName: data.brandName,
-    gender: data.gender,
-    availableSize: data.availableSize,
-    productDescription: data.description,
-    stock: Number(data.quantity),
-    currency: data.currency,
-    pricePerUnit: Number(data.pricePerUnit),
-    specialPrice: data.specialPrice ? Number(data.specialPrice) : undefined,
-    specialPriceStartingDate: data.specialPriceFrom,
-    specialPriceEndingDate: data.specialPriceTo,
-    mainImageUrl: mediaData.images.mainImage.name || mediaData.images.mainImage,
-    sideImageUrl: mediaData.images.sideImage,
-    sideImage2Url: mediaData.images.sideImage2,
-    lastImageUrl: mediaData.images.lastImage,
-    videoUrl: mediaData.video,
-    weight: data.weight ? Number(data.weight) : undefined,
+   if (mediaData.images.mainImage) formData.append("mainImage", mediaData.images.mainImage);
+if (mediaData.images.sideImage) formData.append("sideImage", mediaData.images.sideImage);
+if (mediaData.images.sideImage2) formData.append("sideImage2", mediaData.images.sideImage2);
+if (mediaData.images.lastImage) formData.append("lastImage", mediaData.images.lastImage);
+if (mediaData.video) formData.append("video", mediaData.video);
+
+
+    if (data?.quantity !== undefined && data?.quantity !== null) {
+      formData.append("stock", String(Number(data.quantity)));
     }
 
-console.log(formData)
+    if (data?.currency) {
+      formData.append("currency", data.currency);
+    }
+
+    if (data?.pricePerUnit !== undefined && data?.pricePerUnit !== null) {
+      formData.append("pricePerUnit", String(Number(data.pricePerUnit)));
+    }
+
+    if (data?.specialPrice !== undefined && data?.specialPrice !== null) {
+      formData.append("specialPrice", String(Number(data.specialPrice)));
+    }
+
+    if (data?.specialPriceFrom) {
+      formData.append("specialPriceStartingDate", data.specialPriceFrom);
+    }
+
+    if (data?.specialPriceTo) {
+      formData.append("specialPriceEndingDate", data.specialPriceTo);
+    }
+
+    if (data?.weight !== undefined && data?.weight !== null) {
+      formData.append("weight", String(Number(data.weight)));
+    }
 
     try {
       toast.loading("Adding product...", { id: "addProduct" });
@@ -66,7 +85,9 @@ console.log(formData)
         toast.success("Product added successfully!", { id: "addProduct" });
         navigate("/seller-dashboard/products");
       } else {
-        toast.error(res.message || "Failed to add product.", { id: "addProduct" });
+        toast.error(res.message || "Failed to add product.", {
+          id: "addProduct",
+        });
       }
     } catch (error) {
       console.error("Failed to add product:", error);
@@ -83,21 +104,18 @@ console.log(formData)
           title="Bulk Upload"
           rightIcon={<FaPlus />}
           className="px-12"
-          onClick={() =>
-            navigate("/seller-dashboard/products/add-bulk-product")
-          }
+          onClick={() => navigate("/Products/post_products")}
         />
       </div>
+
       <div className="flex gap-10">
         <div className="flex-1">
           <ProductCard />
         </div>
-        <div className=" space-y-10 flex-2">
+
+        <div className="space-y-10 flex-2">
           <MediaUpload onMediaChange={setMediaData} />
-          <ProductForm
-            ref={productFormRef}
-            onSubmit={handleFormSubmit}
-          />
+          <ProductForm ref={productFormRef} onSubmit={handleFormSubmit} />
           <div className="flex gap-6 justify-end">
             <PrimaryButton type="Outline" title="Cancel" className="" />
             <PrimaryButton
