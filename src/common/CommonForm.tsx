@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodSchema } from "zod";
-import { forwardRef, useImperativeHandle, useCallback } from "react";
+import { forwardRef, useImperativeHandle, useCallback, useEffect } from "react";
 
-interface FieldConfig {
-  name: string;
+interface FieldConfig<T extends Record<string, string>> {
+  name: keyof T;
   label: string;
   type: string;
   placeholder?: string;
   options?: string[];
-  defaultValue?: string;
+  defaultValue?: T[keyof T];
 }
 
 interface Props<T extends Record<string, unknown>> {
@@ -29,19 +29,30 @@ function CommonFormComponent<T extends Record<string, unknown>>(
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<T>({
     resolver: zodResolver(schema),
   });
 
-  const handleFormSubmit = useCallback((data: T) => {
-    onSubmit(data);
-  }, [onSubmit]);
+   useEffect(() => {
+  fields.forEach((field) => {
+    if (field.defaultValue !== undefined) {
+      setValue(field.name as import("react-hook-form").Path<T>, field.defaultValue);
+    }
+  });
+}, [fields, setValue]);
+
+  const handleFormSubmit = useCallback(
+    (data: T) => {
+      onSubmit(data);
+    },
+    [onSubmit]
+  );
 
   useImperativeHandle(ref, () => ({
     submit: handleSubmit(handleFormSubmit),
   }));
-
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {fields.map((field) => (
@@ -52,13 +63,10 @@ function CommonFormComponent<T extends Record<string, unknown>>(
           {field.type === "select" ? (
             <select
               {...register(field.name as import("react-hook-form").Path<T>)}
-              defaultValue={field.defaultValue}
               className="border border-border px-3 py-2 rounded w-full "
             >
-              <option value="">
-                {field.placeholder}
-              </option>
-              {field.options?.map((opt) => (
+              <option value="">{field.placeholder}</option>
+              {field.options?.map((opt:string) => (
                 <option key={opt} value={opt}>
                   {opt}
                 </option>
@@ -66,7 +74,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
             </select>
           ) : field.type === "badge" ? (
             <div className="flex flex-wrap items-center gap-4 h-14">
-              {field.options?.map((opt) => (
+              {field.options?.map((opt:string) => (
                 <label key={opt} className="cursor-pointer">
                   <input
                     type="radio"
@@ -115,6 +123,10 @@ function CommonFormComponent<T extends Record<string, unknown>>(
   );
 }
 
-const CommonForm = forwardRef(CommonFormComponent) as <T extends Record<string, unknown>>(props: Props<T> & { ref?: React.Ref<CommonFormRef> }) => React.ReactElement;
+const CommonForm = forwardRef(CommonFormComponent) as <
+  T extends Record<string, unknown>
+>(
+  props: Props<T> & { ref?: React.Ref<CommonFormRef> }
+) => React.ReactElement;
 
 export default CommonForm;
