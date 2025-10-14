@@ -2,25 +2,63 @@ import { MediaData, MediaUploadProps, UploadedImage, UploadedVideo } from "@/typ
 import { Upload, X } from "lucide-react";
 import { useState, useRef, ChangeEvent, useEffect } from "react";
 
-
-export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploadProps) {
+export default function MediaUpload({ onMediaChange, defaultMedia }: MediaUploadProps) {
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [uploadedVideo, setUploadedVideo] = useState<UploadedVideo | null>(null);
   const imageInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const videoInputRef = useRef<HTMLInputElement | null>(null);
-  console.log(defaultMedia)
+
+  // Load default media when component mounts
+  useEffect(() => {
+    if (defaultMedia?.images) {
+      const defaultImages: UploadedImage[] = [];
+      
+      // Convert defaultMedia URLs to UploadedImage format
+      const imageSlots = [
+        { id: "mainImage", urlKey: "mainImageUrl" },
+        { id: "sideImage", urlKey: "sideImageUrl" },
+        { id: "sideImage2", urlKey: "sideImage2Url" },
+        { id: "lastImage", urlKey: "lastImageUrl" },
+      ];
+
+      imageSlots.forEach(slot => {
+        const imageUrl = defaultMedia.images[slot.urlKey as keyof MediaData["images"]];
+        if (imageUrl) {
+          defaultImages.push({
+            id: slot.id,
+            file: undefined, // Use undefined instead of null
+            preview: imageUrl as string,
+            isDefault: true
+          });
+        }
+      });
+      
+      setUploadedImages(defaultImages);
+    }
+
+    if (defaultMedia?.videoUrl) {
+      setUploadedVideo({
+        file: undefined, // Use undefined instead of null
+        preview: defaultMedia.videoUrl,
+        isDefault: true
+      });
+    }
+  }, [defaultMedia]);
+
+  // Notify parent of media changes
   useEffect(() => {
     const images: MediaData["images"] = {};
-      uploadedImages.forEach((img) => {
-    if (img.file) {
-      console.log("Img File",img.file)
-      images[img.id as keyof MediaData["images"]]  = img.file as File & string;
-    }
-  });
+    
+    uploadedImages.forEach((img) => {
+      if (img.file) {
+        // Only send new files, not default URLs
+        images[img.id as "mainImage" | "sideImage" | "sideImage2" | "lastImage"] = img.file ;
+      }
+    });
 
     onMediaChange({
       images,
-      video: uploadedVideo?.file,
+      video: uploadedVideo?.file as File,
     });
   }, [uploadedImages, uploadedVideo, onMediaChange]);
 
@@ -53,10 +91,19 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
 
     // Update uploaded images
     setUploadedImages((prev) => {
-      // Remove existing image for this slot if any
+      // Clean up old blob URL if it exists and is not a default URL
+      const existing = prev.find((img) => img.id === slotId);
+      if (existing && existing.preview.startsWith('blob:')) {
+        URL.revokeObjectURL(existing.preview);
+      }
+
+      // Remove existing image for this slot
       const filtered = prev.filter((img) => img.id !== slotId);
-      return [...filtered, { id: slotId, file, preview }];
+      return [...filtered, { id: slotId, file, preview, isDefault: false }];
     });
+
+    // Reset input to allow uploading the same file again
+    event.target.value = "";
   };
 
   // Handle video upload
@@ -76,16 +123,25 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
       return;
     }
 
+    // Clean up old blob URL if exists
+    if (uploadedVideo && uploadedVideo.preview.startsWith('blob:')) {
+      URL.revokeObjectURL(uploadedVideo.preview);
+    }
+
     // Create preview URL
     const preview = URL.createObjectURL(file);
-    setUploadedVideo({ file, preview });
+    setUploadedVideo({ file, preview, isDefault: false });
+
+    // Reset input
+    event.target.value = "";
   };
 
   // Remove image
   const removeImage = (slotId: string) => {
     setUploadedImages((prev) => {
       const image = prev.find((img) => img.id === slotId);
-      if (image) {
+      // Only revoke blob URLs, not server URLs
+      if (image && image.preview.startsWith('blob:')) {
         URL.revokeObjectURL(image.preview);
       }
       return prev.filter((img) => img.id !== slotId);
@@ -95,7 +151,10 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
   // Remove video
   const removeVideo = () => {
     if (uploadedVideo) {
-      URL.revokeObjectURL(uploadedVideo.preview);
+      // Only revoke blob URLs, not server URLs
+      if (uploadedVideo.preview.startsWith('blob:')) {
+        URL.revokeObjectURL(uploadedVideo.preview);
+      }
       setUploadedVideo(null);
     }
   };
@@ -104,6 +163,20 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
   const getImageForSlot = (slotId: string) => {
     return uploadedImages.find((img) => img.id === slotId);
   };
+
+  // Cleanup blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      uploadedImages.forEach((img) => {
+        if (img.preview.startsWith('blob:')) {
+          URL.revokeObjectURL(img.preview);
+        }
+      });
+      if (uploadedVideo && uploadedVideo.preview.startsWith('blob:')) {
+        URL.revokeObjectURL(uploadedVideo.preview);
+      }
+    };
+  }, [uploadedImages, uploadedVideo]);
 
   return (
     <div className="space-y-10">
@@ -133,12 +206,15 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
                   />
 
                   {uploadedImage ? (
-                    // Show uploaded image preview
+                    // Show uploaded image preview or default image
                     <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden relative group">
                       <img
-                        src={defaultMedia?.images.mainImageUrl || uploadedImage.preview}
+                        src={uploadedImage.preview}
                         alt={slot.label}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "https://via.placeholder.com/200?text=Image+Error";
+                        }}
                       />
                       <button
                         onClick={() => removeImage(slot.id)}
@@ -146,6 +222,14 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
                       >
                         <X className="w-4 h-4 text-white" />
                       </button>
+                      
+                      {/* Show "Current" badge for default images */}
+                      {uploadedImage.isDefault && (
+                        <div className="absolute top-2 left-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-md">
+                          Current
+                        </div>
+                      )}
+                      
                       <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs py-1 px-2 text-center">
                         {slot.label}
                       </div>
@@ -187,7 +271,7 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
         />
 
         {uploadedVideo ? (
-          // Show uploaded video preview
+          // Show uploaded video preview or default video
           <div className="relative border-2 border-gray-300 rounded-2xl overflow-hidden w-fit max-w-full">
             <video
               src={uploadedVideo.preview}
@@ -200,6 +284,13 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
             >
               <X className="w-5 h-5 text-white" />
             </button>
+            
+            {/* Show "Current" badge for default video */}
+            {uploadedVideo.isDefault && (
+              <div className="absolute top-4 left-4 px-3 py-1.5 bg-blue-500 text-white text-sm rounded-md">
+                Current Video
+              </div>
+            )}
           </div>
         ) : (
           // Show upload placeholder

@@ -31,18 +31,14 @@ function CommonFormComponent<T extends Record<string, unknown>>(
     return acc;
   }, {} as Record<string, string | number | undefined>) as DefaultValues<T>; // <-- cast here
 
-  const { register, handleSubmit, formState: { errors }, getValues } = useForm<T>({
+  const { register, handleSubmit, formState: { errors } } = useForm<T>({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
-
-
   const handleFormSubmit = useCallback((data: T) => {
     onSubmit(data);
-    const values =  getValues()
-    console.log(values, "valuesssssss")
-  }, [onSubmit, getValues]);
+  }, [onSubmit]);
 
   useImperativeHandle(ref, () => ({
     submit: handleSubmit(handleFormSubmit),
