@@ -1,6 +1,6 @@
-import { useForm } from "react-hook-form";
+import { DefaultValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodSchema } from "zod";
+import { ZodSchema, ZodTypeAny } from "zod";
 import { forwardRef, useImperativeHandle, useCallback } from "react";
 
 interface FieldConfig {
@@ -9,12 +9,12 @@ interface FieldConfig {
   type: string;
   placeholder?: string;
   options?: string[];
-  defaultValue?: string;
+  defaultValue?: string | number | undefined;
 }
 
 interface Props<T extends Record<string, unknown>> {
   fields: FieldConfig[];
-  schema: ZodSchema<T>;
+  schema: ZodSchema<T> | ZodTypeAny;
   onSubmit: (data: T) => void;
 }
 
@@ -26,17 +26,23 @@ function CommonFormComponent<T extends Record<string, unknown>>(
   { fields, schema, onSubmit }: Props<T>,
   ref: React.Ref<CommonFormRef>
 ) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<T>({
+  const defaultValues = fields.reduce((acc, field) => {
+    acc[field.name] = field.defaultValue ?? undefined;
+    return acc;
+  }, {} as Record<string, string | number | undefined>) as DefaultValues<T>; // <-- cast here
+
+  const { register, handleSubmit, formState: { errors }, getValues } = useForm<T>({
     resolver: zodResolver(schema),
+    defaultValues,
   });
+
+
 
   const handleFormSubmit = useCallback((data: T) => {
     onSubmit(data);
-  }, [onSubmit]);
+    const values =  getValues()
+    console.log(values, "valuesssssss")
+  }, [onSubmit, getValues]);
 
   useImperativeHandle(ref, () => ({
     submit: handleSubmit(handleFormSubmit),
@@ -70,7 +76,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
                 <label key={opt} className="cursor-pointer">
                   <input
                     type="radio"
-                    value={opt}
+                    value={field.defaultValue || opt}
                     {...register(
                       field.name as import("react-hook-form").Path<T>
                     )}

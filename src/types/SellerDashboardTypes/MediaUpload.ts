@@ -13,17 +13,18 @@ export interface UploadedVideo {
 
 export interface MediaData {
   images: {
-    mainImage?: File ;
+    mainImage?: File;
     sideImage?: File;
     sideImage2?: File;
     lastImage?: File;
     mainImageUrl?: string;
     sideImageUrl?: string;
     sideImage2Url?: string;
-    lastImageUrl?: string;
+    lastImageUrl  ?: string;
   };
   video?: File;
   videoUrl?: string;
+  removedDefaultImageIds?: string[];
 }
 
 export interface DefaultImages {
