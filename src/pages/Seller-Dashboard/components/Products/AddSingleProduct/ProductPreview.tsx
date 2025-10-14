@@ -1,44 +1,120 @@
 import { MediaData } from "@/types/SellerDashboardTypes/MediaUpload";
+import { Product } from "@/types/Product";
 import { useEffect, useState } from "react";
 
-export default function ProductPreview({ file, defaultMedia }: { file?: File, defaultMedia?: MediaData }) {
+interface ProductPreviewProps {
+  file?: File;
+  defaultMedia?: MediaData;
+  mediaData?: MediaData | null;
+  previewDetails?: Partial<Product> | null;
+}
+
+export default function ProductPreview({
+  file,
+  defaultMedia,
+  mediaData,
+  previewDetails,
+}: ProductPreviewProps) {
   const [selectedSize, setSelectedSize] = useState("20 mg");
-  const [preview, setPreview] = useState<string | null>();
-  console.log(defaultMedia?.images.mainImageUrl, preview)
+  const [preview, setPreview] = useState<string | null>(null);
+
   const sizes = ["5mg", "10 mg", "20 mg", "50 mg"];
+
+  // Use previewDetails if available, otherwise fallback to defaults
+  const productName = previewDetails?.productName || "Gastroesophageal Reflux Disease (GERD): Acid from the stomach flows back into the esophagus.";
+  const productSKU = previewDetails?.productSKU || "GRD-00253A";
+  const pricePerUnit = previewDetails?.pricePerUnit || 100;
+  const availableSize = previewDetails?.availableSize || "20 mg";
+
+  // Determine which image to show with priority: new upload > mediaData > defaultMedia
   useEffect(() => {
-    if (file) {
-      setPreview(URL.createObjectURL(file));
+    // Clean up previous blob URL if it exists
+    if (preview && preview.startsWith("blob:")) {
+      URL.revokeObjectURL(preview);
     }
-  }, [file]);
+
+    // Priority 1: New file upload
+    if (file) {
+      const blobUrl = URL.createObjectURL(file);
+      setPreview(blobUrl);
+      return;
+    }
+
+    // Priority 2: Media data from parent (new uploads that are already processed)
+    if (mediaData?.images?.mainImage) {
+      if (mediaData.images.mainImage instanceof File) {
+        // If it's a File object, create blob URL
+        const blobUrl = URL.createObjectURL(mediaData.images.mainImage);
+        setPreview(blobUrl);
+      } else {
+        // If it's already a URL string, use it directly
+        setPreview(mediaData.images.mainImage as string);
+      }
+      return;
+    }
+
+    // Priority 3: Default media from backend
+    if (defaultMedia?.images?.mainImageUrl) {
+      setPreview(defaultMedia.images.mainImageUrl);
+      return;
+    }
+    if(availableSize){
+      setSelectedSize(availableSize);
+    }
+    // Fallback: No image available
+    setPreview(null);
+  }, [file, mediaData, defaultMedia,availableSize]);
+
+  // Clean up blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (preview && preview.startsWith("blob:")) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
+  const imageSrc = preview || "/medicine.png";
+
+  console.log(availableSize)
 
   return (
     <div className="bg-light-background rounded-lg p-6">
       {/* Product Image */}
       <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4">
         <img
-          src={defaultMedia?.images.mainImageUrl || preview || "/medicine.png"}
-          alt="Oxecone-8 medication"
+          src={imageSrc}
+          alt="Product preview"
           width={300}
           height={200}
           className="w-full h-auto object-cover"
+          onError={(e) => {
+            // Fallback if image fails to load
+            e.currentTarget.src = "/medicine.png";
+          }}
         />
+
+        {/* Image source indicator */}
+        <div className="absolute top-2 left-2 px-2 py-1 bg-black/70 text-white text-xs rounded-md">
+          {file || mediaData?.images?.mainImage instanceof File
+            ? "New Upload"
+            : "Current Image"}
+        </div>
       </div>
 
       {/* Product Info */}
       <div className="space-y-4">
-        <h3 className="text-dark-blue font-semibold text-base leading-tight">
-          Gastroesophageal Reflux Disease (GERD): Acid from the stomach flows
-          back into the esophagus.
-        </h3>
+        <h2 className="">
+          {productName}
+        </h2>
 
-        <p className="text-light-gray text-xs font-normal">SKU: GRD-00253A</p>
+        <p className="text-sm">SKU: {productSKU}</p>
 
         <div>
           <p className="text-light-gray text-xs font-normal mb-1">
             Price per unit
           </p>
-          <p className="text-dark-blue text-2xl font-bold">$100</p>
+          <p className="text-dark-blue text-2xl font-bold">${pricePerUnit}</p>
         </div>
 
         {/* Size Selection */}

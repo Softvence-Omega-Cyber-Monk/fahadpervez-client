@@ -1,182 +1,98 @@
 import ProductForm, { ProductFormValues, ProductFormRef } from "./ProductForm";
 import PrimaryButton from "@/common/PrimaryButton";
 import { FaPlus } from "react-icons/fa6";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // useParams is no longer needed
 import ProductPreview from "./ProductPreview";
 import MediaUpload from "./MediaUpload";
-import {
-  useAddProductMutation,
-  useGetProductByIdQuery,
-  useUpdateProductMutation,
-} from "@/Redux/Features/products/products.api";
-import { useState, useRef, useEffect } from "react";
+import { useAddProductMutation } from "@/Redux/Features/products/products.api"; // Removed update and fetch
+import { useState, useRef } from "react"; // Removed useEffect
 import { toast } from "sonner";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 import { buildFormData } from "./buildFormData";
 import { MediaData } from "@/types/SellerDashboardTypes/MediaUpload";
-import { Product } from "@/types/Product";
+ // Assuming Category is a global type now
 
-interface Category {
-  _id: string;
-  categoryName: string;
-}
+// NOTE: All 'defaultProduct' and 'defaultMedia' state/logic have been removed.
 
-// Define shared keys between ProductFormValues and Product
-type SharedKeys = keyof ProductFormValues & keyof Product;
-
-const AddProduct = () => {
-  const { id } = useParams();
+const AddProductPage = () => { // Renamed from AddProduct to AddProductPage for clarity
   const navigate = useNavigate();
 
+  // Fetch categories (still needed for the form)
   const { data: categories } = useGetAllCategoriesQuery({});
-  const { data: product, refetch } = useGetProductByIdQuery(
-    { id: id as string },
-    { skip: !id }
-  );
 
+  // Mutations (Only Add needed)
   const [addProduct] = useAddProductMutation();
-  const [updateProduct] = useUpdateProductMutation();
 
-  const [defaultProduct, setDefaultProduct] = useState<Product | null>(null);
-  const [defaultMedia, setDefaultMedia] = useState<MediaData | null>(null);
-  const [mediaData, setMediaData] = useState<MediaData | null>();
+  // State
+  // mediaData is now optional since it might not be set initially
+  const [mediaData, setMediaData] = useState<MediaData | null>(null);
   const productFormRef = useRef<ProductFormRef>(null);
 
-  // Set default product data when product is fetched
-  useEffect(() => {
-    if (product) {
-      setDefaultProduct(product.data);
-      setDefaultMedia({
-        images: {
-          mainImageUrl: product.data.mainImageUrl,
-          sideImageUrl: product.data.sideImageUrl,
-          sideImage2Url: product.data.sideImage2Url,
-          lastImageUrl: product.data.lastImageUrl,
-        },
-        videoUrl: product.data.videoUrl,
-      });
-    }
-  }, [product]);
-
+  // Trigger form submission
   const handleSaveChanges = async () => {
     if (productFormRef.current) {
       await productFormRef.current.submit();
     }
   };
 
+  // Handle actual form submit (Simplified for creation)
   const handleFormSubmit = async (data: Partial<ProductFormValues>) => {
-    // Ensure at least a main image is uploaded for NEW products
-    if (!id && (!mediaData || !mediaData.images.mainImage)) {
+    // 1. Ensure main image is uploaded for the new product
+    if (!mediaData || !mediaData.images.mainImage) {
       toast.error("Please select at least a main image.");
       return;
     }
 
-    // For updates, only include changed fields
-    let changedData: Partial<ProductFormValues> = {};
+    // 2. Handle category lookup
+    const categoryNameOrId = data.productCategory;
 
-    if (id && defaultProduct) {
-      // Define only the fields that exist in both types
-      const sharedFields: SharedKeys[] = [
-        "productName",
-        "productCategory",
-        "productSKU",
-        "companyName",
-        "gender",
-        "availableSize",
-        "productDescription",
-        "stock",
-        "weight",
-        "currency",
-        "pricePerUnit",
-        "specialPrice",
-        "specialPriceStartingDate",
-        "specialPriceEndingDate",
-      ];
-
-      changedData = sharedFields?.reduce((acc, field) => {
-  const currentValue = data[field];
-  const originalValue = defaultProduct[field];
-
-  if (currentValue !== originalValue) {
-    if (field?.includes("Date") && currentValue && originalValue) {
-      const currentDate = new Date(currentValue as string)
-        ?.toISOString()
-        .split("T")[0];
-      const originalDate = new Date(originalValue as string)
-        ?.toISOString()
-        .split("T")[0];
-      if (currentDate !== originalDate) {
-        // Create a new object with the updated field
-        return { ...acc, [field]: currentValue };
-      }
-    } else {
-      // Create a new object with the updated field
-      return { ...acc, [field]: currentValue };
+    if (!categoryNameOrId) {
+      toast.error("Please select a product category.");
+      return;
     }
-  }
-  return acc;
-}, {} as Partial<ProductFormValues>);
 
-      if (Object.keys(changedData).length === 0 && !mediaData) {
-        toast.info("No changes detected.");
+    const category = categories?.data?.find(
+      (item: { _id: string; categoryName: string }) =>
+        item._id === categoryNameOrId ||
+        item.categoryName === categoryNameOrId
+    );
+    
+    if (!category || !category._id) {
+        toast.error("Invalid category selected.");
         return;
-      }
-    } else {
-      // For new products, use all data
-      changedData = data;
     }
+    const categoryId = category._id;
 
-    // Handle category lookup
-    let categoryId = defaultProduct?.productCategory;
-    if (changedData.productCategory) {
-      const category = categories?.data?.find(
-        (item: Category) =>
-          item._id === changedData.productCategory ||
-          item.categoryName === changedData.productCategory
-      );
-      categoryId = category?._id;
-    }
-
+    // 3. Convert to FormData and call mutation
     const formData = buildFormData(
-      changedData,
+      data, // Use all form data for creation
       mediaData,
-      categoryId as string,
-      !!id
+      categoryId,
+      false // isEditMode is always false
     );
 
     try {
-      toast.loading(id ? "Updating product..." : "Adding product...", {
-        id: "addProduct",
-      });
+      toast.loading("Adding product...", { id: "productAction" });
 
-      const res = id
-        ? await updateProduct({ id, data: formData }).unwrap()
-        : await addProduct(formData).unwrap();
+      const res = await addProduct(formData).unwrap();
 
       if (res.success) {
-        toast.success(`Product ${id ? "updated" : "added"} successfully!`, {
-          id: "addProduct",
-        });
-        if (id) {
-          await refetch();
-        }
+        toast.success("Product added successfully!", { id: "productAction" });
         navigate("/seller-dashboard/products");
       } else {
-        toast.error(
-          res.message || `Failed to ${id ? "update" : "add"} product.`,
-          {
-            id: "addProduct",
-          }
-        );
+        toast.error(res.message || "Failed to add product.", {
+          id: "productAction",
+        });
       }
     } catch (error) {
       console.error("Failed to add product:", error);
-      toast.error("An unexpected error occurred.", { id: "addProduct" });
+      toast.error("An unexpected error occurred.", { id: "productAction" });
     }
   };
 
   return (
     <div className="space-y-10">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div></div>
         <PrimaryButton
@@ -191,21 +107,25 @@ const AddProduct = () => {
       </div>
 
       <div className="flex gap-10">
+        {/* Left: Preview */}
         <div className="flex-1">
-          <ProductPreview file={mediaData?.images.mainImage as File} />
+          {/* Note: Removed 'as File' cast for cleaner typing, assuming MediaUpload ensures the correct type */}
+          <ProductPreview file={mediaData?.images.mainImage} /> 
         </div>
 
+        {/* Right: Form + Media */}
         <div className="space-y-10 flex-2">
+          {/* Default media is no longer passed as we are creating a new product */}
           <MediaUpload
             onMediaChange={setMediaData}
-            defaultMedia={defaultMedia!}
+            // defaultMedia is not passed as we are creating
           />
 
           <ProductForm
             ref={productFormRef}
             onSubmit={handleFormSubmit}
-            defaultValue={defaultProduct || undefined}
-            isEditMode={!!id}
+            // defaultValue is not passed
+            isEditMode={false} // Always false
           />
 
           <div className="flex gap-6 justify-end">
@@ -216,7 +136,7 @@ const AddProduct = () => {
             />
             <PrimaryButton
               type="Primary"
-              title={id ? "Update Product" : "Create Product"}
+              title="Create Product" // Title is fixed
               onClick={handleSaveChanges}
               className="w-full sm:w-auto min-w-[120px]"
             />
@@ -227,4 +147,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddProductPage;
