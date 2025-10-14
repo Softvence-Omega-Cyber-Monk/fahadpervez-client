@@ -15,6 +15,7 @@ import CompleteUpload from "@/pages/Seller-Dashboard/components/Products/AddBulk
 import OrderLandingPage from "@/pages/Seller-Dashboard/components/Order/OrderLandingPage";
 import OrderTracking from "@/pages/Seller-Dashboard/components/Order/OrderTracking";
 import SellerCategory from "@/pages/Seller-Dashboard/components/SellerCategory/SellerCategory";
+import UpdateProduct from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/UpdateProduct";
 
 export const sellerRoutes = [
   {
@@ -40,7 +41,7 @@ export const sellerRoutes = [
       },
       {
         path:"add-single-product/:id",
-        element:<AddProduct/>
+        element:<UpdateProduct/>
       },
       {
         path:"add-bulk-product",

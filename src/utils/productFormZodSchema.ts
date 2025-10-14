@@ -14,7 +14,7 @@ export const productSchema = z.object({
   // Optional Fields
   companyName: z.string().optional(),
   gender: z.string().optional(),
-  availableSize: z.string().optional(),
+  availableSize: z.string().nullable().optional(),
   specialPrice: z.coerce.number().optional(),
   specialPriceStartingDate: z.string().optional(),
   specialPriceEndingDate: z.string().optional(),
@@ -38,3 +38,6 @@ export const productSchema = z.object({
   width: z.coerce.number().optional(),
   height: z.coerce.number().optional(),
 });
+
+
+export const productUpdateSchema = productSchema.partial();

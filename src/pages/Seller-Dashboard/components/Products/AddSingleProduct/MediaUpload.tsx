@@ -13,7 +13,8 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
     const images: MediaData["images"] = {};
       uploadedImages.forEach((img) => {
     if (img.file) {
-      images[img.id as keyof MediaData["images"]] = img.file;
+      console.log("Img File",img.file)
+      images[img.id as keyof MediaData["images"]]  = img.file as File & string;
     }
   });
 
@@ -135,7 +136,7 @@ export default function MediaUpload({ onMediaChange , defaultMedia }: MediaUploa
                     // Show uploaded image preview
                     <div className="aspect-square border-2 border-gray-300 rounded-lg overflow-hidden relative group">
                       <img
-                        src={defaultMedia?.images || uploadedImage.preview}
+                        src={defaultMedia?.images.mainImageUrl || uploadedImage.preview}
                         alt={slot.label}
                         className="w-full h-full object-cover"
                       />

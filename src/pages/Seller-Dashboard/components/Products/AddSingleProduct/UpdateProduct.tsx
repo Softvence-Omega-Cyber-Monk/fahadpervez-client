@@ -16,33 +16,32 @@ import { buildFormData } from "./buildFormData";
 import { MediaData } from "@/types/SellerDashboardTypes/MediaUpload";
 import { Product } from "@/types/Product";
 
-interface Category {
-  _id: string;
-  categoryName: string;
-}
-
-// Define shared keys between ProductFormValues and Product
-type SharedKeys = keyof ProductFormValues & keyof Product;
-
-const AddProduct = () => {
+const UpdateProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data: categories } = useGetAllCategoriesQuery({});
-  const { data: product, refetch } = useGetProductByIdQuery(
-    { id: id as string },
-    { skip: !id }
-  );
-
-  const [addProduct] = useAddProductMutation();
-  const [updateProduct] = useUpdateProductMutation();
-
+  const [productId, setProductId] = useState<string | null>(null);
   const [defaultProduct, setDefaultProduct] = useState<Product | null>(null);
   const [defaultMedia, setDefaultMedia] = useState<MediaData | null>(null);
-  const [mediaData, setMediaData] = useState<MediaData | null>();
+  const [mediaData, setMediaData] = useState<MediaData | null>(null);
+
   const productFormRef = useRef<ProductFormRef>(null);
 
-  // Set default product data when product is fetched
+  // Sync route ID
+  useEffect(() => {
+    if (id) setProductId(id);
+  }, [id]);
+
+  // Fetch product
+  const { data: product, refetch } = useGetProductByIdQuery(
+    { id: productId as string },
+    { skip: !productId, refetchOnMountOrArgChange: true }
+  );
+
+  // Fetch categories
+  const { data: categories } = useGetAllCategoriesQuery({});
+
+  // Populate default product and media
   useEffect(() => {
     if (product) {
       setDefaultProduct(product.data);
@@ -58,125 +57,121 @@ const AddProduct = () => {
     }
   }, [product]);
 
+  const [updateProduct] = useUpdateProductMutation();
+  const [addProduct] = useAddProductMutation();
+
+  // Form submission trigger
   const handleSaveChanges = async () => {
     if (productFormRef.current) {
       await productFormRef.current.submit();
     }
   };
 
+  // Handle actual form submit
   const handleFormSubmit = async (data: Partial<ProductFormValues>) => {
-    // Ensure at least a main image is uploaded for NEW products
-    if (!id && (!mediaData || !mediaData.images.mainImage)) {
+    console.log("Form Submit Data:", data);
+
+    // Ensure main image for new products
+    if (!productId && (!mediaData || !mediaData.images.mainImage)) {
       toast.error("Please select at least a main image.");
       return;
     }
 
-    // For updates, only include changed fields
+    // Only include changed fields
     let changedData: Partial<ProductFormValues> = {};
+    if (productId && defaultProduct) {
+   changedData = Object.entries(data).reduce((acc, [key, value]) => {
+  const formKey = key as keyof ProductFormValues;
 
-    if (id && defaultProduct) {
-      // Define only the fields that exist in both types
-      const sharedFields: SharedKeys[] = [
-        "productName",
-        "productCategory",
-        "productSKU",
-        "companyName",
-        "gender",
-        "availableSize",
-        "productDescription",
-        "stock",
-        "weight",
-        "currency",
-        "pricePerUnit",
-        "specialPrice",
-        "specialPriceStartingDate",
-        "specialPriceEndingDate",
-      ];
+  const currentValue = value;
+  const originalValue = defaultProduct[formKey];
 
-      changedData = sharedFields?.reduce((acc, field) => {
-  const currentValue = data[field];
-  const originalValue = defaultProduct[field];
-
-  if (currentValue !== originalValue) {
-    if (field?.includes("Date") && currentValue && originalValue) {
-      const currentDate = new Date(currentValue as string)
-        ?.toISOString()
-        .split("T")[0];
-      const originalDate = new Date(originalValue as string)
-        ?.toISOString()
-        .split("T")[0];
-      if (currentDate !== originalDate) {
-        // Create a new object with the updated field
-        return { ...acc, [field]: currentValue };
-      }
-    } else {
-      // Create a new object with the updated field
-      return { ...acc, [field]: currentValue };
-    }
+  // Skip if values are the same or currentValue is undefined
+  if (currentValue === originalValue || currentValue === undefined) {
+    return acc;
   }
-  return acc;
+
+  // Handle date comparison
+  if (formKey.toString().includes("Date") && originalValue) {
+    try {
+      const currentDate = new Date(currentValue as string).toISOString().split("T")[0];
+      const originalDate = new Date(originalValue as string).toISOString().split("T")[0];
+      
+      if (currentDate !== originalDate) {
+        return { ...acc, [formKey]: currentValue };
+      }
+    } catch{
+      // If date parsing fails, treat as regular field
+      return { ...acc, [formKey]: currentValue };
+    }
+    return acc;
+  }
+
+  // For all other fields
+  return { ...acc, [formKey]: currentValue };
 }, {} as Partial<ProductFormValues>);
 
       if (Object.keys(changedData).length === 0 && !mediaData) {
         toast.info("No changes detected.");
         return;
       }
-    } else {
-      // For new products, use all data
-      changedData = data;
     }
 
-    // Handle category lookup
+    // Determine category ID
     let categoryId = defaultProduct?.productCategory;
-    if (changedData.productCategory) {
-      const category = categories?.data?.find(
-        (item: Category) =>
+    if (changedData.productCategory && categories?.data) {
+      const category = categories.data.find(
+        (item: { _id: string; categoryName: string }) =>
           item._id === changedData.productCategory ||
           item.categoryName === changedData.productCategory
       );
       categoryId = category?._id;
     }
 
+    if (!categoryId) {
+      toast.error("Invalid category selected.");
+      return;
+    }
+
+    // Convert to FormData
     const formData = buildFormData(
       changedData,
       mediaData,
-      categoryId as string,
-      !!id
+      categoryId,
+      !!productId
     );
 
     try {
-      toast.loading(id ? "Updating product..." : "Adding product...", {
-        id: "addProduct",
+      toast.loading(productId ? "Updating product..." : "Adding product...", {
+        id: "productAction",
       });
 
-      const res = id
-        ? await updateProduct({ id, data: formData }).unwrap()
+      const res = productId
+        ? await updateProduct({ id: productId, data: formData }).unwrap()
         : await addProduct(formData).unwrap();
 
       if (res.success) {
-        toast.success(`Product ${id ? "updated" : "added"} successfully!`, {
-          id: "addProduct",
-        });
-        if (id) {
-          await refetch();
-        }
+        toast.success(
+          `Product ${productId ? "updated" : "added"} successfully!`,
+          { id: "productAction" }
+        );
+        if (productId) await refetch();
         navigate("/seller-dashboard/products");
       } else {
         toast.error(
-          res.message || `Failed to ${id ? "update" : "add"} product.`,
-          {
-            id: "addProduct",
-          }
+          res.message || `Failed to ${productId ? "update" : "add"} product.`,
+          { id: "productAction" }
         );
       }
-    } catch (error) {
-      console.error("Failed to add product:", error);
-      toast.error("An unexpected error occurred.", { id: "addProduct" });
+    } catch (err) {
+      console.error("Product mutation error:", err);
+      toast.error("An unexpected error occurred.", { id: "productAction" });
     }
   };
 
   return (
     <div className="space-y-10">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div></div>
         <PrimaryButton
@@ -191,10 +186,12 @@ const AddProduct = () => {
       </div>
 
       <div className="flex gap-10">
+        {/* Left: Preview */}
         <div className="flex-1">
           <ProductPreview file={mediaData?.images.mainImage as File} />
         </div>
 
+        {/* Right: Form + Media */}
         <div className="space-y-10 flex-2">
           <MediaUpload
             onMediaChange={setMediaData}
@@ -205,18 +202,14 @@ const AddProduct = () => {
             ref={productFormRef}
             onSubmit={handleFormSubmit}
             defaultValue={defaultProduct || undefined}
-            isEditMode={!!id}
+            isEditMode={!!productId}
           />
 
           <div className="flex gap-6 justify-end">
-            <PrimaryButton
-              type="Outline"
-              title="Cancel"
-              onClick={() => navigate("/seller-dashboard/products")}
-            />
+            <PrimaryButton type="Outline" title="Cancel" />
             <PrimaryButton
               type="Primary"
-              title={id ? "Update Product" : "Create Product"}
+              title={productId ? "Update Product" : "Create Product"}
               onClick={handleSaveChanges}
               className="w-full sm:w-auto min-w-[120px]"
             />
@@ -227,4 +220,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;
