@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { FileText } from 'lucide-react';
 
 interface ContractInstractionProps {
   onNext: () => void;
@@ -13,15 +13,8 @@ const ContractInstraction: React.FC<ContractInstractionProps> = ({onNext}) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Logo */}
-        <div className="flex items-center mb-12">
-          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-3">
-            <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full"></div>
-          </div>
-          <span className="text-2xl font-bold text-blue-600">Logoipsum</span>
-        </div>
+    <div className="min-h-screen py-8">
+      <div className="max-w-6xl mx-auto pt-30">
 
         {/* Header */}
         <div className="text-center mb-12">
@@ -33,11 +26,11 @@ const ContractInstraction: React.FC<ContractInstractionProps> = ({onNext}) => {
         </div>
 
         {/* Content Container */}
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="p-8">
+          <div className="flex items-start justify-between">
             {/* Left Side - Instructions */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <h2 className="text-4xl font-semibold text-gray-900 mb-6">
                 SELLER AGREEMENT/<br />CONTRACT INSTRUCTION
               </h2>
 
@@ -86,26 +79,18 @@ const ContractInstraction: React.FC<ContractInstractionProps> = ({onNext}) => {
             </div>
 
             {/* Right Side - PDF Viewer */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className='rounded-lg shadow-sm p-4 w-90'>
+              <div className='bg-white'>
+                <h3 className="text-lg font-semibold text-gray-900 pb-4 border-b border-gray-200">
                 View and sign with you seal
               </h3>
 
               <button
                 onClick={handleOpenPDF}
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
-              >
-                <span>📄</span>
-                <span>Open the PDF</span>
+                className="w-full mt-4 bg-blue-600 text-white py-6 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 cursor-pointer">
+                <span><FileText className='w-4 h-4' /></span>
+                <span className='text-sm'>Open the PDF</span>
               </button>
-
-              {/* PDF Preview Area */}
-              <div className="mt-6 border-2 border-dashed border-gray-300 rounded-lg h-96 flex items-center justify-center bg-gray-50">
-                <div className="text-center text-gray-400">
-                  <div className="text-6xl mb-4">📄</div>
-                  <p className="text-sm">PDF Preview Area</p>
-                  <p className="text-xs mt-2">Click "Open the PDF" to view the contract</p>
-                </div>
               </div>
             </div>
           </div>

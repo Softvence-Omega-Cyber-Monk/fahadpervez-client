@@ -1,20 +1,28 @@
 import ProductForm, { ProductFormValues, ProductFormRef } from "./ProductForm";
 import PrimaryButton from "@/common/PrimaryButton";
 import { FaPlus } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
-import ProductCard from "./ProductPreview";
+import { useNavigate, useParams } from "react-router-dom";
+import ProductPreview from "./ProductPreview";
 import MediaUpload, { MediaData } from "./MediaUpload";
-import { useAddProductMutation } from "@/Redux/Features/products/products.api";
-import { useState, useRef } from "react";
+import { useAddProductMutation, useGetProductByIdQuery } from "@/Redux/Features/products/products.api";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 
 const AddProduct = () => {
+  const {id} = useParams()
   const { data: categories } = useGetAllCategoriesQuery({});
+  useEffect(()=>{
+    if(id){
+      console.log(product,id)
+      
+    }
+  },)
+  const {data : product } = useGetProductByIdQuery({id:id as string})
+
   const [addProduct] = useAddProductMutation();
   const [mediaData, setMediaData] = useState<MediaData | null>(null);
   const productFormRef = useRef<ProductFormRef>(null);
-
   const navigate = useNavigate();
 
   const handleSaveChanges = async () => {
@@ -34,7 +42,7 @@ const AddProduct = () => {
     );
 
     const formData = new FormData();
-    
+
     formData.append("productName", data.productName);
     formData.append("productCategory", category?._id);
     formData.append("productSKU", data.sku);
@@ -43,12 +51,15 @@ const AddProduct = () => {
     formData.append("availableSize", data.availableSize as string);
     formData.append("productDescription", data.description as string);
 
-   if (mediaData.images.mainImage) formData.append("mainImage", mediaData.images.mainImage);
-if (mediaData.images.sideImage) formData.append("sideImage", mediaData.images.sideImage);
-if (mediaData.images.sideImage2) formData.append("sideImage2", mediaData.images.sideImage2);
-if (mediaData.images.lastImage) formData.append("lastImage", mediaData.images.lastImage);
-if (mediaData.video) formData.append("video", mediaData.video);
-
+    if (mediaData.images.mainImage)
+      formData.append("mainImage", mediaData.images.mainImage);
+    if (mediaData.images.sideImage)
+      formData.append("sideImage", mediaData.images.sideImage);
+    if (mediaData.images.sideImage2)
+      formData.append("sideImage2", mediaData.images.sideImage2);
+    if (mediaData.images.lastImage)
+      formData.append("lastImage", mediaData.images.lastImage);
+    if (mediaData.video) formData.append("video", mediaData.video);
 
     if (data?.quantity !== undefined && data?.quantity !== null) {
       formData.append("stock", String(Number(data.quantity)));
@@ -104,18 +115,23 @@ if (mediaData.video) formData.append("video", mediaData.video);
           title="Bulk Upload"
           rightIcon={<FaPlus />}
           className="px-12"
-          onClick={() => navigate("/Products/post_products")}
+          onClick={() => navigate("/seller-dashboard/products/add-bulk-product")}
         />
       </div>
 
       <div className="flex gap-10">
         <div className="flex-1">
-          <ProductCard />
+          <ProductPreview
+            file={mediaData?.images.mainImage as File}
+          />
         </div>
 
         <div className="space-y-10 flex-2">
           <MediaUpload onMediaChange={setMediaData} />
-          <ProductForm ref={productFormRef} onSubmit={handleFormSubmit} />
+          <ProductForm
+            ref={productFormRef}
+            onSubmit={handleFormSubmit}
+          />
           <div className="flex gap-6 justify-end">
             <PrimaryButton type="Outline" title="Cancel" className="" />
             <PrimaryButton
