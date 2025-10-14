@@ -24,7 +24,12 @@ export default function ProductPreview({
   const productName = previewDetails?.productName || "Gastroesophageal Reflux Disease (GERD): Acid from the stomach flows back into the esophagus.";
   const productSKU = previewDetails?.productSKU || "GRD-00253A";
   const pricePerUnit = previewDetails?.pricePerUnit || 100;
-  const availableSize = previewDetails?.availableSize || "20 mg";
+  useEffect(() => {
+     if(previewDetails?.availableSize){
+      console.log(selectedSize)
+      setSelectedSize(previewDetails.availableSize);
+    }
+  },[previewDetails?.availableSize,selectedSize])
 
   // Determine which image to show with priority: new upload > mediaData > defaultMedia
   useEffect(() => {
@@ -58,13 +63,11 @@ export default function ProductPreview({
       setPreview(defaultMedia.images.mainImageUrl);
       return;
     }
-    if(availableSize){
-      setSelectedSize(availableSize);
-    }
+   
     // Fallback: No image available
     setPreview(null);
-  }, [file, mediaData, defaultMedia,availableSize]);
-
+  }, [file, mediaData, defaultMedia,preview]);
+  console.log(selectedSize)
   // Clean up blob URLs on unmount
   useEffect(() => {
     return () => {
@@ -76,7 +79,7 @@ export default function ProductPreview({
 
   const imageSrc = preview || "/medicine.png";
 
-  console.log(availableSize)
+
 
   return (
     <div className="bg-light-background rounded-lg p-6">
@@ -123,19 +126,22 @@ export default function ProductPreview({
             Select Available Size
           </p>
           <div className="flex items-center gap-2">
-            {sizes.map((size) => (
+            {sizes.map((size) => {
+              console.log({size,selectedSize})
+             return (
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedSize === size
+                   size === selectedSize
                     ? "bg-dark-blue text-white"
                     : "bg-gray-100 text-dark-blue hover:bg-gray-200"
                 }`}
               >
                 {size}
               </button>
-            ))}
+            )
+            })}
           </div>
         </div>
       </div>

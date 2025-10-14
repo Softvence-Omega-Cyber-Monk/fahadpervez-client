@@ -72,7 +72,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
                 <label key={opt} className="cursor-pointer">
                   <input
                     type="radio"
-                    value={field.defaultValue || opt}
+                    value={opt}
                     {...register(
                       field.name as import("react-hook-form").Path<T>
                     )}

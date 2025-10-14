@@ -147,7 +147,7 @@ const UpdateProduct = () => {
 
       // Call ONLY updateProduct mutation
       const res = await updateProduct({ id: productId, data: formData }).unwrap();
-
+        
       if (res.success) {
         toast.success("Product updated successfully!", { id: "productAction" });
         await refetch();
