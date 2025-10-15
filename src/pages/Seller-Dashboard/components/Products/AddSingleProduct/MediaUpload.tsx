@@ -211,9 +211,7 @@ export default function MediaUpload({ onMediaChange, defaultMedia }: MediaUpload
                         src={uploadedImage.preview}
                         alt={slot.label}
                         className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = "https://via.placeholder.com/200?text=Image+Error";
-                        }}
+                        
                       />
                       <button
                         onClick={() => removeImage(slot.id)}
