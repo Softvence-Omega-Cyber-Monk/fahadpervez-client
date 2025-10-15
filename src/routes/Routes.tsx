@@ -38,12 +38,10 @@ import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 import CMSDashboard from "@/components/Admin/CMS/CMSDashboard";
 import AdminMessage from "@/pages/Admin-Dashboard/Message/AdminMessage";
 import { CMSEditPage } from "@/components/Admin/CMS/CMSEditPage";
-
 import SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard"
 import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
-import WithAuth from "@/Config/withAuth";
-
 import Register from "@/pages/Login/Register";
+import WithAuth from "@/Config/WithAuth";
 
 
 const routes = createBrowserRouter([
@@ -146,7 +144,7 @@ const routes = createBrowserRouter([
 
   {
     path: "admin-dashboard",
-    element: <AdminDashboardLayout />,
+    element: <WithAuth><AdminDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,
