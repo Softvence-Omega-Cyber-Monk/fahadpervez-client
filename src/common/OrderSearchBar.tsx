@@ -18,7 +18,6 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
   const [orderStatus] = useState("Order Status");
 
   const handleDelete =()=>{
-    console.log(props.selectedProduct)
     deleteProductById(props.selectedProduct).unwrap()
     .then((res)=>{
       if(res.success){

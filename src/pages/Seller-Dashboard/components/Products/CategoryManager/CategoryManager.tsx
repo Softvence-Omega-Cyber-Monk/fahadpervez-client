@@ -5,9 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Spinner } from '@/components/ui/spinner';
 
 const CategoryManager: React.FC = () => {
-  const { data: categories, error, isLoading } = useGetCategoriesQuery();
+  const { data: categories, isLoading } = useGetCategoriesQuery();
   const [createCategory] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
@@ -45,8 +46,7 @@ const CategoryManager: React.FC = () => {
     await deleteCategory(id);
   };
 
-  if (isLoading) return <div>Loading categories...</div>;
-  if (error) return <div>Error loading categories: { (error as any).data?.message || (error as any).error || (error as any).message || 'Unknown error' }</div>;
+  if (isLoading) return <div><Spinner /></div>;
 
   return (
     <Card className="w-full">
@@ -85,7 +85,7 @@ const CategoryManager: React.FC = () => {
           <h4 className="text-lg font-semibold">Existing Categories</h4>
           {categories && categories.length > 0 ? (
             <ul className="space-y-2">
-              {categories.map((category: any) => (
+              {categories.map((category: { id: string; name: string; description?: string }) => (
                 <li key={category.id} className="flex items-center justify-between p-2 border rounded-md">
                   <span>{category.name} {category.description && `(${category.description})`}</span>
                   <div className="flex gap-2">

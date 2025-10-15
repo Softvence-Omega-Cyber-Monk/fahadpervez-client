@@ -15,21 +15,20 @@ export default function ProductPreview({
   mediaData,
   previewDetails,
 }: ProductPreviewProps) {
-  const [selectedSize, setSelectedSize] = useState("20 mg");
   const [preview, setPreview] = useState<string | null>(null);
-
-  const sizes = ["5mg", "10 mg", "20 mg", "50 mg"];
+  const [availableSize, setAvailableSize] = useState<string | null>(null);
+  const sizes = ["5mg", "10mg", "20mg", "50mg"];
 
   // Use previewDetails if available, otherwise fallback to defaults
-  const productName = previewDetails?.productName || "Gastroesophageal Reflux Disease (GERD): Acid from the stomach flows back into the esophagus.";
+  const productName =
+    previewDetails?.productName ||
+    "Gastroesophageal Reflux Disease (GERD): Acid from the stomach flows back into the esophagus.";
   const productSKU = previewDetails?.productSKU || "GRD-00253A";
   const pricePerUnit = previewDetails?.pricePerUnit || 100;
+
   useEffect(() => {
-     if(previewDetails?.availableSize){
-      console.log(selectedSize)
-      setSelectedSize(previewDetails.availableSize);
-    }
-  },[previewDetails?.availableSize,selectedSize])
+    if (previewDetails) setAvailableSize(previewDetails?.availableSize || null);
+  }, [previewDetails]);
 
   // Determine which image to show with priority: new upload > mediaData > defaultMedia
   useEffect(() => {
@@ -63,11 +62,11 @@ export default function ProductPreview({
       setPreview(defaultMedia.images.mainImageUrl);
       return;
     }
-   
+
     // Fallback: No image available
     setPreview(null);
-  }, [file, mediaData, defaultMedia,preview]);
-  console.log(selectedSize)
+  }, [file, mediaData, defaultMedia, preview]);
+
   // Clean up blob URLs on unmount
   useEffect(() => {
     return () => {
@@ -78,8 +77,6 @@ export default function ProductPreview({
   }, [preview]);
 
   const imageSrc = preview || "/medicine.png";
-
-
 
   return (
     <div className="bg-light-background rounded-lg p-6">
@@ -107,9 +104,7 @@ export default function ProductPreview({
 
       {/* Product Info */}
       <div className="space-y-4">
-        <h2 className="">
-          {productName}
-        </h2>
+        <h2 className="">{productName}</h2>
 
         <p className="text-sm">SKU: {productSKU}</p>
 
@@ -127,20 +122,18 @@ export default function ProductPreview({
           </p>
           <div className="flex items-center gap-2">
             {sizes.map((size) => {
-              console.log({size,selectedSize})
-             return (
-              <button
-                key={size}
-                onClick={() => setSelectedSize(size)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                   size === selectedSize
-                    ? "bg-dark-blue text-white"
-                    : "bg-gray-100 text-dark-blue hover:bg-gray-200"
-                }`}
-              >
-                {size}
-              </button>
-            )
+              return (
+                <button
+                  key={size}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    size === availableSize
+                      ? "bg-dark-blue text-white"
+                      : "bg-gray-100 text-dark-blue hover:bg-gray-200"
+                  }`}
+                >
+                  {size}
+                </button>
+              );
             })}
           </div>
         </div>

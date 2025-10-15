@@ -1,26 +1,7 @@
 import { DefaultValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodSchema, ZodTypeAny } from "zod";
 import { forwardRef, useImperativeHandle, useCallback } from "react";
-
-interface FieldConfig {
-  name: string;
-  label: string;
-  type: string;
-  placeholder?: string;
-  options?: string[];
-  defaultValue?: string | number | undefined;
-}
-
-interface Props<T extends Record<string, unknown>> {
-  fields: FieldConfig[];
-  schema: ZodSchema<T> | ZodTypeAny;
-  onSubmit: (data: T) => void;
-}
-
-export interface CommonFormRef {
-  submit: () => Promise<void>;
-}
+import { CommonFormRef, Props } from "@/types/CommonForm";
 
 function CommonFormComponent<T extends Record<string, unknown>>(
   { fields, schema, onSubmit }: Props<T>,
@@ -29,16 +10,23 @@ function CommonFormComponent<T extends Record<string, unknown>>(
   const defaultValues = fields.reduce((acc, field) => {
     acc[field.name] = field.defaultValue ?? undefined;
     return acc;
-  }, {} as Record<string, string | number | undefined>) as DefaultValues<T>; // <-- cast here
+  }, {} as Record<string, string | number | undefined>) as DefaultValues<T>; 
 
-  const { register, handleSubmit, formState: { errors } } = useForm<T>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<T>({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
-  const handleFormSubmit = useCallback((data: T) => {
-    onSubmit(data);
-  }, [onSubmit]);
+  const handleFormSubmit = useCallback(
+    (data: T) => {
+      onSubmit(data);
+    },
+    [onSubmit]
+  );
 
   useImperativeHandle(ref, () => ({
     submit: handleSubmit(handleFormSubmit),
@@ -57,9 +45,7 @@ function CommonFormComponent<T extends Record<string, unknown>>(
               defaultValue={field.defaultValue}
               className="border border-border px-3 py-2 rounded w-full "
             >
-              <option value="">
-                {field.placeholder}
-              </option>
+              <option value="">{field.placeholder}</option>
               {field.options?.map((opt) => (
                 <option key={opt} value={opt}>
                   {opt}
@@ -117,6 +103,10 @@ function CommonFormComponent<T extends Record<string, unknown>>(
   );
 }
 
-const CommonForm = forwardRef(CommonFormComponent) as <T extends Record<string, unknown>>(props: Props<T> & { ref?: React.Ref<CommonFormRef> }) => React.ReactElement;
+const CommonForm = forwardRef(CommonFormComponent) as <
+  T extends Record<string, unknown>
+>(
+  props: Props<T> & { ref?: React.Ref<CommonFormRef> }
+) => React.ReactElement;
 
 export default CommonForm;

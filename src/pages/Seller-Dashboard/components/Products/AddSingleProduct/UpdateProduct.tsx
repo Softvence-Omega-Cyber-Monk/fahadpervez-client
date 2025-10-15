@@ -11,6 +11,7 @@ import PrimaryButton from "@/common/PrimaryButton";
 import { FaPlus } from "react-icons/fa";
 import ProductPreview from "./ProductPreview";
 import MediaUpload from "./MediaUpload";
+import { Spinner } from "@/components/ui/spinner";
 
 
 const UpdateProduct = () => {
@@ -71,7 +72,6 @@ const UpdateProduct = () => {
 
   // Handle actual form submit (Simplified for update ONLY)
   const handleFormSubmit = async (data: Partial<ProductFormValues>) => {
-    console.log("Form Submit Data from update product:", data);
 
     if (!defaultProduct) {
         toast.error("Product data not loaded for update. Please refresh.");
@@ -166,7 +166,7 @@ const UpdateProduct = () => {
 
   // 1. Loading State
   if (isFetching && !defaultProduct) {
-    return <div className="p-10 text-center text-xl font-medium">Loading product data...</div>
+    return <div className="p-10 text-center text-xl font-medium"><Spinner /></div>
   }
   
   // 2. Error/Missing ID State

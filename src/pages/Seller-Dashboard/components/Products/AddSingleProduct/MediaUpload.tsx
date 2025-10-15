@@ -55,7 +55,6 @@ export default function MediaUpload({ onMediaChange, defaultMedia }: MediaUpload
         images[img.id as "mainImage" | "sideImage" | "sideImage2" | "lastImage"] = img.file ;
       }
     });
-
     onMediaChange({
       images,
       video: uploadedVideo?.file as File,
