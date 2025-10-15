@@ -65,7 +65,7 @@ export default function ProductPreview({
 
     // Fallback: No image available
     setPreview(null);
-  }, [file, mediaData, defaultMedia, preview]);
+  }, [file, mediaData, defaultMedia]);
 
   // Clean up blob URLs on unmount
   useEffect(() => {
