@@ -1,9 +1,11 @@
-import CommonForm, { CommonFormRef } from "@/common/CommonForm";
+import CommonForm  from "@/common/CommonForm";
 import { z } from "zod";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 import { productSchema, productUpdateSchema } from "@/utils/productFormZodSchema";
 import { Product } from "@/types/Product";
+import { CommonFormRef } from "@/types/CommonForm";
+import { Spinner } from "@/components/ui/spinner";
 
 export type ProductFormValues = z.infer<typeof productSchema>;
 
@@ -39,12 +41,12 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
 
   // For edit mode, wait for both categories and default values
   if (isEditMode && (!isReady || !defaultValue)) {
-    return <div>Loading product data...</div>;
+    return <div><Spinner /></div>;
   }
 
   // For create mode, just wait for categories
   if (!isEditMode && categoriesLoading) {
-    return <div>Loading...</div>;
+    return <div><Spinner /></div>;
   }
 
   const getCategoryNameFromId = (categoryId: string) => {
