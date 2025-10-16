@@ -38,8 +38,11 @@ import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 import CMSDashboard from "@/components/Admin/CMS/CMSDashboard";
 import AdminMessage from "@/pages/Admin-Dashboard/Message/AdminMessage";
 import { CMSEditPage } from "@/components/Admin/CMS/CMSEditPage";
-import  SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard"
+import SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard"
+import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
 import Register from "@/pages/Login/Register";
+import WithAuth from "@/Config/WithAuth";
+
 
 const routes = createBrowserRouter([
   {
@@ -90,7 +93,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "buyer-dashboard",
-    element: <BuyerDashboardLayout />,
+    element: <WithAuth><BuyerDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,
@@ -141,7 +144,7 @@ const routes = createBrowserRouter([
 
   {
     path: "admin-dashboard",
-    element: <AdminDashboardLayout />,
+    element: <WithAuth><AdminDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,
@@ -202,8 +205,8 @@ const routes = createBrowserRouter([
     element: <SellerDashboardLayout />,
     children: [
       {
-        index:true,
-        element:<SellerDashboard/>
+        index: true,
+        element: <SellerDashboard />
       },
       ...sellerRoutes
     ],
@@ -212,6 +215,10 @@ const routes = createBrowserRouter([
     path: "*",
     element: <NotFound />,
   },
+  {
+    path: "/un-authoraised",
+    element: <UnAuthoraised />
+  }
 ]);
 
 export default routes;
