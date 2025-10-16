@@ -22,12 +22,10 @@ const userApi = baseApi.injectEndpoints({
             })
         }),
         diActivateAccount: builder.mutation({
-            query: ({ data }) => ({
-                url: `/users/deactivate/${data.id}`,
+            query: ({reason , userId}) => ({
+                url: `/users/deactivate/${userId}`,
                 method: "PUT",
-                body: {
-                    reason: data.reason
-                }
+                body: {reason}
             })
         }),
         changePassword: builder.mutation({
