@@ -8,13 +8,17 @@ import {
   Plus,
 } from "lucide-react";
 import { Product } from "@/types/Product";
+import { toast } from "sonner";
+import { useAddWishListMutation, useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
 
 const ProductGallery = ({ product }: { product: Product }) => {
   // --- State ---
-  console.log(product)
   const [images, setImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [addWishlist, { isSuccess,isError }] = useAddWishListMutation({});
+  const {data:wishlistData} = useGetAllWishListQuery({});
+    const [wishlist, setWishlist] = useState(false);
 
   // --- Update images when product changes ---
   useEffect(() => {
@@ -34,7 +38,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
       <video
         src={product.videoUrl}
         controls
-        className="w-full h-auto object-cover rounded-lg"
+        className="w-full h-full object-cover rounded-lg"
       />
     ) : (
       <img
@@ -72,7 +76,22 @@ const ProductGallery = ({ product }: { product: Product }) => {
           )}
         </button>
       ));
+  const handleAddToCart = () => {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    cartItems.push(product);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  };
 
+  const handleAddWishlist = () => {
+    console.log(wishlistData)
+    addWishlist(product._id);
+    if (isSuccess) {
+        toast.success("Product added to wishlist");
+        setWishlist(!wishlist);
+        console.log(wishlist)
+    }
+    if (isError) toast.error("Failed to add product to wishlist");
+  };
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
       {/* ------------------ Left Section: Images ------------------ */}
@@ -80,15 +99,20 @@ const ProductGallery = ({ product }: { product: Product }) => {
         <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible">
           {renderThumbnails()}
         </div>
-        <div className="flex-1 bg-gray-100   relative rounded-lg">
+        <div className="flex-1 bg-gray-100  h-96 relative rounded-lg">
           {/* Wishlist & Share */}
-          <button className="absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 z-10">
+          <button
+            className={`absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 z-10 ${wishlist ? "bg-red-500" : ""}`}
+            onClick={handleAddWishlist}
+          >
             <Heart className="h-6 w-6 text-gray-600" />
           </button>
           <button className="absolute top-20 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 z-10">
             <Share2 className="h-6 w-6 text-gray-600" />
           </button>
-          <div className="rounded-lg p-1 w-full h-full grid place-content-center">{renderMainPreview()}</div>
+          <div className="rounded-lg w-full h-96 grid place-content-center overflow-hidden">
+            {renderMainPreview()}
+          </div>
         </div>
       </div>
 
@@ -145,14 +169,18 @@ const ProductGallery = ({ product }: { product: Product }) => {
         </div>
 
         {/* Stock Info */}
-        <div className="inline-block mb-6">
-          <span className="px-3 py-1 bg-[#E6F3FF] border-2 border-blue-400 text-blue-600 rounded-md text-base font-medium">
-            In Stock - {product.stock} left
-          </span>
-        </div>
+        {product.stock && (
+          <div className="inline-block mb-6">
+            <span className="px-3 py-1 bg-[#E6F3FF] border-2 border-blue-400 text-blue-600 rounded-md text-base font-medium">
+              In Stock - {product.stock} left
+            </span>
+          </div>
+        )}
 
         {/* Product Description */}
-        <div className="text-gray-700 text-base">{product.productDescription}</div>
+        <div className="text-gray-700 text-base">
+          {product.productDescription}
+        </div>
       </div>
 
       {/* ------------------ Right Section: Price & Actions ------------------ */}
@@ -161,11 +189,13 @@ const ProductGallery = ({ product }: { product: Product }) => {
           <div className="mb-6">
             {/* Price */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl font-bold text-[#1C2A33]">
-                ${product.pricePerUnit}
-              </span>
+              {product.specialPrice && (
+                <span className="text-2xl font-bold text-[#1C2A33]">
+                  ${product.specialPrice?.toFixed(2)}
+                </span>
+              )}
               <span className="text-base text-gray-400 line-through">
-                ${(product.pricePerUnit + 5).toFixed(2)}
+                ${product.pricePerUnit?.toFixed(2)}
               </span>
             </div>
 
@@ -189,7 +219,10 @@ const ProductGallery = ({ product }: { product: Product }) => {
             </div>
 
             {/* Add to Cart Button */}
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors mb-3">
+            <button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors mb-3"
+              onClick={handleAddToCart}
+            >
               <ShoppingCart className="h-5 w-5" />
               Add To Cart
             </button>

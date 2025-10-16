@@ -5,7 +5,7 @@ import authReducer from "./Slices/AuthSlice/authSlice";
 import formReducer from "./Slices/FormSlice/FormSlice";
 import productReducer from "./Slices/ProductSlice/productSlice";
 import { productApi } from "./Slices/productApi";
-import { categoryApi } from "./Slices/categoryApi"; 
+import { categoryApi } from "./Slices/categoryApi";
 
 // Added to ensure RTK-Query middleware is correctly registered
 const store = configureStore({
@@ -14,8 +14,10 @@ const store = configureStore({
     auth: authReducer,
     form: formReducer,
     product: productReducer,
+    // cart: cartReducer,
     [productApi.reducerPath]: productApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
+
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(productApi.middleware, categoryApi.middleware),

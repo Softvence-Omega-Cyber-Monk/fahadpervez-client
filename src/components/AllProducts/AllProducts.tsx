@@ -5,11 +5,12 @@ import { Link, NavLink } from 'react-router-dom';
 import { useGetAllProductsQuery } from '@/Redux/Features/products/products.api';
 import { Spinner } from '../ui/spinner';
 import { Product } from '@/types/Product';
+import CommonWrapper from '@/common/CommonWrapper';
 
 const AllProducts: React.FC = () => {
   const {data:products,isLoading} = useGetAllProductsQuery({})
 
-  if(isLoading) return <div><Spinner /></div>
+  if(isLoading) return <div className='min-h-screen grid place-content-center'><Spinner /></div>
 
 
   // const products: Product[] = [
@@ -28,9 +29,9 @@ const AllProducts: React.FC = () => {
   // ];
 
   return (
-    <div className="pb-16">
-      <div className="max-w-6xl mx-auto px-4">
-        <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue">ALL PRODUCTS</h1>
+    <div className="py-20">
+      <CommonWrapper>
+        <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue py-10">ALL PRODUCTS</h1>
         
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
@@ -79,7 +80,7 @@ const AllProducts: React.FC = () => {
             </Button>
           </NavLink>
         </div>
-      </div>
+      </CommonWrapper>
     </div>
   );
 };

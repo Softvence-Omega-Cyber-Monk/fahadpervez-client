@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import CommonWrapper from '@/common/CommonWrapper';
 
 interface Product {
   id: number;
@@ -73,8 +74,9 @@ const BestSeller: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-12 bg-[#F1F5F8]">
-      <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue">BEST SELLERS</h2>
+   <CommonWrapper>
+     <div className="w-full px-4 md:px-0  bg-[#F1F5F8]">
+      <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue py-10">BEST SELLERS</h2>
       
       <div className="relative">
         {/* Previous Button - hidden on mobile */}
@@ -174,6 +176,7 @@ const BestSeller: React.FC = () => {
         ))}
       </div>
     </div>
+   </CommonWrapper>
   );
 };
 

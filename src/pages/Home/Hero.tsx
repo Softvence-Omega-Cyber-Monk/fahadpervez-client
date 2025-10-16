@@ -2,6 +2,7 @@ import React from "react"
 import Button from "@/components/Button/Button"
 import { MoveUpRight } from "lucide-react"
 import Marquee from "react-fast-marquee";
+import CommonWrapper from "@/common/CommonWrapper";
 
 interface IHeroData {
     title: string,
@@ -17,10 +18,11 @@ const Hero : React.FC<IHeroProps> = ({ data }) => {
 
 
     return (
-        <div className="flex w-full h-screen bg-center bg-cover bg-no-repeat flex-col md:flex-row justify-center" style={{backgroundImage : `url(${data.image})`}}>
+        <div className="flex items-center w-full h-screen bg-center bg-cover bg-no-repeat flex-col md:flex-row justify-center" style={{backgroundImage : `url(${data.image})`}}>
             {/* Left Side */}
-            <div className="w-full md:w-1/2 pt-30 md:pt-50 px-6 md:pl-100 ">
-                <h1 className="font-montserrat text-3xl sm:text-4xl md:text-5xl font-medium text-white uppercase leading-snug md:leading-[120%] mb-6">
+            <CommonWrapper>
+            <div className="w-full md:w-1/2 flex flex-col items-start justify-center pt-30 md:pt-50 px-6 md-px-0">
+                <h1 className="font-montserrat text-start text-3xl sm:text-4xl md:text-5xl font-medium text-white uppercase leading-snug md:leading-[120%] mb-6">
                     Experience Top-Notch Healthcare Products with Ease
                 </h1>
                 <p className="font-montserrat text-gray-300 text-base sm:text-lg mb-10">
@@ -42,9 +44,10 @@ const Hero : React.FC<IHeroProps> = ({ data }) => {
                   </div>
                 </Marquee>
             </div>
+            </CommonWrapper>
 
             {/* Right Side */}
-            <div className="w-full md:w-1/2 md:mt-0"></div>
+            {/* <div className="w-full md:w-1/2 md:mt-0"></div> */}
         </div>
     )
 }

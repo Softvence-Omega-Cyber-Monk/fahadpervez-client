@@ -1,3 +1,4 @@
+import CommonWrapper from "@/common/CommonWrapper";
 import { NavLink } from "react-router-dom";
 
 interface Category {
@@ -71,13 +72,13 @@ const HomeCategories = () => {
   ];
 
   return (
-    <div className="py-24 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="py-24 px-6 md:px-0">
+      <CommonWrapper>
         <h1 className="text-4xl font-montserrat font-semibold text-center text-website-color-blue mb-12">
           CATEGORISE
         </h1>
         
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
           {categories.map((category , idx) => (
             <NavLink key={idx} to='/products/:id'>
               <div
@@ -100,7 +101,7 @@ const HomeCategories = () => {
             </NavLink>
           ))}
          </div>
-      </div>
+      </CommonWrapper>
     </div>
   );
 };
