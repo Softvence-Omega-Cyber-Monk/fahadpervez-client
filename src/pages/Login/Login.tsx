@@ -24,7 +24,7 @@ const Login: React.FC = () => {
       console.log(res);
 
       if (res.success) {
-        localStorage.setItem("user", res.data);
+        localStorage.setItem("user", res.data); 
         toast.success("Logged In Successfully", { id: toastId });
         navigate("/");
       } else {
