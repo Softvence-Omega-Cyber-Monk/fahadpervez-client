@@ -27,4 +27,6 @@ export interface Product {
   width?: number;
   height?: number;
   weight: number;
+  status?: string;
+  issues?: { type: "error" | "warning" | "valid"; message: string }[];
 }

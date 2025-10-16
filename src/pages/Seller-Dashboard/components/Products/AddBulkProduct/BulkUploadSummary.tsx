@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import PrimaryButton from "@/common/PrimaryButton";
 import { useAddBulkProductMutation } from "@/Redux/Features/products/products.api";
 import { Product } from "@/types/Product";
@@ -7,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function BulkUploadSummary({ data }: { data: Product[] }) {
-  console.log("mahim", data);
   const navigate = useNavigate();
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [error, setError] = useState("")
@@ -36,8 +36,9 @@ export default function BulkUploadSummary({ data }: { data: Product[] }) {
       }else{
         setError("Please confirm before submitting");
       }
-    } catch (error) {
+    } catch (error: { data?: { message?: string } } | any) {
       console.log(error);
+      toast.error(error.data.message);
     }
   };
 

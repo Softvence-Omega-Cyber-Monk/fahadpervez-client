@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Statistics from "@/common/Statistics";
 import ConfirmUploadData from "@/utils/SellerDashboardData/ConfirmUpload.json"
 import BulkUploadSummary from "./BulkUploadSummary";
