@@ -78,8 +78,6 @@ const Home = () => {
             }
           </CarouselContent>
         </Carousel>
-
-
         {/* Other Sections */}
         <HomeCategories />
         <BestSeller />

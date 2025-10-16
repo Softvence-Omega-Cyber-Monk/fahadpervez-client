@@ -3,11 +3,11 @@ import { Upload, AlertCircle } from "lucide-react";
 import { Product } from "@/types/Product";
 
 const CSVProductUploader = () => {
-  const [ setFile] = useState<File | null>(null);
+  const [ ,setFile] = useState<File | null>(null);
   const [products, setProducts] = useState<
-    (Product & { issues?: string[] ; status?: string })[]
+    (Product)[]
   >([]);
-  const [ setValidationStats] = useState({
+  const [ ,setValidationStats] = useState({
     total: 0,
     valid: 0,
     warnings: 0,
@@ -155,10 +155,10 @@ const CSVProductUploader = () => {
 
       const stats = {
         total: parsedProducts.length,
-        valid: parsedProducts.filter((p: any) => p.status === "valid").length,
-        warnings: parsedProducts.filter((p: any) => p.status === "warning")
+        valid: parsedProducts.filter((p: Product) => p.status === "valid").length,
+        warnings: parsedProducts.filter((p: Product) => p.status === "warning")
           .length,
-        errors: parsedProducts.filter((p: any) => p.status === "error").length,
+        errors: parsedProducts.filter((p: Product) => p.status === "error").length,
       };
       setValidationStats(stats);
     };
@@ -186,7 +186,7 @@ const CSVProductUploader = () => {
   };
 
   // ✅ Render status badge
-  const getStatusBadge = (product: any) => {
+  const getStatusBadge = (product: Product) => {
     if (product.status === "valid")
       return (
         <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
@@ -196,12 +196,12 @@ const CSVProductUploader = () => {
     if (product.status === "warning")
       return (
         <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-medium">
-          {product.issues.find((i: any) => i.type === "warning")?.message}
+          {product.issues!.find((i: any ) => i.type === "warning")?.message}
         </span>
       );
     return (
       <span className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-medium">
-        {product.issues.find((i: any) => i.type === "error")?.message}
+        {product.issues!.find((i: any) => i.type === "error")?.message}
       </span>
     );
   };
@@ -210,7 +210,7 @@ const CSVProductUploader = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  // const totalPages = Math.ceil(products.length / itemsPerPage);
 
   // ✅ Initial upload UI
   if (products.length === 0) {
