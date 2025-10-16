@@ -18,13 +18,14 @@ const getStockColor = (stock: number) => {
 // };
 
 
-const formatCurrency = (amount: number, currency: string) => {
+const formatCurrency = (amount: number | null | undefined, currency: string) => {
   const symbols: Record<string, string> = {
     USD: "$",
     EUR: "€",
     BDT: "৳",
   };
-  return `${symbols[currency] || currency} ${amount.toFixed(2)}`;
+  const value = amount ?? 0; // fallback to 0 if null/undefined
+  return `${symbols[currency] || currency} ${value.toFixed(2)}`;
 };
 
 // --- Memoized Table Row Component ---
@@ -52,7 +53,7 @@ const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTa
       <td className="px-4 py-4">
         <div className="flex items-center gap-3">
           <img
-            src={product.mainImage}
+            src={product.mainImageUrl}
             alt={product.productName}
             className="w-12 h-12 rounded-lg object-cover border border-gray-200"
           />
@@ -183,7 +184,7 @@ export default function ProductTable({products,totalProduct,setSelectedProduct,s
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {currentProducts.map((product:ProductType) => (
+            {currentProducts?.map((product:ProductType) => (
               <ProductTableRow
                 key={product._id}
                 product={product}

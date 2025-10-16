@@ -1,42 +1,60 @@
 import type React from "react";
 import { Upload } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PrimaryButton from "@/common/PrimaryButton";
 import { useNavigate } from "react-router-dom";
 
-export default function UploadProductFile() {
-  const navigate = useNavigate();
+export default function UploadProductFile({
+  onFileUpload,
+}: {
+  onFileUpload: (file: File) => void;
+}) {
   const [isDragging, setIsDragging] = useState(false);
+  const navigate = useNavigate()
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
+  // Handle drag-and-drop
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file && (file.type === "text/csv" || file.name.endsWith(".csv"))) {
+      onFileUpload(file);
+    } else {
+      alert("Please upload a valid CSV file");
+    }
   };
+
+  // Handle file input change
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onFileUpload(file);
+      navigate("/seller-dashboard/products/bulk-validation"); // fixed
+    }
+  };
+
+  // Trigger hidden file input
   const handleBrowseFile = () => {
-    navigate("/seller-dashboard/products/bulk-validation");
+    fileInputRef.current?.click();
   };
+
   return (
-    <div className="">
+    <div>
       <h2 className="text-dark-blue font-semibold text-xl mb-6">
         Upload Your Product File
       </h2>
       <div
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+        }}
+        onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
-        className={`bg-light-background rounded-lg py-16 text-center transition-colors ${
+        className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
           isDragging
-            ? "border-primary-blue bg-primary-blue/5"
-            : "border-border bg-white"
+            ? "border-blue-500 bg-blue-50"
+            : "border-gray-300 bg-gray-50"
         }`}
       >
         <div className="flex flex-col items-center gap-4">
@@ -60,11 +78,21 @@ export default function UploadProductFile() {
 
           <p className="p2 ">Maximum file size: 10MB</p>
 
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            id="file-upload"
+            type="file"
+            accept=".csv"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+
           <PrimaryButton
             type="Primary"
             title="Browse File"
             className="px-10"
-            onClick={handleBrowseFile}
+            onClick={handleBrowseFile} // triggers hidden input
           />
         </div>
       </div>

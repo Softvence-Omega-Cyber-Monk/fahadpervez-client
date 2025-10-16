@@ -5,6 +5,7 @@ import ProductTable from "./ProductTable";
 import { useGetMyProductsQuery } from "@/Redux/Features/products/products.api";
 import { useEffect, useState } from "react";
 import { Product } from "@/types/Product";
+import { Spinner } from "@/components/ui/spinner";
 
 
 
@@ -24,7 +25,7 @@ const ProductsLandingPage = () => {
   },[data,refetch])
   
   if(isLoading){
-    return <div>Loading...</div>
+    return <div><Spinner /></div>
   }
 
   return (

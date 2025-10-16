@@ -7,6 +7,7 @@ import {
   useDeleteCategoryMutation,
   Category,
 } from '../../../../store/Slices/categoryApi';
+import { Spinner } from '@/components/ui/spinner';
 
 const SellerCategory: React.FC = () => {
   // RTK Query hooks
@@ -162,9 +163,11 @@ const SellerCategory: React.FC = () => {
       }
       
       closeModal();
-    } catch (error: any) {
-      console.error('API Error:', error);
-      const errorMessage = error.data?.message || 'Something went wrong!';
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong!';
+      if (typeof error === 'object' && error !== null && 'data' in error && typeof (error as { data?: { message?: string } }).data?.message === 'string') {
+        errorMessage = (error as { data?: { message?: string } }).data!.message!;
+      }
       toast.error(errorMessage);
     }
   };
@@ -176,11 +179,13 @@ const SellerCategory: React.FC = () => {
       try {
         await deleteCategory(id).unwrap();
         toast.success('Category deleted successfully!');
-      } catch (error: any) {
-        console.error('Delete Error:', error);
-        const errorMessage = error.data?.message || 'Failed to delete category!';
-        toast.error(errorMessage);
+      } catch (error: unknown) {
+      let errorMessage = 'Failed to delete category!';
+      if (typeof error === 'object' && error !== null && 'data' in error && typeof (error as { data?: { message?: string } }).data?.message === 'string') {
+        errorMessage = (error as { data?: { message?: string } }).data!.message!;
       }
+      toast.error(errorMessage);
+    }
     }
   };
 
@@ -188,7 +193,7 @@ const SellerCategory: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl font-medium">Loading categories...</p>
+        <p className="text-xl font-medium"><Spinner /></p>
       </div>
     );
   }

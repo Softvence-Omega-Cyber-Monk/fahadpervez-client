@@ -1,5 +1,5 @@
 export interface Product {
-_id?: string;
+  _id?: string;
   productName: string;
   productCategory: string;
   productSKU: string;
@@ -11,15 +11,22 @@ _id?: string;
   currency: string;
   pricePerUnit: number;
   specialPrice?: number;
-  specialPriceStartingDate?: string; 
-  specialPriceEndingDate?: string;   
-  mainImage?: string; 
-  sideImage?: string;  
-  sideImage2?: string; 
-  lastImage?: string;  
-  video?: string;      
+  specialPriceStartingDate?: string;
+  specialPriceEndingDate?: string;
+  mainImage?: string;
+  sideImage?: string;
+  sideImage2?: string;
+  lastImage?: string;
+  mainImageUrl?: string;
+  sideImageUrl?: string;
+  sideImage2Url?: string;
+  lastImageUrl?: string;
+  video?: string;
+  videoUrl?: string;
   length?: number;
   width?: number;
   height?: number;
   weight: number;
+  status?: string;
+  issues?: { type: "error" | "warning" | "valid"; message: string }[];
 }

@@ -1,26 +1,13 @@
 import { AiOutlineInfo } from "react-icons/ai";
 
 export default function BulkUploadHeader() {
-  const requiredColumns = [
-    "Product Image",
-    "Name",
-    "arabic_name",
-    "description",
-    "arabic_description",
-    "sku",
-    "approval_status",
-    "status",
-    "tags",
-    "category_id",
-    "barcode",
-    "stock",
-    "price_bhd",
-    "price_sar",
-    "price_usd",
-    "price_usd",
-    "discount",
-  ];
-
+const requiredColumns = [
+  "productName", "productCategory", "productSKU", "companyName", "gender",
+  "availableSize", "productDescription", "stock", "currency", "pricePerUnit",
+  "specialPrice", "specialPriceStartingDate", "specialPriceEndingDate",
+  "mainImageUrl", "sideImageUrl", "sideImage2Url", "lastImageUrl",
+  "videoUrl", "length", "width", "height", "weight"
+];
   return (
     <div className="bg-primary-blue/10 rounded-2xl p-6">
       <div className="space-y-3">
@@ -50,7 +37,7 @@ export default function BulkUploadHeader() {
             ))}
           </div>
         </div>
-      </div>
+      </div>  
     </div>
   );
 }
