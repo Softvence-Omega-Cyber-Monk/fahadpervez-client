@@ -1,0 +1,26 @@
+[
+  {
+    "id": "total-products",
+    "title": "Total products",
+    "value": 155,
+    "icon": "box"
+  },
+  {
+    "id": "active-products",
+    "title": "Active products",
+    "value": 142,
+    "icon": "check"
+  },
+  {
+    "id": "recently-added",
+    "title": "Recently added",
+    "value": 8,
+    "icon": "plus"
+  },
+  {
+    "id": "out-of-stock",
+    "title": "Out of Stock",
+    "value": 5,
+    "icon": "alert"
+  }
+]

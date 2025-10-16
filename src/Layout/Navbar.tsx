@@ -1,146 +1,153 @@
-import UserAvatar from "@/ui/UserAvatar";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { useAppDispatch } from "@/hooks/useRedux";
-import { logout } from "@/store/Slices/AuthSlice/authSlice";
+import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
+import CommonWrapper from "@/common/CommonWrapper";
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 0);
+    window.addEventListener("scroll", handleScroll);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
-  };
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <nav className="bg-website-color-green shadow-lg">
-      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav className="">
+      <div
+        className={`h-22 flex items-center  justify-center fixed top-0 z-50 w-full  transition-all duration-300 ${
+          scrolled ? "backdrop-blur-md bg-white/30 shadow-sm" : "bg-transparent"
+        }`}
+      >
+        <div className=" w-full">
+        <CommonWrapper>
+        <div className="w-full flex items-center justify-between ">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="">
             <Link to="/" className="text-white text-2xl font-bold">
-              MyApp
+              <img src="/Logo.png" alt="Logo" className="h-8 sm:h-10 w-auto" />
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-4">
-            <Link
-              to="/"
-              className="text-white hover:bg-website-color-lightGray hover:text-black px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="text-white hover:bg-website-color-lightGray hover:text-black px-3 py-2 rounded-md text-sm font-medium"
-            >
-              About
-            </Link>
-            <Link
-              to="/services"
-              className="text-white hover:bg-website-color-lightGray hover:text-black px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Services
-            </Link>
-            <Link
-              to="/contact"
-              className="text-white hover:bg-website-color-lightGray hover:text-black px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Contact
+          {/* Right icons (desktop only) */}
+          <div className="hidden sm:flex items-center gap-4 relative ">
+            <Search className="text-[#455058] cursor-pointer" />
+            <Link to={`/my-cart/${10}`}>
+              <ShoppingCart className="text-[#455058] cursor-pointer" />
             </Link>
 
-            <Popover>
-              <PopoverTrigger>
-                <UserAvatar userName="Mahim" />
-              </PopoverTrigger>
-              <PopoverContent className="mr-3 bg-website-color-darkGray border-none text-white">
-                <Button
-                  onClick={handleLogout}
-                  className="bg-website-color-lightGray text-black w-full"
-                >
-                  Logout
-                </Button>
-              </PopoverContent>
-            </Popover>
+            {/* User icon + dropdown */}
+            <div className="relative" ref={menuRef}>
+              <CircleUserRound
+                className="text-[#455058] cursor-pointer"
+                onClick={() => setMenuOpen((prev) => !prev)}
+              />
+
+              {/* Dropdown menu */}
+              {menuOpen && (
+                <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 animate-fadeIn ">
+                  <ul className="py-2">
+                    <li>
+                      <Link
+                        to="/buyer-dashboard"
+                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Buyer Dashboard
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/seller-dashboard/dashboard"
+                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Seller Dashboard
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/admin-dashboard"
+                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Admin Dashboard
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={toggleMenu}
-              type="button"
-              className="text-white hover:text-gray-300 focus:outline-none"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16m-7 6h7"
-                  />
-                )}
-              </svg>
-            </button>
+          {/* Mobile Hamburger */}
+          <div className="sm:hidden">
+            {mobileOpen ? (
+              <X
+                className="text-[#455058] cursor-pointer"
+                onClick={() => setMobileOpen(false)}
+              />
+            ) : (
+              <Menu
+                className="text-[#455058] cursor-pointer"
+                onClick={() => setMobileOpen(true)}
+              />
+            )}
           </div>
+        </div>
+        </CommonWrapper>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link
-              to="/"
-              className="text-white block hover:bg-purple-700 px-3 py-2 rounded-md text-base font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="text-white block hover:bg-purple-700 px-3 py-2 rounded-md text-base font-medium"
-            >
-              About
-            </Link>
-            <Link
-              to="/services"
-              className="text-white block hover:bg-purple-700 px-3 py-2 rounded-md text-base font-medium"
-            >
-              Services
-            </Link>
-            <Link
-              to="/contact"
-              className="text-white block hover:bg-purple-700 px-3 py-2 rounded-md text-base font-medium"
-            >
-              Contact
-            </Link>
-          </div>
+      {/* Mobile Dropdown */}
+      {mobileOpen && (
+        <div className="sm:hidden absolute top-22 left-0 w-full bg-white shadow-md z-40">
+          <ul className="flex flex-col py-6 space-y-2 fixed bg-white w-full ">
+            <li className="px-4">
+              <input
+                type="text"
+                placeholder="Search..."
+                className="w-full px-4 py-3 pr-28 border border-gray-300 bg-white shadow-md rounded-lg focus:outline-none"
+              />
+            </li>
+            <li className="px-6 py-2">
+              <Link to={`/my-cart/${10}`} onClick={() => setMobileOpen(false)}>
+                My Cart
+              </Link>
+            </li>
+            <li className="px-6 py-2">
+              <Link to="/buyer-dashboard" onClick={() => setMobileOpen(false)}>
+                Buyer Dashboard
+              </Link>
+            </li>
+            <li className="px-6 py-2">
+              <Link
+                to="/seller-dashboard/dashboard"
+                onClick={() => setMobileOpen(false)}
+              >
+                Seller Dashboard
+              </Link>
+            </li>
+            <li className="px-6 py-2">
+              <Link to="/admin-dashboard" onClick={() => setMobileOpen(false)}>
+                Admin Dashboard
+              </Link>
+            </li>
+          </ul>
         </div>
       )}
     </nav>

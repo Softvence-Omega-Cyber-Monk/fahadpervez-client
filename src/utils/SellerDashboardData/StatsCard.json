@@ -1,0 +1,29 @@
+[
+    {
+      "id": "total-orders",
+      "title": "Total Orders",
+      "value": 1243,
+      "status": "13.65%",
+      "type": "up"
+    },
+    {
+      "id": "pending-orders",
+      "title": "Pending Orders",
+      "value": 24,
+      "status": "Needs Attention",
+      "type": "warning"
+    },
+    {
+      "id": "total-revenue",
+      "title": "Total Revenue",
+      "value": 34558,
+      "currency": "USD",
+      "status": "13.65%",
+      "type": "down"
+    },
+    {
+      "id": "product-listed",
+      "title": "Product Listed",
+      "value": 156
+    }
+  ]
