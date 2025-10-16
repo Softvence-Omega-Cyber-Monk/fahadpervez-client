@@ -1,21 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [role, setRole] = useState<string | null>(null); // ✅ role store korar jonno
   const menuRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // ✅ Suppose tumi login korar somoy role localStorage e save korso:
-    // localStorage.setItem("role", "buyer" | "seller" | "admin");
-    const storedRole = localStorage.getItem("role");
-    setRole(storedRole);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
@@ -33,20 +24,6 @@ const Navbar: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  // ✅ Handle My Account click based on role
-  const handleMyAccountClick = () => {
-    setMenuOpen(false);
-    if (role === "buyer") {
-      navigate("/buyer/profile");
-    } else if (role === "seller") {
-      navigate("/seller/profile");
-    } else if (role === "admin") {
-      navigate("/admin/dashboard");
-    } else {
-      navigate("/login"); // default fallback (not logged in)
-    }
-  };
 
   return (
     <nav>
@@ -79,15 +56,16 @@ const Navbar: React.FC = () => {
 
               {/* Dropdown menu */}
               {menuOpen && (
-                <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 animate-fadeIn">
+                <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 animate-fadeIn ">
                   <ul className="py-2">
                     <li>
-                      <button
-                        onClick={handleMyAccountClick}
-                        className="w-full text-left block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                      <Link
+                        to="/"
+                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                        onClick={() => setMenuOpen(false)}
                       >
                         My Account
-                      </button>
+                      </Link>
                     </li>
                     <li>
                       <Link
@@ -138,21 +116,15 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
             <li className="px-6 py-2">
-              <button
-                onClick={() => {
-                  handleMyAccountClick();
-                  setMobileOpen(false);
-                }}
-                className="w-full text-left"
-              >
+              <Link to="/" onClick={() => setMobileOpen(false)}>
                 My Account
-              </button>
+              </Link>
             </li>
             <li>
               <Link
                 to="/customer-support"
                 className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => setMenuOpen(false)}
               >
                 Customer Support
               </Link>
