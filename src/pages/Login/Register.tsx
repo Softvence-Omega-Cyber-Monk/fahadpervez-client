@@ -1,64 +1,90 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { BuyerRegister } from "../Apis/BuyerSignupApi";
+import toast from "react-hot-toast";
 
 const Register: React.FC = () => {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
-    if (!email || !password) {
-      setError('Please fill in all fields');
+    if (!name || !email || !password) {
+      setError("Please fill in all fields");
       return;
     }
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email address');
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address");
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError("Password must be at least 6 characters");
       return;
     }
 
-    // Simulate login attempt
-    setError('Invalid email or password');
+    try {
+      setLoading(true);
+
+      const response = await BuyerRegister({ name, email, password });
+      console.log("Register Response:", response.data);
+
+      if (response.data?.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        toast.success("Registration successful!")
+        navigate("/login", { replace: true });
+        window.location.href = "/login";
+      } else {
+        setError(response.data?.message || "Registration failed. Please try again.");
+      }
+    } catch (err: unknown) {
+      toast.error("Register Error");
+
+      if (typeof err === "object" && err !== null && "response" in err) {
+        const axiosError = err as any;
+        setError(axiosError.response?.data?.message || "Something went wrong");
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex min-h-screen flex-row-reverse">
-      {/* Left Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
-
-          {/* Register Link */}
           <div className="mb-8">
             <span className="text-gray-600">Already have an account? </span>
-            
-            <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+            <Link to="/login" className="text-blue-600 hover:underline">
+              Login
+            </Link>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit}>
-            {/* Error Message */}
             {error && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
                 <p className="text-red-600 text-sm">{error}</p>
               </div>
             )}
 
-            {/* Name Field */}
             <div className="mb-6">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                 Name
               </label>
               <input
-                type="name"
+                type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -67,7 +93,6 @@ const Register: React.FC = () => {
               />
             </div>
 
-            {/* Email Field */}
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Email
@@ -82,9 +107,8 @@ const Register: React.FC = () => {
               />
             </div>
 
-            {/* Password Field */}
             <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2 focus:outline-none">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
               <input
@@ -97,26 +121,27 @@ const Register: React.FC = () => {
               />
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer mt-5"
+              disabled={loading}
+              className={`w-full bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors cursor-pointer mt-5 ${
+                loading ? "opacity-70" : "hover:bg-blue-700"
+              }`}
             >
-              Create Account
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
         </div>
       </div>
 
-      {/* Right Side - Pharmacy Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: 'linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1))',
           }}
         >
-          <img src="/login-img.png" alt="" className='w-full h-full' />
+          <img src="/login-img.png" alt="" className="w-full h-full" />
         </div>
       </div>
     </div>

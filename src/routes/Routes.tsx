@@ -42,6 +42,7 @@ import SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard"
 import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
 import Register from "@/pages/Login/Register";
 import WithAuth from "@/Config/WithAuth";
+import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
 
 
 const routes = createBrowserRouter([
@@ -76,6 +77,10 @@ const routes = createBrowserRouter([
       {
         path: "/store-profile/:id",
         element: <StoreHome />,
+      },
+      {
+        path: "/customer-support",
+        element: <CustomerSupport />,
       },
       {
         path: "/login",
