@@ -1,143 +1,144 @@
 import ProductForm, { ProductFormValues, ProductFormRef } from "./ProductForm";
 import PrimaryButton from "@/common/PrimaryButton";
 import { FaPlus } from "react-icons/fa6";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // useParams is no longer needed
 import ProductPreview from "./ProductPreview";
-import MediaUpload, { MediaData } from "./MediaUpload";
-import { useAddProductMutation, useGetProductByIdQuery } from "@/Redux/Features/products/products.api";
-import { useState, useRef, useEffect } from "react";
+import MediaUpload from "./MediaUpload";
+import { useAddProductMutation } from "@/Redux/Features/products/products.api"; // Removed update and fetch
+import { useState, useRef } from "react"; // Removed useEffect
 import { toast } from "sonner";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
+import { buildFormData } from "./buildFormData";
+import { MediaData } from "@/types/SellerDashboardTypes/MediaUpload";
+ // Assuming Category is a global type now
 
-const AddProduct = () => {
-  const {id} = useParams()
-  const { data: categories } = useGetAllCategoriesQuery({});
-  useEffect(()=>{
-    if(id){
-      console.log(product,id)
-      
-    }
-  },)
-  const {data : product } = useGetProductByIdQuery({id:id as string})
+// NOTE: All 'defaultProduct' and 'defaultMedia' state/logic have been removed.
 
-  const [addProduct] = useAddProductMutation();
-  const [mediaData, setMediaData] = useState<MediaData | null>(null);
-  const productFormRef = useRef<ProductFormRef>(null);
+const AddProductPage = () => { // Renamed from AddProduct to AddProductPage for clarity
   const navigate = useNavigate();
 
+  // Fetch categories (still needed for the form)
+  const { data: categories } = useGetAllCategoriesQuery({});
+
+  // Mutations (Only Add needed)
+  const [addProduct] = useAddProductMutation();
+
+  // State
+  // mediaData is now optional since it might not be set initially
+  const [mediaData, setMediaData] = useState<MediaData | null>(null);
+  const productFormRef = useRef<ProductFormRef>(null);
+
+  // Trigger form submission
   const handleSaveChanges = async () => {
     if (productFormRef.current) {
       await productFormRef.current.submit();
     }
   };
 
-  const handleFormSubmit = async (data: ProductFormValues) => {
+  // Handle actual form submit (Simplified for creation)
+  const handleFormSubmit = async (data: Partial<ProductFormValues>) => {
+    // 1. Ensure main image is uploaded for the new product
     if (!mediaData || !mediaData.images.mainImage) {
       toast.error("Please select at least a main image.");
       return;
     }
+
+    // 2. Handle category lookup
+    const categoryNameOrId = data.productCategory;
+
+    if (!categoryNameOrId) {
+      toast.error("Please select a product category.");
+      return;
+    }
+
     const category = categories?.data?.find(
       (item: { _id: string; categoryName: string }) =>
-        item.categoryName === data.productCategory
+        item._id === categoryNameOrId ||
+        item.categoryName === categoryNameOrId
+    );
+    
+    if (!category || !category._id) {
+        toast.error("Invalid category selected.");
+        return;
+    }
+    const categoryId = category._id;
+
+    // 3. Convert to FormData and call mutation
+    const formData = buildFormData(
+      data, // Use all form data for creation
+      mediaData,
+      categoryId,
+      false // isEditMode is always false
     );
 
-    const formData = new FormData();
-
-    formData.append("productName", data.productName);
-    formData.append("productCategory", category?._id);
-    formData.append("productSKU", data.sku);
-    formData.append("companyName", data?.brandName as string);
-    formData.append("gender", data.gender as string);
-    formData.append("availableSize", data.availableSize as string);
-    formData.append("productDescription", data.description as string);
-
-    if (mediaData.images.mainImage)
-      formData.append("mainImage", mediaData.images.mainImage);
-    if (mediaData.images.sideImage)
-      formData.append("sideImage", mediaData.images.sideImage);
-    if (mediaData.images.sideImage2)
-      formData.append("sideImage2", mediaData.images.sideImage2);
-    if (mediaData.images.lastImage)
-      formData.append("lastImage", mediaData.images.lastImage);
-    if (mediaData.video) formData.append("video", mediaData.video);
-
-    if (data?.quantity !== undefined && data?.quantity !== null) {
-      formData.append("stock", String(Number(data.quantity)));
-    }
-
-    if (data?.currency) {
-      formData.append("currency", data.currency);
-    }
-
-    if (data?.pricePerUnit !== undefined && data?.pricePerUnit !== null) {
-      formData.append("pricePerUnit", String(Number(data.pricePerUnit)));
-    }
-
-    if (data?.specialPrice !== undefined && data?.specialPrice !== null) {
-      formData.append("specialPrice", String(Number(data.specialPrice)));
-    }
-
-    if (data?.specialPriceFrom) {
-      formData.append("specialPriceStartingDate", data.specialPriceFrom);
-    }
-
-    if (data?.specialPriceTo) {
-      formData.append("specialPriceEndingDate", data.specialPriceTo);
-    }
-
-    if (data?.weight !== undefined && data?.weight !== null) {
-      formData.append("weight", String(Number(data.weight)));
-    }
-
     try {
-      toast.loading("Adding product...", { id: "addProduct" });
+      toast.loading("Adding product...", { id: "productAction" });
+
       const res = await addProduct(formData).unwrap();
+
       if (res.success) {
-        toast.success("Product added successfully!", { id: "addProduct" });
+        toast.success("Product added successfully!", { id: "productAction" });
         navigate("/seller-dashboard/products");
       } else {
         toast.error(res.message || "Failed to add product.", {
-          id: "addProduct",
+          id: "productAction",
         });
       }
     } catch (error) {
       console.error("Failed to add product:", error);
-      toast.error("An unexpected error occurred.", { id: "addProduct" });
+      toast.error("An unexpected error occurred.", { id: "productAction" });
     }
   };
 
   return (
     <div className="space-y-10">
-      <div className="flex items-center justify-between ">
-        <div className=""></div>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div></div>
         <PrimaryButton
           type="Primary"
           title="Bulk Upload"
           rightIcon={<FaPlus />}
           className="px-12"
-          onClick={() => navigate("/seller-dashboard/products/add-bulk-product")}
+          onClick={() =>
+            navigate("/seller-dashboard/products/add-bulk-product")
+          }
         />
       </div>
 
       <div className="flex gap-10">
+        {/* Left: Preview */}
         <div className="flex-1">
-          <ProductPreview
-            file={mediaData?.images.mainImage as File}
-          />
+          {/* Note: Removed 'as File' cast for cleaner typing, assuming MediaUpload ensures the correct type */}
+          <ProductPreview file={mediaData?.images.mainImage} /> 
         </div>
 
+        {/* Right: Form + Media */}
         <div className="space-y-10 flex-2">
-          <MediaUpload onMediaChange={setMediaData} />
+          {/* Default media is no longer passed as we are creating a new product */}
+          <MediaUpload
+            onMediaChange={setMediaData}
+            // defaultMedia is not passed as we are creating
+          />
+
           <ProductForm
             ref={productFormRef}
             onSubmit={handleFormSubmit}
+            // defaultValue is not passed
+            isEditMode={false} // Always false
           />
+
           <div className="flex gap-6 justify-end">
-            <PrimaryButton type="Outline" title="Cancel" className="" />
+            <PrimaryButton
+              type="Outline"
+              title="Cancel"
+              onClick={() => navigate("/seller-dashboard/products")}
+            />
             <PrimaryButton
               type="Primary"
-              title="Save Changes"
+              title="Create Product" // Title is fixed
               onClick={handleSaveChanges}
+              className="w-full sm:w-auto min-w-[120px]"
             />
           </div>
         </div>
@@ -146,4 +147,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddProductPage;

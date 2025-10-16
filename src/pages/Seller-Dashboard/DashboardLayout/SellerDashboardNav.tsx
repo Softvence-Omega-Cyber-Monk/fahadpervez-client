@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaBell, FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 
 interface DashboardNavProps {
@@ -30,12 +30,14 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
         </button>
 
         {/* Logo */}
+          <NavLink to="/">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 flex items-center justify-center">
             <img src={logo} alt="logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-blue-600 font-bold text-2xl md:text-3xl">Logoipsum</h1>
         </div>
+          </NavLink>
       </div>
 
       {/* Center: Notification + Cart (Always Visible) */}
