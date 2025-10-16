@@ -23,7 +23,7 @@ const Home = () => {
     (async () => {
       try {
         await refreshToken(null).unwrap();
-      } catch (error) {
+      } catch {
         toast.error("Please Login");
       }
     })()

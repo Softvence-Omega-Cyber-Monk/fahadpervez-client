@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
+import CommonWrapper from "@/common/CommonWrapper";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -26,22 +27,24 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav>
+    <nav className="">
       <div
-        className={`flex justify-center fixed top-0 z-50 w-full py-8 transition-all duration-300 ${
+        className={`h-22 flex items-center  justify-center fixed top-0 z-50 w-full  transition-all duration-300 ${
           scrolled ? "backdrop-blur-md bg-white/30 shadow-sm" : "bg-transparent"
         }`}
       >
-        <div className="flex items-center justify-between w-6xl px-4 sm:px-6">
+        <div className=" w-full">
+        <CommonWrapper>
+        <div className="w-full flex items-center justify-between ">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="">
             <Link to="/" className="text-white text-2xl font-bold">
               <img src="/Logo.png" alt="Logo" className="h-8 sm:h-10 w-auto" />
             </Link>
           </div>
 
           {/* Right icons (desktop only) */}
-          <div className="hidden sm:flex items-center gap-4 relative">
+          <div className="hidden sm:flex items-center gap-4 relative ">
             <Search className="text-[#455058] cursor-pointer" />
             <Link to={`/my-cart/${10}`}>
               <ShoppingCart className="text-[#455058] cursor-pointer" />
@@ -105,6 +108,8 @@ const Navbar: React.FC = () => {
               />
             )}
           </div>
+        </div>
+        </CommonWrapper>
         </div>
       </div>
 
