@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import PrimaryButton from "@/common/PrimaryButton";
 import { MdOutlineFileDownload } from "react-icons/md";
 import BulkUploadHeader from "./BulkUploadHeader";
@@ -10,38 +11,52 @@ import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories
 import { Product } from "@/types/Product";
 import { useGetAllProductsQuery } from "@/Redux/Features/products/products.api";
 
-
 const AddBulkProduct = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [products, setProducts] = useState<(Product & { issues?: any[]; status?: string })[]>([]);
-  const [validationStats, setValidationStats] = useState({ total: 0, valid: 0, warnings: 0, errors: 0 });
-  const {data:categories} = useGetAllCategoriesQuery({});
-  const {data:allProducts} = useGetAllProductsQuery({})
-  console.log(categories)
+  const [, setFile] = useState<File | null>(null);
+  const [, setProducts] = useState<(Product & { issues?: any; status?: string })[]>([]);
+  const [, setValidationStats] = useState({
+    total: 0,
+    valid: 0,
+    warnings: 0,
+    errors: 0,
+  });
+
+  const { data: categories } = useGetAllCategoriesQuery({});
+  const { data: allProducts } = useGetAllProductsQuery({});
   const dispatch = useAppDispatch();
-    const handleFileUpload = (uploadedFile: File) => {
+
+  const handleFileUpload = (uploadedFile: File) => {
     setFile(uploadedFile);
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const text = e.target?.result as string;
-      const parsedProducts = parseCSV(text,categories.data,allProducts.data);
-      console.log({parsedProducts,categories})
-      setProducts(parsedProducts);
-      dispatch(setBulkProduct(parsedProducts));
-      setValidationStats({
-        total: parsedProducts.length,
-        valid: parsedProducts.filter((p) => p.status === "valid").length,
-        warnings: parsedProducts.filter((p) => p.status === "warning").length,
-        errors: parsedProducts.filter((p) => p.status === "error").length,
-      });
+
+      try {
+        const parsedProducts = parseCSV(
+          text,
+          categories?.data || [],
+          allProducts?.data || []
+        );
+
+        console.log({ parsedProducts });
+        setProducts(parsedProducts);
+        dispatch(setBulkProduct(parsedProducts));
+
+        setValidationStats({
+          total: parsedProducts.length,
+          valid: parsedProducts.filter((p) => p.status === "valid").length,
+          warnings: parsedProducts.filter((p) => p.status === "warning").length,
+          errors: parsedProducts.filter((p) => p.status === "error").length,
+        });
+      } catch (error: any) {
+        console.error("Error during file upload:", error.message);
+      }
     };
 
     reader.readAsText(uploadedFile);
   };
 
-  const onFileUpload = (file: File) => {
-    handleFileUpload(file);
-  };
   return (
     <div className="space-y-10">
       <div className="flex items-center justify-between">
@@ -57,10 +72,11 @@ const AddBulkProduct = () => {
           leftIcon={<MdOutlineFileDownload className="size-6" />}
         />
       </div>
-      <BulkUploadHeader /> 
-      <UploadProductFile onFileUpload={onFileUpload} />
+      <BulkUploadHeader />
+      <UploadProductFile onFileUpload={handleFileUpload} />
     </div>
   );
 };
 
 export default AddBulkProduct;
+  
