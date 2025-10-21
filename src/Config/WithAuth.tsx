@@ -9,7 +9,6 @@ interface IWithAuthProps {
 
 const WithAuth = ({ children, requiredRole }: IWithAuthProps) => {
     const { data, isLoading } = useGetMeQuery(null);
-
     if (!isLoading && !data?.data?.email) {
         return <Navigate to={"/login"} />
     };

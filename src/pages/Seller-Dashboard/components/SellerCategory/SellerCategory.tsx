@@ -6,6 +6,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { useCreateNewCategoryMutation, useDeleteCategoryByIdMutation, useGetAllCategoriesQuery, useUpdateCategoryByIdMutation } from '@/Redux/Features/categories/categories.api';
 import { useAppSelector } from '@/hooks/useRedux';
+import Swal from 'sweetalert2'
 
 const SellerCategory = () => {
   // RTK Query hooks
@@ -181,7 +182,17 @@ const SellerCategory = () => {
   // Delete category with RTK Query
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to delete this category?')) {
+     const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this category?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+    reverseButtons: true,
+    focusCancel: true,
+  });
+    if (result.isConfirmed) {
       try {
         await deleteCategoryById(id).unwrap();
         toast.success('Category deleted successfully!');

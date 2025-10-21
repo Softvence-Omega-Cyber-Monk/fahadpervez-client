@@ -47,6 +47,7 @@
     "recharts": "^3.2.1",
     "slick-carousel": "^1.8.1",
     "sonner": "^2.0.7",
+    "sweetalert2": "^11.26.3",
     "swiper": "^12.0.2",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.12",

@@ -98,7 +98,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "buyer-dashboard",
-    element: <WithAuth><BuyerDashboardLayout /></WithAuth>,
+    element: <WithAuth requiredRole="BUYER"><BuyerDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,
@@ -149,7 +149,7 @@ const routes = createBrowserRouter([
 
   {
     path: "admin-dashboard",
-    element: <WithAuth><AdminDashboardLayout /></WithAuth>,
+    element: <WithAuth requiredRole="ADMIN"><AdminDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,
@@ -207,7 +207,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/seller-dashboard",
-    element: <SellerDashboardLayout />,
+    element: <WithAuth requiredRole="VENDOR"><SellerDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,
