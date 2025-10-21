@@ -63,29 +63,20 @@ const Navbar: React.FC = () => {
                   <ul className="py-2">
                     <li>
                       <Link
-                        to="/buyer-dashboard"
+                        to="/"
                         className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={() => setMenuOpen(false)}
                       >
-                        Buyer Dashboard
+                        My Account
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="/seller-dashboard/dashboard"
+                        to="/customer-support"
                         className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={() => setMenuOpen(false)}
                       >
-                        Seller Dashboard
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/admin-dashboard"
-                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        Admin Dashboard
+                        Customer Support
                       </Link>
                     </li>
                   </ul>
@@ -130,21 +121,17 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
             <li className="px-6 py-2">
-              <Link to="/buyer-dashboard" onClick={() => setMobileOpen(false)}>
-                Buyer Dashboard
+              <Link to="/" onClick={() => setMobileOpen(false)}>
+                My Account
               </Link>
             </li>
-            <li className="px-6 py-2">
+            <li>
               <Link
-                to="/seller-dashboard/dashboard"
-                onClick={() => setMobileOpen(false)}
+                to="/customer-support"
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                onClick={() => setMenuOpen(false)}
               >
-                Seller Dashboard
-              </Link>
-            </li>
-            <li className="px-6 py-2">
-              <Link to="/admin-dashboard" onClick={() => setMobileOpen(false)}>
-                Admin Dashboard
+                Customer Support
               </Link>
             </li>
           </ul>
