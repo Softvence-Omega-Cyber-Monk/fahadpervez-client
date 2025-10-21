@@ -2,13 +2,17 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
 import CommonWrapper from "@/common/CommonWrapper";
+import { useAppSelector } from "@/hooks/useRedux";
+
+
+
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
+  const state = useAppSelector(state=> state.auth.user)
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
@@ -63,7 +67,7 @@ const Navbar: React.FC = () => {
                   <ul className="py-2">
                     <li>
                       <Link
-                        to="/"
+                        to={`${state?.role === "ADMIN" ? '/admin-dashboard' : state?.role === "VENDOR" ? '/seller-dashboard' : state?.role === "BUYER" ? '/buyer-dashboard' : '/login'}`}
                         className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={() => setMenuOpen(false)}
                       >
