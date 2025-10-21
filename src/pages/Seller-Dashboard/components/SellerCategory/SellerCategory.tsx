@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import {
-  useGetCategoriesQuery,
-  useCreateCategoryMutation,
-  useUpdateCategoryMutation,
-  useDeleteCategoryMutation,
   Category,
 } from '../../../../store/Slices/categoryApi';
 import { Spinner } from '@/components/ui/spinner';
+import { useCreateNewCategoryMutation, useDeleteCategoryByIdMutation, useGetAllCategoriesQuery, useUpdateCategoryByIdMutation } from '@/Redux/Features/categories/categories.api';
+import { useAppSelector } from '@/hooks/useRedux';
 
-const SellerCategory: React.FC = () => {
+const SellerCategory = () => {
   // RTK Query hooks
   const { 
     data: categories = [], 
     isLoading, 
     error: fetchError,
     refetch 
-  } = useGetCategoriesQuery();
-  
-  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
-  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
-  const [deleteCategory] = useDeleteCategoryMutation();
-
+  } = useGetAllCategoriesQuery({});
+  const [createNewCategory, { isLoading: isCreating, isSuccess }] = useCreateNewCategoryMutation();
+  const [updateCategoryById, { isLoading: isUpdating }] = useUpdateCategoryByIdMutation();
+  const [deleteCategoryById] = useDeleteCategoryByIdMutation();
+  const token = useAppSelector(state=> state?.auth?.user?.token)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState({
@@ -119,9 +116,9 @@ const SellerCategory: React.FC = () => {
   const openEditModal = (category: Category) => {
     setEditingCategory(category);
     setFormData({
-      name: category.name,
+      name: category.categoryName,
       image: null,
-      imagePreview: category.image
+      imagePreview: category.imageUrl as string
     });
     setErrors({});
     setIsModalOpen(true);
@@ -142,26 +139,35 @@ const SellerCategory: React.FC = () => {
   // Create or update category with RTK Query
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
     try {
       const categoryFormData = new FormData();
-      categoryFormData.append('name', formData.name.trim());
-      
+      categoryFormData.append('categoryName', formData.name.trim());
       if (formData.image) {
         categoryFormData.append('image', formData.image);
       }
 
       if (editingCategory) {
-        await updateCategory({ 
-          id: editingCategory.id, 
-          formData: categoryFormData 
-        }).unwrap();
-        toast.success('Category updated successfully!');
+        console.log("editing category",editingCategory,categoryFormData.get('categoryName'))
+       
+          try {
+            await updateCategoryById({
+            id: editingCategory._id, 
+            formData: categoryFormData 
+          }).unwrap();
+          } catch (error) {
+            console.log(error)
+          }
+          toast.success('Category updated successfully!');
+        
       } else {
-        await createCategory(categoryFormData).unwrap();
-        toast.success('Category created successfully!');
+        console.log("Category Formdata",categoryFormData)
+        await createNewCategory({categoryFormData,token}).unwrap();
+        if(isSuccess){
+          toast.success('Category created successfully!');
+          refetch()
+        }
       }
-      
+
       closeModal();
     } catch (error: unknown) {
       let errorMessage = 'Something went wrong!';
@@ -177,7 +183,7 @@ const SellerCategory: React.FC = () => {
     e.stopPropagation();
     if (window.confirm('Are you sure you want to delete this category?')) {
       try {
-        await deleteCategory(id).unwrap();
+        await deleteCategoryById(id).unwrap();
         toast.success('Category deleted successfully!');
       } catch (error: unknown) {
       let errorMessage = 'Failed to delete category!';
@@ -222,7 +228,7 @@ const SellerCategory: React.FC = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Categories Grid */}
-        {categories.length === 0 ? (
+        {categories?.data?.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm p-12 text-center">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -238,20 +244,20 @@ const SellerCategory: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {categories.map(category => (
-              <div key={category.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
+            {categories?.data?.map((category : Category)=> (
+              <div key={category._id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
                 {/* Category Image */}
                 <div className="aspect-square bg-gray-100 relative">
                   <img
-                    src={category.image}
-                    alt={category.name}
+                    src={category.imageUrl}
+                    alt={category.categoryName}
                     className="w-full h-full object-cover"
                   />
                 </div>
 
                 {/* Category Info */}
                 <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-1 truncate">{category.name}</h3>
+                  <h3 className="font-semibold text-gray-900 mb-1 truncate">{category.categoryName}</h3>
                   <p className="text-xs text-gray-500">
                     Created {new Date(category.createdAt).toLocaleDateString()}
                   </p>
@@ -268,7 +274,7 @@ const SellerCategory: React.FC = () => {
                       Edit
                     </button>
                     <button
-                      onClick={(e) => handleDelete(e, category.id)}
+                      onClick={(e) => handleDelete(e, category._id)}
                       className="flex-1 flex items-center justify-center gap-1 bg-red-50 hover:bg-red-100 text-red-600 font-medium px-3 py-2 rounded-md transition-colors duration-200 text-sm cursor-pointer"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

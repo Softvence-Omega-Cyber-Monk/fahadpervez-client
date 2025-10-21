@@ -2,10 +2,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export interface Category {
-  id: string;
-  name: string;
-  image: string;
+  _id: string;
+  categoryName: string;
+  image:File,
+  imageUrl?: string;
   createdAt: string;
+  imagePreview?:string
 }
 
 export const categoryApi = createApi({
