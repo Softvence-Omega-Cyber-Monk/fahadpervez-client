@@ -7,7 +7,6 @@ export const baseApi = createApi({
         baseUrl : `${ProjectConfig.apiBaseUrl}/api/v1`,
         credentials : "include"
     }),
-    
     endpoints: () => ({}),
-    tagTypes : ["USER", "PRODUCTS", "ORDER", "MESSAGE", "ADMIN", "CATEGORY","DELETED_PRODUCTS"],
+    tagTypes : ["USER", "PRODUCTS", "ORDER", "MESSAGE", "ADMIN", "CATEGORY","DELETED_PRODUCTS","CATEGORY","MY_ORDER","ORDER_ADMIN"],
 });

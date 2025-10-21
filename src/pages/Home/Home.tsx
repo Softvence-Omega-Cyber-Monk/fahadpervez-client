@@ -27,7 +27,7 @@ const Home = () => {
         toast.error("Please Login");
       }
     })()
-  }, []);
+  }, [refreshToken]);
 
   // embla-carousel-autoplay
   const heroCarousel: IHeroData[] = [

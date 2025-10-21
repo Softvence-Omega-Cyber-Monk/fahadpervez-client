@@ -9,6 +9,7 @@ import { TbReportSearch } from "react-icons/tb";
 import { MdLocalShipping, MdOutlinePayments } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
+import Logout from "@/components/Logout/Logout";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -65,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 rounded-none md:rounded-lg shadow-md p-4 flex flex-col transform transition-transform duration-300 mt-12
+        className={`fixed md:static top-0 left-0 z-50 bg-white w-64 rounded-none md:rounded-lg shadow-md p-4 flex flex-col justify-between transform transition-transform duration-300 mt-12
           ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
           h-screen md:h-auto overflow-y-auto
         `}
@@ -82,6 +83,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </Link>
           ))}
         </nav>
+        <Logout/>
       </div>
     </>
   );

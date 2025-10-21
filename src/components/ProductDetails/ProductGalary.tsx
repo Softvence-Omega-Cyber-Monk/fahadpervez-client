@@ -10,26 +10,45 @@ import {
 import { Product } from "@/types/Product";
 import { toast } from "sonner";
 import { useAddWishListMutation, useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
+import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 
 const ProductGallery = ({ product }: { product: Product }) => {
   // --- State ---
+  const {data:user}  =useGetMeQuery({})
+  const [addWishlist, { isSuccess,isError }] = useAddWishListMutation({});
   const [images, setImages] = useState<string[]>([]);
+  const [,setUserId] = useState('');
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(0);
-  const [addWishlist, { isSuccess,isError }] = useAddWishListMutation({});
-  const {data:wishlistData} = useGetAllWishListQuery({});
-    const [wishlist, setWishlist] = useState(false);
-
+  const {data:wishlistData,isLoading} = useGetAllWishListQuery({userID:"68f0cf68062cfcdc93dc75ad"});
+  const [wishlist, setWishlist] = useState(false);
   // --- Update images when product changes ---
   useEffect(() => {
-    setImages([
-      product.mainImageUrl!,
-      product.sideImageUrl!,
-      product.sideImage2Url!,
-      product.lastImageUrl!,
-      product.videoUrl!,
-    ]);
-  }, [product]);
+      setImages([
+          product.mainImageUrl!,
+          product.sideImageUrl!,
+          product.sideImage2Url!,
+          product.lastImageUrl!,
+          product.videoUrl!,
+        ]);
+    }, [product]);
+    
+    useEffect(() => {
+        if (user) {
+            setUserId(user?.data?._id)
+        }
+    }, [user])
+    
+    useEffect(() => {
+        if (wishlistData) {
+            wishlistData.data.map((wish: {productId: string}) => {
+                if (wish.productId === product._id) {
+                    setWishlist(true);
+                }
+            })
+        }
+    }, [wishlistData,product._id])
+    if(isLoading) return <div>Loading...</div>
 
   // --- Helper: Render Main Preview ---
   const renderMainPreview = () => {
@@ -82,15 +101,18 @@ const ProductGallery = ({ product }: { product: Product }) => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
 
-  const handleAddWishlist = () => {
-    console.log(wishlistData)
-    addWishlist(product._id);
-    if (isSuccess) {
-        toast.success("Product added to wishlist");
-        setWishlist(!wishlist);
-        console.log(wishlist)
+  const handleAddWishlist = async() => {
+    console.log(product._id)
+    try {
+        await addWishlist(product._id).unwrap();
+        if (isSuccess) {
+            console.log(isSuccess)
+            toast.success("Product added to wishlist");
+        }
+        
+    } catch {
+        if (isError) toast.error("Failed to add product to wishlist");
     }
-    if (isError) toast.error("Failed to add product to wishlist");
   };
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">

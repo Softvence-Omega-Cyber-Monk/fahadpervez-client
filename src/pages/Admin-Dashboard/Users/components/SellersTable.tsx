@@ -54,7 +54,7 @@ const SellersTable = ({ data }: any) => {
                         <tbody className="divide-y divide-gray-200">
                             {/* Table Row */}
                             {
-                                data?.map((item : any) => (
+                                data?.data.map((item : any) => (
                                     <tr key={item._id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center gap-3">
