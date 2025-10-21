@@ -6,13 +6,13 @@ const userApi = baseApi.injectEndpoints({
             query: () => ({
                 url: "/users/customers"
             }),
-            transformResponse: (data) => data.data
+            transformResponse: (data) => data
         }),
         getAllSellers: builder.query({
             query: () => ({
                 url: "/users/vendors"
             }),
-            transformResponse: (data) => data.data
+            transformResponse: (data) => data
         }),
         updateProfile: builder.mutation({
             query: (data) => ({

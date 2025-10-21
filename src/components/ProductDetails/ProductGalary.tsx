@@ -17,7 +17,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
   const {data:user}  =useGetMeQuery({})
   const [addWishlist, { isSuccess,isError }] = useAddWishListMutation({});
   const [images, setImages] = useState<string[]>([]);
-  const [userId,setUserId] = useState('');
+  const [,setUserId] = useState('');
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const {data:wishlistData,isLoading} = useGetAllWishListQuery({userID:"68f0cf68062cfcdc93dc75ad"});
@@ -41,7 +41,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
     
     useEffect(() => {
         if (wishlistData) {
-            wishlistData.data.map((wish) => {
+            wishlistData.data.map((wish: {productId: string}) => {
                 if (wish.productId === product._id) {
                     setWishlist(true);
                 }
@@ -50,7 +50,6 @@ const ProductGallery = ({ product }: { product: Product }) => {
     }, [wishlistData,product._id])
     if(isLoading) return <div>Loading...</div>
 
-    console.log(wishlistData)
   // --- Helper: Render Main Preview ---
   const renderMainPreview = () => {
     const selected = images[selectedImage];
