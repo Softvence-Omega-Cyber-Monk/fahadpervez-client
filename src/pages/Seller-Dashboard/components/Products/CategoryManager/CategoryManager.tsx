@@ -14,7 +14,7 @@ const CategoryManager: React.FC = () => {
   const [createNewCategory] = useCreateNewCategoryMutation();
   const [updateCategoryById] = useUpdateCategoryByIdMutation();
   const [deleteCategoryById] = useDeleteCategoryByIdMutation();
-  const token = useAppSelector(state=> state.auth.user.token)
+  const token = useAppSelector(state=> state?.auth?.user?.token as string)
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [editingCategory, setEditingCategory] = useState<{ id: string; name: string; description?: string } | null>(null);
