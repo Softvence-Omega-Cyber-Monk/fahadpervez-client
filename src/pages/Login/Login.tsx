@@ -33,7 +33,7 @@ const Login: React.FC = () => {
       toast.error("Login failed. Please check your credentials", { id: toastId });
     }
   };
-  console.log(email,password)
+
   return (
     <div className="flex min-h-screen bg-[#F1F5F8]">
       {/* Left Side - Form */}
