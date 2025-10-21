@@ -19,15 +19,17 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
+  console.log(result,"BaseApi Result")
   if (result.error && result.error.status === 401) {
-    const refreshResult = await baseQuery(
-      "/users/refresh-token",
-      api,
-      extraOptions
-    );
-    if (refreshResult.data) {
+    const refreshResult = await fetch(`${ProjectConfig.apiBaseUrl}/api/v1/users/refresh-token`,{
+      method: "POST",
+      credentials: "include"}).then(res => res.json());
+
+    console.log(refreshResult,"BaseApi Refresh Result")
+    if (refreshResult) {
       api.dispatch(setUser(refreshResult.data));
       result = await baseQuery(args, api, extraOptions);
+      console.log(result,"BaseApi Result2")
     } else {
       api.dispatch(logout());
     }
