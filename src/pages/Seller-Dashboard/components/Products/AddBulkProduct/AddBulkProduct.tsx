@@ -39,7 +39,6 @@ const AddBulkProduct = () => {
           allProducts?.data || []
         );
 
-        console.log({ parsedProducts });
         setProducts(parsedProducts);
         dispatch(setBulkProduct(parsedProducts));
 

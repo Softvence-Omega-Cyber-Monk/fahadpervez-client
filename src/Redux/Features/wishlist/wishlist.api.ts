@@ -17,8 +17,6 @@ const wishListApi = baseApi.injectEndpoints({
         }),
         getAllWishList : bulider.query({
             query : (userID) =>{
-             
-                console.log(userID)
                 return{
                 url : `/wishlist/${userID}`,
                 method : "GET"

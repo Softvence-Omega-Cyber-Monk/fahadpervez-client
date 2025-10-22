@@ -19,7 +19,6 @@ const productSlice = createSlice({
             state.availableSize = action.payload
         },
         setBulkProduct:(state:ProductState,action : PayloadAction<Product[]>)=>{
-            console.log(state,action.payload)
            state.bulkProduct = action.payload
         }
     }

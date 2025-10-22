@@ -148,7 +148,6 @@ const SellerCategory = () => {
       }
 
       if (editingCategory) {
-        console.log("editing category",editingCategory,categoryFormData.get('categoryName'))
        
           try {
             await updateCategoryById({
@@ -161,7 +160,7 @@ const SellerCategory = () => {
           toast.success('Category updated successfully!');
         
       } else {
-        console.log("Category Formdata",categoryFormData)
+
         await createNewCategory({categoryFormData,token}).unwrap();
         if(isSuccess){
           toast.success('Category created successfully!');
