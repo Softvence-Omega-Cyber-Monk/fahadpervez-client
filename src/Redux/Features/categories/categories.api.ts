@@ -10,7 +10,6 @@ const categoriesApi = baseApi.injectEndpoints({
         }),
         createNewCategory:builder.mutation({
             query:(data)=>{
-                console.log(data, "in slice......")
                 return({
                 url:`/category`,
                 method:'POST',
@@ -29,7 +28,6 @@ const categoriesApi = baseApi.injectEndpoints({
         }),
         updateCategoryById:builder.mutation({
             query:(data)=>{
-                console.log(data, "in slice Update......")
                 return({
                 url:`/category/${data.id}`,
                 method:'PUT',

@@ -23,10 +23,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     const refreshResult = await fetch(`${ProjectConfig.apiBaseUrl}/api/v1/users/refresh-token`,{
       method: "POST",
       credentials: "include"}).then(res => res.json());
-
-    console.log(refreshResult,"BaseApi Refresh Result")
     if (refreshResult) {
-      console.log(refreshResult)
       api.dispatch(setUser({token:refreshResult.data.accessToken}));
       result = await baseQuery(args, api, extraOptions);
     } else {

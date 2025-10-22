@@ -28,7 +28,6 @@ export default function BulkUploadSummary({ data }: { data: Product[] }) {
     try {
       if (isConfirmed) {
         const res = await addBulkProduct(data).unwrap();
-        console.log(res);
         if (res.success) {
           toast.success("Products added successfully");
           navigate("/seller-dashboard/products");
@@ -37,7 +36,6 @@ export default function BulkUploadSummary({ data }: { data: Product[] }) {
         setError("Please confirm before submitting");
       }
     } catch (error: { data?: { message?: string } } | any) {
-      console.log(error);
       toast.error(error.data.message);
     }
   };

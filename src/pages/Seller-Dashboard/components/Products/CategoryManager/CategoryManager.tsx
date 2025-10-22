@@ -18,7 +18,6 @@ const CategoryManager: React.FC = () => {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [editingCategory, setEditingCategory] = useState<{ id: string; name: string; description?: string } | null>(null);
-  console.log(token)
   const handleCreateCategory = async () => {
     if (newCategoryName.trim()) {
       const formData = new FormData();
