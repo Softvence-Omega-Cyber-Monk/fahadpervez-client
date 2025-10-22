@@ -13,7 +13,6 @@ const BestSeller: React.FC = () => {
   const {data,isLoading} = useGetAllProductsQuery({})
   if(isLoading) return <div className='min-h-screen grid place-content-center'><Spinner /></div>
   const products = data?.data.slice(0,6);
-  console.log(products)
   // Mobile: 1 item, Tablet: 2, Desktop: 3
   const getItemsPerPage = () => {
     if (window.innerWidth < 640) return 1;   // mobile

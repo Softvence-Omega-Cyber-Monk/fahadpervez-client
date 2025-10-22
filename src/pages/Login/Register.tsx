@@ -34,7 +34,6 @@ const Register: React.FC = () => {
       setLoading(true);
 
       const response = await BuyerRegister({ name, email, password });
-      console.log("Register Response:", response.data);
 
       if (response.data?.token) {
         localStorage.setItem("token", response.data.token);
