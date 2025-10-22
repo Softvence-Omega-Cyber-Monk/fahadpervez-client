@@ -1,28 +1,19 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CommonWrapper from '@/common/CommonWrapper';
+import { useGetAllProductsQuery } from '@/Redux/Features/products/products.api';
+import { Spinner } from '../ui/spinner';
+import { Product } from '@/types/Product';
 
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  originalPrice: string;
-  image: string;
-}
 
 const BestSeller: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [favorites, setFavorites] = useState<Set<number>>(new Set());
-
-  const products: Product[] = [
-    { id: 1, name: 'Harmony biotic digestive tablets', price: '$7.99', originalPrice: '$9.99', image: './bestsell.png' },
-    { id: 2, name: 'Eco-friendly reusable water bottle', price: '$15.49', originalPrice: '$19.99', image: './bestsell.png' },
-    { id: 3, name: 'Organic herbal tea blend', price: '$9.99', originalPrice: '$12.99', image: './bestsell.png' },
-    { id: 4, name: 'Natural vitamin supplement', price: '$14.99', originalPrice: '$18.99', image: './bestsell.png' },
-    { id: 5, name: 'Premium protein powder', price: '$29.99', originalPrice: '$34.99', image: './bestsell.png' }
-  ];
-
+  // const [favorites, setFavorites] = useState<Set<number>>(new Set());
+  const {data,isLoading} = useGetAllProductsQuery({})
+  if(isLoading) return <div className='min-h-screen grid place-content-center'><Spinner /></div>
+  const products = data?.data.slice(0,6);
+  console.log(products)
   // Mobile: 1 item, Tablet: 2, Desktop: 3
   const getItemsPerPage = () => {
     if (window.innerWidth < 640) return 1;   // mobile
@@ -41,14 +32,14 @@ const BestSeller: React.FC = () => {
     setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
 
-  const toggleFavorite = (id: number) => {
-    setFavorites((prev) => {
-      const newFavorites = new Set(prev);
-      if (newFavorites.has(id)) newFavorites.delete(id);
-      else newFavorites.add(id);
-      return newFavorites;
-    });
-  };
+  // const toggleFavorite = (id: number) => {
+  //   setFavorites((prev) => {
+  //     const newFavorites = new Set(prev);
+  //     if (newFavorites.has(id)) newFavorites.delete(id);
+  //     else newFavorites.add(id);
+  //     return newFavorites;
+  //   });
+  // };
 
   // --- Touch swipe support ---
   let touchStartX = 0;
@@ -98,47 +89,49 @@ const BestSeller: React.FC = () => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {products.map((product) => (
+            {products?.map((product:Product) => (
               <Link
-                to={`/product-details/${product.id}`}
-                key={product.id}
+                to={`/product-details/${product._id}`}
+                key={product._id}
                 className={`flex-none w-[calc(100%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)]`}
               >
                 <div className="rounded-lg overflow-hidden group">
                   <div className="relative flex flex-col items-center justify-start">
                     {/* Favorite Button */}
-                    <button
-                      onClick={() => toggleFavorite(product.id)}
+                    {/* <button
+                      onClick={() => toggleFavorite(product._id)}
                       className="absolute top-3 right-3 w-8 h-8 rounded-xl cursor-pointer bg-gray-500 flex items-center justify-center"
                       aria-label="Add to favorites"
                     >
                       <Heart
                         className={`w-5 h-5 ${
-                          favorites.has(product.id)
+                          favorites.has(product._id )
                             ? 'fill-red-500 text-red-500'
                             : 'text-white'
                         }`}
                       />
-                    </button>
+                    </button> */}
 
                     {/* Product Image */}
                     <img
-                      src={product.image}
-                      alt={product.name}
+                      src={product.mainImageUrl}
+                      alt={product.productName}
                       className="w-full sm:h-56 md:h-77 object-contain"
                     />
 
                     {/* Product Info */}
                     <div className="w-full text-center sm:text-left">
                       <h3 className="text-md font-montserrat font-medium text-website-color-blue mb-2 mt-3">
-                        {product.name}
+                        {product.productName}
                       </h3>
                       <div className="flex items-center justify-center sm:justify-start gap-2">
-                        <span className="text-lg font-montserrat font-medium text-website-color-blue">
-                          {product.price}
+                        {product?.specialPrice && (
+                            <span className="text-lg font-montserrat font-medium text-website-color-blue">
+                          {product.specialPrice}
                         </span>
+                        )}
                         <span className="text-sm text-gray-400 line-through">
-                          {product.originalPrice}
+                          {product.pricePerUnit}
                         </span>
                       </div>
                     </div>
