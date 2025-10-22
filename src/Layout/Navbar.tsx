@@ -4,6 +4,7 @@ import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
 import CommonWrapper from "@/common/CommonWrapper";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
+import logo from "../assets/logo.png"
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -41,8 +42,8 @@ const Navbar: React.FC = () => {
         <div className="w-full flex items-center justify-between ">
           {/* Logo */}
           <div className="">
-            <Link to="/" className="text-white text-2xl font-bold">
-              <img src="/Logo.png" alt="Logo" className="h-8 sm:h-10 w-auto" />
+            <Link to="/" className="">
+              <img src={logo} alt="Logo" className="h-8 sm:h-10 w-auto" />
             </Link>
           </div>
 
