@@ -22,7 +22,7 @@ const Login: React.FC = () => {
       const res = await logInUser(data).unwrap();
       if (res.success) {
         // localStorage.setItem("user", res.data);
-        dispatch(setUser({role: res.data.user.role, token:res.data.accessToken}));
+        dispatch(setUser({token:res.data.accessToken}));
         toast.success("Logged In Successfully", { id: toastId });
         navigate("/");
       } else {
@@ -33,7 +33,7 @@ const Login: React.FC = () => {
       toast.error("Login failed. Please check your credentials", { id: toastId });
     }
   };
-  console.log(email,password)
+
   return (
     <div className="flex min-h-screen bg-[#F1F5F8]">
       {/* Left Side - Form */}

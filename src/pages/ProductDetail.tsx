@@ -8,14 +8,18 @@ import { useGetProductByIdQuery } from "@/Redux/Features/products/products.api";
 import { Spinner } from "@/components/ui/spinner";
 import CommonWrapper from "@/common/CommonWrapper";
 
-
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
-  const {data:product , isLoading} = useGetProductByIdQuery({id});
-    if (isLoading) {
-    return <div className="min-h-screen grid place-content-center"><Spinner /></div>;
+  const { data, isLoading } = useGetProductByIdQuery({ id });
+  if (isLoading) {
+    return (
+      <div className="min-h-screen grid place-content-center">
+        <Spinner />
+      </div>
+    );
   }
-
+  const product = data?.data;
+  console.log(product);
   if (!product) {
     return <div>Product not found</div>;
   }
@@ -25,19 +29,27 @@ export default function ProductDetail() {
       <CommonWrapper>
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 flex-wrap">
-          <a href="#" className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+          <a
+            href="#"
+            className="text-gray-600 hover:text-gray-900 text-sm sm:text-base"
+          >
             Shop
           </a>
           <ChevronRight className="h-4 w-4 text-gray-400" />
-          <a href="#" className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+          <a
+            href="#"
+            className="text-gray-600 hover:text-gray-900 text-sm sm:text-base"
+          >
             Categorise
           </a>
           <ChevronRight className="h-4 w-4 text-gray-400" />
-          <span className="text-gray-900 font-semibold text-sm sm:text-base">{product.name}</span>
+          <span className="text-gray-900 text-sm sm:text-base">
+            {product?.productName}
+          </span>
         </nav>
 
         {/* Main Content */}
-        <ProductGalary product={product.data} />
+        <ProductGalary product={product} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-[60px] gap-5">
           {mockProducts.slice(0, 3).map((product) => (
@@ -46,9 +58,7 @@ export default function ProductDetail() {
         </div>
 
         <ProductDetailsTab />
-
       </CommonWrapper>
-
     </div>
-  )
+  );
 }

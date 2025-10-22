@@ -1,90 +1,32 @@
 import React, { useState } from 'react';
 import { Minus, Plus, Trash2, Tag } from 'lucide-react';
-import AddToCartImg from "../../assets/addToCartImg.png"
+// import AddToCartImg from "../../assets/addToCartImg.png"
 import { Link } from 'react-router-dom';
-
-interface CartItem {
-  id: number;
-  name: string;
-  productCode: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { decreaseQuantity, increaseQuantity, removeFromCart } from '@/store/Slices/CartSlice/cartSlice';
 
 const MyCart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      name: 'Harmony biotic digestive tablets',
-      productCode: '34rh9t388',
-      price: 7.99,
-      quantity: 1,
-      image: AddToCartImg
-    },
-    {
-      id: 2,
-      name: 'Harmony biotic digestive tablets',
-      productCode: '34rh9t388',
-      price: 7.99,
-      quantity: 1,
-      image: AddToCartImg
-    },
-    {
-      id: 3,
-      name: 'Harmony biotic digestive tablets',
-      productCode: '34rh9t388',
-      price: 7.99,
-      quantity: 1,
-      image: AddToCartImg
-    },
-    {
-      id: 4,
-      name: 'Harmony biotic digestive tablets',
-      productCode: '34rh9t388',
-      price: 7.99,
-      quantity: 1,
-      image: AddToCartImg
-    },
-    {
-      id: 5,
-      name: 'Harmony biotic digestive tablets',
-      productCode: '34rh9t388',
-      price: 7.99,
-      quantity: 1,
-      image: AddToCartImg
-    },
-    {
-      id: 6,
-      name: 'Harmony biotic digestive tablets',
-      productCode: '34rh9t388',
-      price: 7.99,
-      quantity: 1,
-      image: AddToCartImg
-    }
-  ]);
-
-  const [promoCode, setPromoCode] = useState<string>('');
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const dispatch = useAppDispatch();
 
   const shipping = 1.99;
   const discount = 2.00;
   const tax = 0.50;
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.totalPrice || 0), 0);
   const total = subtotal + shipping - discount + tax;
 
-  const [selectedItemId, setSelectedItemId] = useState<Number | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems(cartItems.map(item =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    ));
-  };
+const today = new Date();
+const threeDaysLater = new Date();
+threeDaysLater.setDate(today.getDate() + 3);
+const deliveryDate = threeDaysLater.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 
-  const removeItem = (id: number) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
 
   return (
     <div className="">
@@ -134,7 +76,7 @@ const MyCart: React.FC = () => {
                     <div className="bg-[#E8EBED] rounded-lg aspect-square flex items-center justify-center">
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={item.title}
                         className="w-full h-full object-contain p-4"
                       />
                     </div>
@@ -143,17 +85,20 @@ const MyCart: React.FC = () => {
                   {/* Product Details */}
                   <div className="flex-1 min-w-0">
                     <h4 className="text-[18px] sm:text-[20px] md:text-[22px] font-[600] text-[#1C2A33] mb-2">
-                      {item.name}
+                      {item.title}
                     </h4>
+                    <p className="text-[#70797E] text-[14px] font-[500] mb-px">
+                      Product Code-{item.productSKU}
+                    </p>
                     <p className="text-[#70797E] text-[14px] font-[500] mb-4">
-                      Product Code-{item.productCode}
+                      Price per unit-{item.pricePerUnit.toFixed(2)}
                     </p>
 
                     {/* Quantity Controls */}
                     <div className="flex items-center gap-3 flex-wrap">
                       <div className="flex  justify-around items-center gap-4 shadow p-2 rounded-full">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => dispatch(decreaseQuantity(item.id))}
                           className="w-10 h-10 cursor-pointer rounded-full bg-[#E6F3FF] flex items-center justify-center hover:bg-gray-50 transition-colors"
                           aria-label="Decrease quantity"
                         >
@@ -166,7 +111,7 @@ const MyCart: React.FC = () => {
                           className="w-10 h-10 rounded-full bg-[#EAEAEA] border border-[#BDBDBD] text-center text-[#1C2A33] font-[500] text-[16px] outline-none"
                         />
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => dispatch(increaseQuantity(item.id))}
                           className="w-10 h-10 cursor-pointer rounded-full flex items-center justify-center bg-[#E6F3FF] hover:bg-gray-50 transition-colors"
                           aria-label="Increase quantity"
                         >
@@ -175,7 +120,7 @@ const MyCart: React.FC = () => {
                       </div>
 
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => dispatch(removeFromCart(item.id))}
                         className="flex items-center gap-2 text-[#FF4444] hover:text-[#CC0000] transition-colors text-[14px] font-[500]"
                       >
                         <Trash2 size={16} />
@@ -187,7 +132,7 @@ const MyCart: React.FC = () => {
                   {/* Price */}
                   <div className="flex-shrink-0 self-start sm:self-center relative bottom-[58px]">
                     <p className="font-[600] text-[#0082FA] text-[24px] not-italic">
-                      ${item.price.toFixed(2)}
+                      ${item?.totalPrice?.toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -242,7 +187,7 @@ const MyCart: React.FC = () => {
                     Estimated Delivery
                   </span>
                   <span className="text-[#1C2A33] text-[14px] font-[600]">
-                    4 August
+                    {deliveryDate}
                   </span>
                 </div>
               </div>
@@ -253,8 +198,8 @@ const MyCart: React.FC = () => {
                   <input
                     type="text"
                     placeholder="Promo Code"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value)}
+                    // value={promoCode}
+                    // onChange={(e) => setPromoCode(e.target.value)}
                     className="w-full px-4 py-3 pr-12 bg-[#F1F5F8] rounded-lg text-[#1C2A33] placeholder:text-[#70797E] text-[15px] font-[500] outline-none focus:ring-2 focus:ring-[#0066FF] transition-all"
                   />
                   <button

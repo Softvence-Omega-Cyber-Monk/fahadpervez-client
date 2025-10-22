@@ -1,4 +1,4 @@
-import { useGetMeQuery } from "@/Redux/Features/auth/auth.api"
+import { useAppSelector } from "@/hooks/useRedux";
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -8,15 +8,14 @@ interface IWithAuthProps {
 }
 
 const WithAuth = ({ children, requiredRole }: IWithAuthProps) => {
-    const { data, isLoading } = useGetMeQuery(null);
-    if (!isLoading && !data?.data?.email) {
+    const role = useAppSelector(state => state?.auth?.user?.role)
+    if (!role) {
         return <Navigate to={"/login"} />
     };
 
-    if (requiredRole && !isLoading && requiredRole !== data?.data?.role) {
+    if (requiredRole && requiredRole !== role) {
         return <Navigate to={"/un-authoraised"} />
     };
-
     return children
 };
 
