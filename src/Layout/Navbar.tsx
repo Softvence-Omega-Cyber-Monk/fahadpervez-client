@@ -2,17 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
 import CommonWrapper from "@/common/CommonWrapper";
-import { useAppSelector } from "@/hooks/useRedux";
-
-
-
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { logout } from "@/store/Slices/AuthSlice/authSlice";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const state = useAppSelector(state=> state.auth.user)
+  const role = useAppSelector(state=> state?.auth?.user?.role)
+  const dispatch = useAppDispatch()
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
@@ -66,13 +65,20 @@ const Navbar: React.FC = () => {
                 <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-lg shadow-lg z-50 animate-fadeIn ">
                   <ul className="py-2">
                     <li>
-                      <Link
-                        to={`${state?.role === "ADMIN" ? '/admin-dashboard' : state?.role === "VENDOR" ? '/seller-dashboard' : state?.role === "BUYER" ? '/buyer-dashboard' : '/login'}`}
+                      {
+                        role ? <Link
+                        to={`${role === "ADMIN" ? '/admin-dashboard' : role === "VENDOR" ? '/seller-dashboard' : role === "BUYER" ? '/buyer-dashboard' : '/login'}`}
                         className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={() => setMenuOpen(false)}
                       >
                         My Account
+                      </Link> : <Link
+                        to="/login"
+                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                      >
+                        Login
                       </Link>
+                      }
                     </li>
                     <li>
                       <Link
@@ -83,6 +89,16 @@ const Navbar: React.FC = () => {
                         Customer Support
                       </Link>
                     </li>
+                    {
+                      role && <li>
+                      <li
+                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                        onClick={() => dispatch(logout())}
+                      >
+                        Logout
+                      </li>
+                      </li>
+                    }
                   </ul>
                 </div>
               )}

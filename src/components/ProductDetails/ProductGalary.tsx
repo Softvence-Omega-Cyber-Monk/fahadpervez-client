@@ -11,17 +11,21 @@ import { Product } from "@/types/Product";
 import { toast } from "sonner";
 import { useAddWishListMutation, useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { addToCart } from "@/store/Slices/CartSlice/cartSlice";
 
 const ProductGallery = ({ product }: { product: Product }) => {
   // --- State ---
   const {data:user}  =useGetMeQuery({})
+  const userId = useAppSelector((state) => state.auth.user?.id);
   const [addWishlist, { isSuccess,isError }] = useAddWishListMutation({});
   const [images, setImages] = useState<string[]>([]);
   const [,setUserId] = useState('');
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(0);
-  const {data:wishlistData,isLoading} = useGetAllWishListQuery({userID:"68f0cf68062cfcdc93dc75ad"});
+  const [quantity, setQuantity] = useState(1);
+  const {data:wishlistData,isLoading} = useGetAllWishListQuery({userID:userId});
   const [wishlist, setWishlist] = useState(false);
+  const dispatch = useAppDispatch();
   // --- Update images when product changes ---
   useEffect(() => {
       setImages([
@@ -95,10 +99,20 @@ const ProductGallery = ({ product }: { product: Product }) => {
           )}
         </button>
       ));
+
   const handleAddToCart = () => {
-    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-    cartItems.push(product);
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    const items ={
+      id: product._id!,
+      image: product.mainImageUrl!,
+      title: product.productName,
+      pricePerUnit: product?.specialPrice || product.pricePerUnit,
+      quantity,
+      totalPrice: (product?.specialPrice || product.pricePerUnit) * quantity,
+      productSKU: product.productSKU
+    }
+    dispatch(addToCart(items));
+    toast.success("Product added to cart");
+    console.log(items)
   };
 
   const handleAddWishlist = async() => {
@@ -224,7 +238,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
             {/* Quantity Selector */}
             <div className="flex justify-around items-center mb-20 border border-white shadow p-2 rounded-full">
               <button
-                onClick={() => setQuantity(Math.max(0, quantity - 1))}
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 className="w-12 h-12 rounded-full bg-[#E6F3FF] flex items-center justify-center hover:bg-gray-50 transition-colors"
               >
                 <Minus className="h-6 w-6 text-gray-600" />
