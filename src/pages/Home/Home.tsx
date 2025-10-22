@@ -23,11 +23,11 @@ const Home = () => {
     (async () => {
       try {
         await refreshToken(null).unwrap();
-      } catch (error) {
+      } catch {
         toast.error("Please Login");
       }
     })()
-  }, []);
+  }, [refreshToken]);
 
   // embla-carousel-autoplay
   const heroCarousel: IHeroData[] = [
@@ -78,8 +78,6 @@ const Home = () => {
             }
           </CarouselContent>
         </Carousel>
-
-
         {/* Other Sections */}
         <HomeCategories />
         <BestSeller />

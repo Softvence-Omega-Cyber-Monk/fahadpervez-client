@@ -4,30 +4,48 @@ import ProductDetailsTab from "@/components/ProductDetails/ProductDetailsTab";
 import ProductCard from "@/components/ProductDetails/ProductCart";
 import ProductGalary from "@/components/ProductDetails/ProductGalary";
 import { mockProducts } from "@/pages/Admin-Dashboard/Product/Product";
-
+import { useGetProductByIdQuery } from "@/Redux/Features/products/products.api";
+import { Spinner } from "@/components/ui/spinner";
+import CommonWrapper from "@/common/CommonWrapper";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
-  const product = mockProducts.find((p) => p.id === id);
-
+  const { data, isLoading } = useGetProductByIdQuery({ id });
+  if (isLoading) {
+    return (
+      <div className="min-h-screen grid place-content-center">
+        <Spinner />
+      </div>
+    );
+  }
+  const product = data?.data;
+  console.log(product);
   if (!product) {
     return <div>Product not found</div>;
   }
 
   return (
     <div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8 mt-20 pt-[50px]">
-      <div className="max-w-[1120px] mx-auto">
+      <CommonWrapper>
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 flex-wrap">
-          <a href="#" className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+          <a
+            href="#"
+            className="text-gray-600 hover:text-gray-900 text-sm sm:text-base"
+          >
             Shop
           </a>
           <ChevronRight className="h-4 w-4 text-gray-400" />
-          <a href="#" className="text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+          <a
+            href="#"
+            className="text-gray-600 hover:text-gray-900 text-sm sm:text-base"
+          >
             Categorise
           </a>
           <ChevronRight className="h-4 w-4 text-gray-400" />
-          <span className="text-gray-900 font-semibold text-sm sm:text-base">{product.name}</span>
+          <span className="text-gray-900 text-sm sm:text-base">
+            {product?.productName}
+          </span>
         </nav>
 
         {/* Main Content */}
@@ -40,9 +58,7 @@ export default function ProductDetail() {
         </div>
 
         <ProductDetailsTab />
-
-      </div>
-
+      </CommonWrapper>
     </div>
-  )
+  );
 }

@@ -1,4 +1,6 @@
+import { useAppDispatch } from '@/hooks/useRedux';
 import { useLogInUserMutation } from '@/Redux/Features/auth/auth.api';
+import { setUser } from '@/store/Slices/AuthSlice/authSlice';
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -9,28 +11,23 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
-
+  const dispatch = useAppDispatch(); 
   const [logInUser] = useLogInUserMutation();
-
+  
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const toastId = toast.loading("Signing you in.....");
-
+    const toastId = toast.loading("Signing you in....."); 
     try {
       const data = { email, password };
       const res = await logInUser(data).unwrap();
-
-      console.log(res);
-
       if (res.success) {
-        localStorage.setItem("user", res.data);
+        // localStorage.setItem("user", res.data);
+        dispatch(setUser({token:res.data.accessToken}));
         toast.success("Logged In Successfully", { id: toastId });
         navigate("/");
       } else {
         toast.error("Login failed. Please check your credentials", { id: toastId });
       }
-
     } catch (error) {
       console.log(error);
       toast.error("Login failed. Please check your credentials", { id: toastId });

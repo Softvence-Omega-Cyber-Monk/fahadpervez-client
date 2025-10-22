@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { useGetCategoriesQuery, useCreateCategoryMutation, useUpdateCategoryMutation, useDeleteCategoryMutation } from '@/store/Slices/categoryApi';
+
 import PrimaryButton from '@/common/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
+import { useCreateNewCategoryMutation, useDeleteCategoryByIdMutation, useGetAllCategoriesQuery, useUpdateCategoryByIdMutation } from '@/Redux/Features/categories/categories.api';
+import { useAppSelector } from '@/hooks/useRedux';
 
 const CategoryManager: React.FC = () => {
-  const { data: categories, isLoading } = useGetCategoriesQuery();
-  const [createCategory] = useCreateCategoryMutation();
-  const [updateCategory] = useUpdateCategoryMutation();
-  const [deleteCategory] = useDeleteCategoryMutation();
-
+  const { data: categories, isLoading } = useGetAllCategoriesQuery({});
+  const [createNewCategory] = useCreateNewCategoryMutation();
+  const [updateCategoryById] = useUpdateCategoryByIdMutation();
+  const [deleteCategoryById] = useDeleteCategoryByIdMutation();
+  const token = useAppSelector(state=> state?.auth?.user?.token as string)
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [editingCategory, setEditingCategory] = useState<{ id: string; name: string; description?: string } | null>(null);
-
+  console.log(token)
   const handleCreateCategory = async () => {
     if (newCategoryName.trim()) {
       const formData = new FormData();
@@ -24,7 +26,7 @@ const CategoryManager: React.FC = () => {
       if (newCategoryDescription.trim()) {
         formData.append('description', newCategoryDescription);
       }
-      await createCategory(formData);
+      await createNewCategory({formData,token}).then(res => console.log(res)).catch(err => console.log(err));
       setNewCategoryName('');
       setNewCategoryDescription('');
     }
@@ -37,13 +39,13 @@ const CategoryManager: React.FC = () => {
       if (editingCategory.description) {
         formData.append('description', editingCategory.description);
       }
-      await updateCategory({ id: editingCategory.id, formData });
+      await updateCategoryById({ id: editingCategory.id, formData });
       setEditingCategory(null);
     }
   };
 
   const handleDeleteCategory = async (id: string) => {
-    await deleteCategory(id);
+    await deleteCategoryById(id);
   };
 
   if (isLoading) return <div><Spinner /></div>;
