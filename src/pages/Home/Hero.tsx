@@ -3,6 +3,7 @@ import Button from "@/components/Button/Button"
 import { MoveUpRight } from "lucide-react"
 import Marquee from "react-fast-marquee";
 import CommonWrapper from "@/common/CommonWrapper";
+import { Link } from "react-router-dom";
 
 interface IHeroData {
     title: string,
@@ -30,10 +31,12 @@ const Hero : React.FC<IHeroProps> = ({ data }) => {
                     Your trusted destination for premium products across all categories.
                 </p>
                 <div>
+                    <Link to="/products/:id">
                     <Button className="font-montserrat text-base sm:text-lg text-gray-100 flex items-center gap-2">
                         Start Shopping Now
                         <MoveUpRight />
                     </Button>
+                    </Link>
                 </div>
                 <Marquee>
                    <div className="flex flex-wrap items-center justify-center gap-6 md:gap-14 mt-10 mb-10 md:mt-40">
