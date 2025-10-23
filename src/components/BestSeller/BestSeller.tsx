@@ -13,6 +13,7 @@ const BestSeller: React.FC = () => {
   const {data,isLoading} = useGetAllProductsQuery({})
   if(isLoading) return <div className='min-h-screen grid place-content-center'><Spinner /></div>
   const products = data?.data.slice(0,6);
+  console.log(products)
   // Mobile: 1 item, Tablet: 2, Desktop: 3
   const getItemsPerPage = () => {
     if (window.innerWidth < 640) return 1;   // mobile
@@ -21,7 +22,7 @@ const BestSeller: React.FC = () => {
   };
 
   const itemsPerPage = getItemsPerPage();
-  const maxIndex = Math.max(0, products.length - itemsPerPage);
+  const maxIndex = Math.max(0, products?.length - itemsPerPage);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
