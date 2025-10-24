@@ -20,13 +20,13 @@ const {
   communicationAlert,
   newReviewsNotification,
   language,
-  // _id,
+  _id,
   name,
   email,
   // password,
   role,
-  isActive,
-  isVerified,
+  // isActive,
+  // isVerified,
   businessName,
   // businessCRNumber,
   // CRDocuments,
@@ -41,10 +41,10 @@ const {
   bankAccountNumber,
   bankRoughingNumber,
   taxId,
-  isPrivacyPolicyAccepted,
-  vendorSignature,
-  vendorContract,
-  isSellerPolicyAccepted,
+  // isPrivacyPolicyAccepted,
+  // vendorSignature,
+  // vendorContract,
+  // isSellerPolicyAccepted,
   address,
   phone,
 } = data.data;
@@ -93,14 +93,14 @@ const notifications = {
   newReviewsNotification,
 };
 
-const security = {
-  isActive,
-  isVerified,
-  isPrivacyPolicyAccepted,
-  isSellerPolicyAccepted,
-  vendorSignature,
-  vendorContract,
-};
+// const security = {
+//   isActive,
+//   isVerified,
+//   isPrivacyPolicyAccepted,
+//   isSellerPolicyAccepted,
+//   vendorSignature,
+//   vendorContract,
+// };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -113,7 +113,7 @@ const security = {
       case 'Notification':
         return <NotificationSettings notifications={notifications} />;
       case 'Security':
-        return <SecuritySettings security={security}/>;
+        return <SecuritySettings userId = {_id}/>;
       default:
         return null;
     }

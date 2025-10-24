@@ -13,12 +13,11 @@ const BestSeller: React.FC = () => {
   const {data,isLoading} = useGetAllProductsQuery({})
   if(isLoading) return <div className='min-h-screen grid place-content-center'><Spinner /></div>
   const products = data?.data.slice(0,6);
-  console.log(products)
   // Mobile: 1 item, Tablet: 2, Desktop: 3
   const getItemsPerPage = () => {
-    if (window.innerWidth < 640) return 1;   // mobile
-    if (window.innerWidth < 768) return 2;   // tablet
-    return 3;                                // desktop
+    if (window.innerWidth < 640) return 1;
+    if (window.innerWidth < 768) return 2;
+    return 3;                  
   };
 
   const itemsPerPage = getItemsPerPage();
@@ -66,7 +65,7 @@ const BestSeller: React.FC = () => {
 
   return (
    <CommonWrapper>
-     <div className="w-full px-4 md:px-0  bg-[#F1F5F8]">
+     <div className="w-full px-4 sm:px-8 xl:px-0   bg-[#F1F5F8] ">
       <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue py-10">BEST SELLERS</h2>
       
       <div className="relative">
@@ -116,7 +115,7 @@ const BestSeller: React.FC = () => {
                     <img
                       src={product.mainImageUrl}
                       alt={product.productName}
-                      className="w-full sm:h-56 md:h-77 object-contain"
+                      className="w-full h-96 object-cover"
                     />
 
                     {/* Product Info */}

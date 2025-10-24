@@ -1,9 +1,9 @@
 import { Spinner } from "@/components/ui/spinner";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
-import { useUpdateProfileMutation } from "@/Redux/Features/user/user.api";
 import { CategoryType, CurrencyAndShippingInformation } from "@/types/SellerDashboardTypes/SettingsTypes";
 import React, { useEffect, useState, useMemo } from "react";
-import toast from "react-hot-toast";
+import {toast} from "sonner";
+import useUpdateProfile from "../../../../hooks/useUpdateProfile";
 
 interface SaveButtonProps {
   type: "primary" | "danger";
@@ -44,8 +44,6 @@ interface StorePreferenceProps {
 const StorePreference: React.FC<StorePreferenceProps> = (props) => {
   const { data, isLoading } = useGetAllCategoriesQuery({});
   const categories = useMemo(() => data?.data || [], [data?.data]);
-  console.log(categories)
-  console.log(props.currencyAndShippingInformation)
   const {
     currency,
     shippingLocation,
@@ -63,7 +61,7 @@ const StorePreference: React.FC<StorePreferenceProps> = (props) => {
   const [selectedShippingLocation, setSelectedShippingLocation] = useState<string[]>(shippingLocation || "Local within city/state");
   const [selectedCategories, setSelectedCategories] = useState<string[]>(productCategory || []);
   const [selectAll, setSelectAll] = useState(false);
-  const [updateProfile] = useUpdateProfileMutation({})
+  const {handleUpdate} = useUpdateProfile()
   
   // Handle Select All for categories
   
@@ -94,13 +92,7 @@ const StorePreference: React.FC<StorePreferenceProps> = (props) => {
       productCategory: selectedCategories,
     };
     try {
-      const res = await updateProfile(storePreferenceUpdate);
-      console.log(res);
-      if (res.data.success === false) {
-        toast.error("Error updating profile: " + res.error);
-      } else {
-        toast.success("Profile Updated Successfully");
-      }
+      await handleUpdate(storePreferenceUpdate);
     } catch (error) {
       toast.error("Error updating profile: " + error);
     }

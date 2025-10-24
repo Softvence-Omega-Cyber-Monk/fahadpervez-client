@@ -22,10 +22,10 @@ const userApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["USER_ME"]
         }),
-        diActivateAccount: builder.mutation({
+        deActivateAccount: builder.mutation({
             query: ({reason , userId}) => ({
                 url: `/users/deactivate/${userId}`,
-                method: "PUT",
+                method: "PATCH",
                 body: {reason}
             })
         }),
@@ -40,4 +40,4 @@ const userApi = baseApi.injectEndpoints({
 });
 
 
-export const { useGetAllBuyersQuery, useGetAllSellersQuery, useUpdateProfileMutation , useDiActivateAccountMutation , useChangePasswordMutation } = userApi;
+export const { useGetAllBuyersQuery, useGetAllSellersQuery, useUpdateProfileMutation , useDeActivateAccountMutation , useChangePasswordMutation } = userApi;

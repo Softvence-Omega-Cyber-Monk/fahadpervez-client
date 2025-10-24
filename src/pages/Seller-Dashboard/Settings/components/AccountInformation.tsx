@@ -1,10 +1,11 @@
-import { useUpdateProfileMutation } from "@/Redux/Features/user/user.api";
 import {
   BasicInformation,
   BusinessInformation,
 } from "@/types/SellerDashboardTypes/SettingsTypes";
-import React, { useRef } from "react";
-import toast from "react-hot-toast";
+import React, { useRef, useState } from "react";
+
+import useUpdateProfile from "../../../../hooks/useUpdateProfile";
+import { toast } from "sonner";
 
 interface SaveButtonProps {
   type: "primary" | "danger";
@@ -44,7 +45,6 @@ interface AccountInformationProps {
 }
 
 const AccountInformation: React.FC<AccountInformationProps> = (props) => {
-  const [updateProfile] = useUpdateProfileMutation();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { name, phone, email, country, language, role, address } =
     props.basicInformation;
@@ -63,13 +63,13 @@ const AccountInformation: React.FC<AccountInformationProps> = (props) => {
   });
 
   const [businessUpdateInformation, setBusinessUpdateInformation] =
-    React.useState({
+  useState({
       businessName,
       businessType,
       phone,
       businessDescription,
     });
-
+    const {handleUpdate} = useUpdateProfile()
   // handle change for both
   const handleBasicChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -87,33 +87,19 @@ const AccountInformation: React.FC<AccountInformationProps> = (props) => {
 
   // onClick handlers
   const handleBasicSave = async () => {
-    
     try {
-      const res = await updateProfile(basicUpdateInformation);
-      console.log(res);
-      if (res.data.success === false) {
-        toast.error("Error updating profile: " + res.error);
-      } else {
-        toast.success("Profile Updated Successfully");
-      }
+      handleUpdate(basicUpdateInformation);
     } catch (error) {
       toast.error("Error updating profile: " + error);
     }
   };
-
   const handleBusinessSave = async() => {
-    console.log("Business Information Updated:", businessUpdateInformation);
     try {
-      const res = await updateProfile(businessUpdateInformation);
-      console.log(res);
-      if (res.data.success === false) {
-        toast.error("Error updating profile: " + res.error);
-      } else {
-        toast.success("Profile Updated Successfully");
-      }
+      handleUpdate(businessUpdateInformation);
     } catch (error) {
       toast.error("Error updating profile: " + error);
     }
+    
 
   };
 
