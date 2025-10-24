@@ -67,10 +67,6 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
   );
 };
 
-<<<<<<< HEAD
-export default DashboardNav;
-=======
 export default DashboardNav;
 
 
->>>>>>> 04e8881909da2c316796f778f38163540d21c380

@@ -1,25 +1,7 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 04e8881909da2c316796f778f38163540d21c380
 import OrderSearchBar from "../components/MyOrders/OrderSearchBar"
 import OrderTable from "../components/MyOrders/OrderTable"
 import OrderTabs from "../components/MyOrders/OrderTabs"
 import Pagination from "../components/MyOrders/Pagination"
-<<<<<<< HEAD
-
-
-const MyOrders = () => {
-  return (
-     <div>
-      <div>
-      <OrderTabs />
-    </div>
-    <OrderSearchBar/>
-    <OrderTable/>
-    <Pagination/>
-     </div>
-=======
 
 const MyOrders = () => {
   return (
@@ -71,7 +53,6 @@ const MyOrders = () => {
         </div>
       </div>
     </div>
->>>>>>> 04e8881909da2c316796f778f38163540d21c380
   )
 }
 

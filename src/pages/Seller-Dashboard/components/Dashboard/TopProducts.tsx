@@ -32,18 +32,9 @@ const products: Product[] = [
   },
 ];
 
-<<<<<<< HEAD
-
-
-
-export default function TopProducts() {
-  return (
-    <div className="bg-light-background rounded-xl p-6 shadow-sm border border-border">
-=======
 export default function TopProducts() {
   return (
     <div className="bg-light-background rounded-xl p-6 border border-border">
->>>>>>> 04e8881909da2c316796f778f38163540d21c380
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="">Top Products</h2>

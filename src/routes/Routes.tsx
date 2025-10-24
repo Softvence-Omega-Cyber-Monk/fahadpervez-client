@@ -41,6 +41,8 @@ import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
 import Register from "@/pages/Login/Register";
 import WithAuth from "@/Config/WithAuth";
 import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
+import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerDashboardLayout";
+import CouponAdminPage from "@/pages/Admin-Dashboard/Coupon/Coupon";
 
 
 const routes = createBrowserRouter([
@@ -168,6 +170,10 @@ const routes = createBrowserRouter([
       {
         path: "message",
         element: <AdminMessage />,
+      },
+      {
+        path: "coupons",
+        element: <CouponAdminPage />
       },
       {
         path: "cms",
