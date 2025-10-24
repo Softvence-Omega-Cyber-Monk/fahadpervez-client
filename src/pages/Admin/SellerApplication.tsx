@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 
 export default function SellerApplication() {
     const { id } = useParams()
-
+    console.log(id)
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-2 text-sm text-gray-600">

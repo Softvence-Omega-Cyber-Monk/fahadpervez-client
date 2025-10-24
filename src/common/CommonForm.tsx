@@ -1,51 +1,49 @@
-// src/components/CommonForm.tsx
-import { useForm } from "react-hook-form";
+import { DefaultValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodSchema } from "zod";
+import { forwardRef, useImperativeHandle, useCallback } from "react";
+import { CommonFormRef, Props } from "@/types/CommonForm";
 
-interface FieldConfig {
-  name: string;
-  label: string;
-  type: string;
-  placeholder?: string;
-  options?: string[];
-}
+function CommonFormComponent<T extends Record<string, unknown>>(
+  { fields, schema, onSubmit }: Props<T>,
+  ref: React.Ref<CommonFormRef>
+) {
+  const defaultValues = fields.reduce((acc, field) => {
+    acc[field.name] = field.defaultValue ?? undefined;
+    return acc;
+  }, {} as Record<string, string | number | undefined>) as DefaultValues<T>; 
 
-interface Props<T> {
-  fields: FieldConfig[];
-  schema: ZodSchema<T>;
-  onSubmitRedux: (data: T) => void;
-}
-
-const CommonForm = <T extends Record<string, unknown>>({
-  fields,
-  schema,
-  onSubmitRedux,
-}: Props<T>) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<T>({
     resolver: zodResolver(schema),
+    defaultValues,
   });
 
-  const onSubmit = (data: T) => {
-    onSubmitRedux(data);
-    console.log(data);
-  };
+  const handleFormSubmit = useCallback(
+    (data: T) => {
+      onSubmit(data);
+    },
+    [onSubmit]
+  );
+
+  useImperativeHandle(ref, () => ({
+    submit: handleSubmit(handleFormSubmit),
+  }));
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {fields.map((field) => (
         <div key={field.name}>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm font-medium mb-2 text-light-gray">
             {field.label}
           </label>
           {field.type === "select" ? (
             <select
               {...register(field.name as import("react-hook-form").Path<T>)}
-              className="border px-3 py-2 rounded w-full"
+              defaultValue={field.defaultValue}
+              className="border border-border px-3 py-2 rounded w-full "
             >
               <option value="">{field.placeholder}</option>
               {field.options?.map((opt) => (
@@ -54,12 +52,42 @@ const CommonForm = <T extends Record<string, unknown>>({
                 </option>
               ))}
             </select>
+          ) : field.type === "badge" ? (
+            <div className="flex flex-wrap items-center gap-4 h-14">
+              {field.options?.map((opt) => (
+                <label key={opt} className="cursor-pointer">
+                  <input
+                    type="radio"
+                    value={opt}
+                    {...register(
+                      field.name as import("react-hook-form").Path<T>
+                    )}
+                    defaultValue={field.defaultValue}
+                    className="hidden peer"
+                  />
+                  <span
+                    className="px-6 py-4 bg-primary-background rounded-full text-sm font-medium text-light-gray peer-checked:bg-black peer-checked:text-light-background  
+          hover:bg-black hover:text-light-background transition"
+                  >
+                    {opt}
+                  </span>
+                </label>
+              ))}
+            </div>
+          ) : field.type === "description" ? (
+            <textarea
+              {...register(field.name as import("react-hook-form").Path<T>)}
+              defaultValue={field.defaultValue}
+              placeholder={field.placeholder}
+              className="border border-border px-3 py-2 rounded w-full h-28 "
+            />
           ) : (
             <input
               type={field.type}
               {...register(field.name as import("react-hook-form").Path<T>)}
+              defaultValue={field.defaultValue}
               placeholder={field.placeholder}
-              className="border px-3 py-2 rounded w-full"
+              className="border border-border px-3 py-2 rounded w-full"
             />
           )}
           {errors[field.name] && (
@@ -71,14 +99,14 @@ const CommonForm = <T extends Record<string, unknown>>({
           )}
         </div>
       ))}
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Submit
-      </button>
     </form>
   );
-};
+}
+
+const CommonForm = forwardRef(CommonFormComponent) as <
+  T extends Record<string, unknown>
+>(
+  props: Props<T> & { ref?: React.Ref<CommonFormRef> }
+) => React.ReactElement;
 
 export default CommonForm;

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "total-products",
+    "title": "Total products",
+    "value": 155,
+    "icon": "box"
+  },
+  {
+    "id": "valid-products",
+    "title": "Valid products",
+    "value": 142,
+    "icon": "check"
+  },
+  {
+    "id": "warnings",
+    "title": "Warnings",
+    "value": 8,
+    "icon": "warning"
+  },
+  {
+    "id": "critical-errors",
+    "title": "Critical Errors",
+    "value": 5,
+    "icon": "alert"
+  }
+]

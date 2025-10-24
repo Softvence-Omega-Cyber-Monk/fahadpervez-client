@@ -1,22 +1,28 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
+
 import SideBar from "./Sidebar";
-import SellerDashboardNav from "./SellerDashboardNav";
+import DashboardNav from "./SellerDashboardNav";
+import { Toaster } from "sonner";
 
+const SellerDashboardLayout: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
-const SellerDashboardLayout = () => {
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar on the left */}
-      <SideBar/>
+    <div className="flex w-full min-h-screen ">
 
-      {/* Right side: full width from Sidebar's end */}
-      <div className="flex-1 flex flex-col bg-gray-50 min-h-screen">
-        {/* Topbar */}
-        <SellerDashboardNav />
-        {/* Main content below the topbar */}
-        <div className="p-10 bg-primary-background min-h-screen">
-        <Outlet/>
-          {/* Add more content here */}
+      {/* Sidebar */}
+      <SideBar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col w-full">
+        {/* Top Navbar */}
+        <DashboardNav onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
+
+        {/* Page content */}
+        <div className="flex-1 p-4 md:p-8 mt-20 md:mt-16 bg-[#F1F5F8]">
+          <Toaster/>
+          <Outlet />
         </div>
       </div>
     </div>

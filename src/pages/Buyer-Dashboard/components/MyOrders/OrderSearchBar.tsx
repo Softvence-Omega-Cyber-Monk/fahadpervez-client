@@ -7,7 +7,11 @@ export default function OrderSearchBar() {
   const [orderStatus] = useState('Order Status');
 
   return (
+<<<<<<< HEAD
     <div className="w-full bg-white mt-8">
+=======
+    <div className="w-full mt-8">
+>>>>>>> 04e8881909da2c316796f778f38163540d21c380
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
         {/* Search Input */}
         <div className="relative flex-1 min-w-0">

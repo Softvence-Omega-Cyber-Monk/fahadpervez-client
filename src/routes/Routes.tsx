@@ -1,26 +1,5 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-// import About from "../pages/About";
-// import Contact from "../pages/Contact";
-// import NotFound from "../pages/NotFound";
-// import Home from "../pages/Home";
-import AdminRoute from "./AdminRoutes";
-// import Login from "@/pages/Login";
-// import Signup from "@/pages/Signup";
-// import Form from "@/pages/Form";
-// import Services from "@/pages/Services";
-import Layout from "@/Layout/AdminLayout";
-
-// Admin Pages
-import AdminDashboard from "@/pages/Admin/AdminDashboard";
-import UsersTab from "@/pages/Admin/UsersTab";
-import BuyerDetails from "@/pages/Admin/BuyerDetails";
-import SellerRequests from "@/pages/Admin/SellerRequests";
-import SellerApplication from "@/pages/Admin/SellerApplication";
-import Orders from "@/pages/Admin/Orders";
-import OrderDetails from "@/pages/Admin/OrderDetails";
-
-import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerDashboardLayout";
 import Dashboard from "@/pages/Buyer-Dashboard/Dashboard/Dashboard";
 import MyOrders from "@/pages/Buyer-Dashboard/MyOrders/MyOrders";
 import WishList from "@/pages/Buyer-Dashboard/WishList/WishList";
@@ -31,7 +10,6 @@ import AdminDashboardLayout from "@/pages/Admin-Dashboard/DashboardLayout/AdminD
 import Users from "@/pages/Admin-Dashboard/Users/Users";
 import Order from "@/pages/Admin-Dashboard/Order/Order";
 import Product from "@/pages/Admin-Dashboard/Product/Product";
-import SalesReports from "@/pages/Admin-Dashboard/SalesReports";
 import Payments from "@/pages/Admin-Dashboard/Payments/Payments";
 import Shipping from "@/pages/Admin-Dashboard/Shipping/Shipping";
 import Support from "@/pages/Admin-Dashboard/Support/Support";
@@ -42,13 +20,27 @@ import Signup from "@/pages/Signup/Signup";
 import Home from "@/pages/Home/Home";
 import Categories from "@/pages/Home/Categories";
 import SingleProduct from "@/pages/Home/SingleProduct";
-
 import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetails";
-
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
 import ProductDetail from "@/pages/ProductDetail";
-
+import MyCartHome from "@/pages/My-Cart/MyCartHome";
+import CheckOut from "@/pages/Checkout/CheckOut";
+import StoreHome from "@/pages/Store-Profile/StoreHome";
+import Notifications from "@/pages/Buyer-Dashboard/Notifications/Notifications";
+import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
+import BuyerProfile from "@/pages/Buyer-Dashboard/BuyerProfile/BuyerProfile";
+import Message from "@/pages/Buyer-Dashboard/Message/Message";
+import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord";
+import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
+import CMSDashboard from "@/components/Admin/CMS/CMSDashboard";
+import AdminMessage from "@/pages/Admin-Dashboard/Message/AdminMessage";
+import { CMSEditPage } from "@/components/Admin/CMS/CMSEditPage";
+import SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard"
+import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
+import Register from "@/pages/Login/Register";
+import WithAuth from "@/Config/WithAuth";
+import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
 
 
 const routes = createBrowserRouter([
@@ -69,149 +61,167 @@ const routes = createBrowserRouter([
         element: <SingleProduct />,
       },
       {
-        path: '/product-details',
-        element: <ProductDetail />
+        path: "/product-details/:id",
+        element: <ProductDetail />,
+      },
+      {
+        path: "/my-cart/:id",
+        element: <MyCartHome />,
+      },
+      {
+        path: "/checkout/:id",
+        element: <CheckOut />,
+      },
+      {
+        path: "/store-profile/:id",
+        element: <StoreHome />,
+      },
+      {
+        path: "/customer-support",
+        element: <CustomerSupport />,
       },
       {
         path: "/login",
         element: <Login />,
       },
       {
+        path: "/register",
+        element: <Register />,
+      },
+      {
         path: "/signup",
         element: <Signup />,
       },
-
-      // ✅ Admin Protected Routes
+    ],
+  },
+  {
+    path: "buyer-dashboard",
+    element: <WithAuth requiredRole="BUYER"><BuyerDashboardLayout /></WithAuth>,
+    children: [
       {
-        path: "/admin",
-        element: <AdminRoute />, // Checks for admin
-        children: [
-          {
-            path: "",
-            element: <Navigate to="dashboard" replace />,
-          },
-          {
-            path: "",
-            element: <Layout />,
-            children: [
-              {
-                path: "dashboard",
-                element: <AdminDashboard />,
-              },
-              {
-                path: "users",
-                element: <UsersTab />,
-              },
-              {
-                path: "users/buyer/:id",
-                element: <BuyerDetails />,
-              },
-              {
-                path: "users/sellers/requests",
-                element: <SellerRequests />,
-              },
-              {
-                path: "users/sellers/requests/:id",
-                element: <SellerApplication />,
-              },
-              {
-                path: "orders",
-                element: <Orders />,
-              },
-              {
-                path: "orders/:id",
-                element: <OrderDetails />,
-              },
-            ],
-          },
-          {
-            path: "buyer-dashboard",
-            element: <BuyerDashboardLayout />,
-            children: [
-              {
-                index: true,
-                element: <Dashboard />,
-              },
-              {
-                path: "my-orders",
-                element: <MyOrders />,
-              },
-              {
-                path: "wishlist",
-                element: <WishList />,
-              },
-              {
-                path: "settings",
-                element: <Settings />,
-              },
-              {
-                path: "help-support",
-                element: <HelpSupport />,
-              },
-              {
-                path: 'product-details/:productId',
-                element: <ProductDetails />
-              }
-            ],
-          },
-
-          {
-            path: "admin-dashboard",
-            element: <AdminDashboardLayout />,
-            children: [
-              {
-                index: true,
-                element: <AdmninDashboard />,
-              },
-              {
-                path: "users",
-                element: <Users />,
-              },
-              {
-                path: "orders",
-                element: <Order />,
-              },
-              {
-                path: "product",
-                element: <Product />,
-              },
-              {
-                path: "sales-reports",
-                element: <SalesReports />,
-              },
-              {
-                path: "payments",
-                element: <Payments />,
-              },
-              {
-                path: "shipping",
-                element: <Shipping />,
-              },
-              {
-                path: "support",
-                element: <Support />,
-              },
-              {
-                path: "settings",
-                element: <AdminSettings />,
-              },
-            ],
-          },
-        ],
+        index: true,
+        element: <Dashboard />,
       },
       {
-        path: "/seller-dashboard",
-        element: <SellerDashboardLayout />,
-        children: sellerRoutes,
+        path: "my-orders",
+        element: <MyOrders />,
       },
       {
-        path: "*",
-        element: <NotFound />,
+        path: "wishlist",
+        element: <WishList />,
       },
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+      {
+        path: "help-support",
+        element: <HelpSupport />,
+      },
+      {
+        path: "product-details/:productId",
+        element: <ProductDetails />,
+      },
+      {
+        path: "product-details/:productId",
+        element: <ProductDetails />,
+      },
+      {
+        path: "notifications",
+        element: <Notifications />,
+      },
+      {
+        path: "dashboard-product-details/:productId",
+        element: <DashboardProductDetails />,
+      },
+      {
+        path: "buyer-profile",
+        element: <BuyerProfile />,
+      },
+      {
+        path: "message",
+        element: <Message />,
+      },
+    ],
+  },
 
-    ]
+  {
+    path: "admin-dashboard",
+    element: <WithAuth requiredRole="ADMIN"><AdminDashboardLayout /></WithAuth>,
+    children: [
+      {
+        index: true,
+        element: <AdmninDashboard />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "orders",
+        element: <Order />,
+      },
+      {
+        path: "product",
+        element: <Product />,
+      },
+      {
+        path: "message",
+        element: <AdminMessage />,
+      },
+      {
+        path: "cms",
+        element: <CMSDashboard />,
+      },
+      {
+        path: "edit-page",
+        element: <CMSEditPage />,
+      },
+      {
+        path: "payments",
+        element: <Payments />,
+      },
+      {
+        path: "shipping",
+        element: <Shipping />,
+      },
+      {
+        path: "support",
+        element: <Support />,
+      },
+      {
+        path: "settings",
+        element: <AdminSettings />,
+      },
+      {
+        path: "admin-payment",
+        element: <PaymentsDasbord />,
+      },
+      {
+        path: "sales-reports",
+        element: <SalesReportsPage />,
+      },
+    ],
+  },
+  {
+    path: "/seller-dashboard",
+    element: <WithAuth requiredRole="VENDOR"><SellerDashboardLayout /></WithAuth>,
+    children: [
+      {
+        index: true,
+        element: <SellerDashboard />
+      },
+      ...sellerRoutes
+    ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+  {
+    path: "/un-authoraised",
+    element: <UnAuthoraised />
   }
-
 ]);
 
 export default routes;

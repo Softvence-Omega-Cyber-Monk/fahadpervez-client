@@ -1,39 +1,60 @@
-import { useParams, Link, useLocation, useNavigate } from "react-router-dom"
-import { ChevronRight, MapPin, Mail, Phone, MapPinned, ArrowLeft } from "lucide-react"
+import { useParams, Link } from "react-router-dom"
+import { ChevronRight, MapPin, Mail, Phone, MapPinned } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+
+interface Buyer {
+  id: string
+  name: string
+  joinDate: string
+  status: string
+  address: string
+  email: string
+  phone: string
+  totalBuy: number
+  avatar: string
+}
 
 export default function BuyerDetails() {
-  const { id } = useParams()
-  const location = useLocation()
-  const navigate = useNavigate()
-  
-  // Get buyer data from navigation state
-  const buyer = location.state?.buyer
+  const { id } = useParams<{ id: string }>()
+  const [buyer, setBuyer] = useState<Buyer | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // Redirect if no buyer data (optional: fetch from API instead)
   useEffect(() => {
-    if (!buyer) {
-      // Optionally fetch buyer data from API here
-      // For now, redirect back to users page
-      console.warn("No buyer data found in navigation state")
-    }
-  }, [buyer])
+    setLoading(true)
+    setError(null)
+    // Simulate fetching data
+    setTimeout(() => {
+      if (id === "1") {
+        setBuyer({
+          id: "1",
+          name: "John Doe",
+          joinDate: "2023-01-15",
+          status: "Active",
+          address: "123 Main St, Anytown, USA",
+          email: "john.doe@example.com",
+          phone: "555-123-4567",
+          totalBuy: 1250.75,
+          avatar: "JD",
+        })
+      } else {
+        setError("Buyer not found")
+      }
+      setLoading(false)
+    }, 1000)
+  }, [id])
 
-  // Fallback if no buyer data
+  if (loading) {
+    return <div className="text-center py-8">Loading buyer details...</div>
+  }
+
+  if (error) {
+    return <div className="text-center py-8 text-red-600">{error}</div>
+  }
+
   if (!buyer) {
-    return (
-      <div className="space-y-6">
-        <div className="bg-white rounded-lg border p-6 text-center">
-          <p className="text-gray-600 mb-4">Buyer data not found</p>
-          <Button onClick={() => navigate("/admin/users")}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Users
-          </Button>
-        </div>
-      </div>
-    )
+    return <div className="text-center py-8">No buyer data available.</div>
   }
 
   return (

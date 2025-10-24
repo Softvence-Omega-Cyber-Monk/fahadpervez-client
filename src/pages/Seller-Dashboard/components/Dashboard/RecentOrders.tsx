@@ -66,7 +66,11 @@ const statusConfig = {
 
 export default function RecentOrders() {
   return (
+<<<<<<< HEAD
     <div className="bg-light-background rounded-xl p-6 shadow-sm border border-border">
+=======
+    <div className="bg-light-background rounded-xl p-6 border border-border w-full">
+>>>>>>> 04e8881909da2c316796f778f38163540d21c380
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-dark-blue">Recent Orders</h2>
@@ -80,7 +84,11 @@ export default function RecentOrders() {
         {orders.map((order, index) => (
           <div key={index} className="flex items-center justify-between gap-4 py-2">
             {/* Left: Avatar + Order Info */}
+<<<<<<< HEAD
             <div className="flex items-center gap-2 flex-1 min-w-0">
+=======
+            <div className="sm:flex items-center gap-2 flex-1 min-w-0">
+>>>>>>> 04e8881909da2c316796f778f38163540d21c380
               <Avatar  className="size-12 flex-shrink-0">
                 <AvatarImage src={order.image}/>
               </Avatar>
