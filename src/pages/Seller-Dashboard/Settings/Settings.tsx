@@ -4,12 +4,14 @@ import StorePreference from './components/StorePreference';
 import PaymentSettings from './components/PaymentSettings';
 import NotificationSettings from './components/NotificationSettings';
 import SecuritySettings from './components/SecuritySettings';
+// import { useGetMeQuery } from '@/Redux/Features/auth/auth.api';
 
 type Tab = 'Account Information' | 'Store Preference' | 'Payment Settings' | 'Notification' | 'Security';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState<Tab>('Account Information');
-
+  // const {data} = useGetMeQuery({})
+  // console.log(data)
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Account Information':
