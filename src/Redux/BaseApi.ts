@@ -19,7 +19,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log(result,baseQuery,ProjectConfig,ProjectConfig.apiBaseUrl);
   if (result.error && result.error.status === 401) {
     const refreshResult = await fetch(`${ProjectConfig.apiBaseUrl}/api/v1/users/refresh-token`,{
       method: "POST",
