@@ -75,10 +75,8 @@ const WishlistGrid = () => {
   const { data, isLoading } = useGetMeQuery(null);
   const userId = data?.data?._id;
 
-
-  console.log(data?.data, isLoading);
   const { data: wishlist, isLoading: wishLoading } = useGetAllWishListQuery(userId);
-  console.log(wishlist);
+
   useEffect(() => {
     if (!isLoading && data?.data) {
       setWishProduct(wishlist?.data);
@@ -86,8 +84,6 @@ const WishlistGrid = () => {
   }, [wishlist , wishLoading]);
 
 
-
-  console.log(wishProduct);
 
   return (
     <div className="mb-6">

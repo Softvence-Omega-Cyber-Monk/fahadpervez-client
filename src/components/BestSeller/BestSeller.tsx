@@ -22,7 +22,7 @@ const BestSeller: React.FC = () => {
   };
 
   const itemsPerPage = getItemsPerPage();
-  const maxIndex = Math.max(0, products.length - itemsPerPage);
+  const maxIndex = Math.max(0, products?.length - itemsPerPage);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
