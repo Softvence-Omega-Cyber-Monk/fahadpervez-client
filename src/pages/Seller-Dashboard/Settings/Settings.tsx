@@ -4,26 +4,116 @@ import StorePreference from './components/StorePreference';
 import PaymentSettings from './components/PaymentSettings';
 import NotificationSettings from './components/NotificationSettings';
 import SecuritySettings from './components/SecuritySettings';
-// import { useGetMeQuery } from '@/Redux/Features/auth/auth.api';
+import { Spinner } from '@/components/ui/spinner';
+import { useGetMeQuery } from '@/Redux/Features/auth/auth.api';
 
 type Tab = 'Account Information' | 'Store Preference' | 'Payment Settings' | 'Notification' | 'Security';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState<Tab>('Account Information');
-  // const {data} = useGetMeQuery({})
-  // console.log(data)
+  const {data , isLoading} = useGetMeQuery({})
+  if(isLoading) return <div className='flex items-center justify-center min-h-[70vh]'><Spinner /></div>
+  console.log(data)
+const {
+  orderNotification,
+  promotionNotification,
+  communicationAlert,
+  newReviewsNotification,
+  language,
+  // _id,
+  name,
+  email,
+  // password,
+  role,
+  isActive,
+  isVerified,
+  businessName,
+  // businessCRNumber,
+  // CRDocuments,
+  businessType,
+  businessDescription,
+  country,
+  productCategory,
+  shippingLocation,
+  storeDescription,
+  paymentMethod,
+  bankAccountHolderName,
+  bankAccountNumber,
+  bankRoughingNumber,
+  taxId,
+  isPrivacyPolicyAccepted,
+  vendorSignature,
+  vendorContract,
+  isSellerPolicyAccepted,
+  address,
+  phone,
+} = data.data;
+
+
+const basicInformation = {
+    name ,
+    phone ,
+    email ,
+    country, 
+    language,
+    role ,
+    address
+  }
+const businessInformation = {
+  businessName,
+  businessType,
+  phone,
+  businessDescription,
+};
+
+const currencyAndShippingInformation = {
+  currency: "USD", 
+  shippingLocation,
+  country, 
+  holdingTime:24, 
+  storeDescription,
+  productCategory,
+};
+
+const paymentMethodInfo = {
+  defaultPaymentMethod: paymentMethod,
+  bankAccountHolderName,
+  bankAccountNumber,
+  bankRoughingNumber,
+};
+
+const taxInformation = {
+  taxId,
+};
+
+const notifications = {
+  orderNotification,
+  promotionNotification,
+  communicationAlert,
+  newReviewsNotification,
+};
+
+const security = {
+  isActive,
+  isVerified,
+  isPrivacyPolicyAccepted,
+  isSellerPolicyAccepted,
+  vendorSignature,
+  vendorContract,
+};
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Account Information':
-        return <AccountInformation />;
+        return <AccountInformation basicInformation={basicInformation} businessInformation={businessInformation} />;
       case 'Store Preference':
-        return <StorePreference />;
+        return <StorePreference currencyAndShippingInformation={currencyAndShippingInformation} />;
       case 'Payment Settings':
-        return <PaymentSettings />;
+        return <PaymentSettings  paymentMethodInfo={paymentMethodInfo} taxInformation={taxInformation}/>;
       case 'Notification':
-        return <NotificationSettings />;
+        return <NotificationSettings notifications={notifications} />;
       case 'Security':
-        return <SecuritySettings />;
+        return <SecuritySettings security={security}/>;
       default:
         return null;
     }

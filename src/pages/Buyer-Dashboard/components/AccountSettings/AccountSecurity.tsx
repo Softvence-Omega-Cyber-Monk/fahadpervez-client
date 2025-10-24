@@ -1,4 +1,4 @@
-import { useChangePasswordMutation } from '@/Redux/Features/user/aure.api';
+import { useChangePasswordMutation } from '@/Redux/Features/user/user.api';
 import { useState } from 'react';
 import { toast } from 'sonner';
 

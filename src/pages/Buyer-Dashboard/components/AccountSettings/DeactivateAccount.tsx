@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { useDiActivateAccountMutation } from '@/Redux/Features/user/aure.api';
+import { useDiActivateAccountMutation } from '@/Redux/Features/user/user.api';
 import { useGetMeQuery } from '@/Redux/Features/auth/auth.api';
 import { useNavigate } from 'react-router-dom';
 
