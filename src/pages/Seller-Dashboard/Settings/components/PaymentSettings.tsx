@@ -26,7 +26,8 @@ const SectionTitle = ({ children }: SectionTitleProps) => (
   <h3 className="text-base font-semibold text-gray-900 mb-4 mt-8 first:mt-0">{children}</h3>
 );
 
-const PaymentSettings = () => {
+const PaymentSettings = (props) => {
+  console.log(props)
   return (
     <div className="space-y-6">
       <SectionTitle>Payment method</SectionTitle>

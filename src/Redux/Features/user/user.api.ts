@@ -19,7 +19,8 @@ const userApi = baseApi.injectEndpoints({
                 url: "/users/profile",
                 method: "PATCH",
                 body: data
-            })
+            }),
+            invalidatesTags: ["USER_ME"]
         }),
         diActivateAccount: builder.mutation({
             query: ({reason , userId}) => ({

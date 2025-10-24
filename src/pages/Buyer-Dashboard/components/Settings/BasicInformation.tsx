@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useUpdateProfileMutation } from '@/Redux/Features/user/aure.api';
+import { useUpdateProfileMutation } from '@/Redux/Features/user/user.api';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 

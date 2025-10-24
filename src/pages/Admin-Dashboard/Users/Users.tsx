@@ -2,7 +2,7 @@ import { ArrowDownToLine } from "lucide-react"
 import { useState } from "react"
 import BuyersTable from "./components/BuyersTable";
 import SellersTable from "./components/SellersTable";
-import { useGetAllBuyersQuery, useGetAllSellersQuery } from "@/Redux/Features/user/aure.api";
+import { useGetAllBuyersQuery, useGetAllSellersQuery } from "@/Redux/Features/user/user.api";
 
 const Users = () => {
 
