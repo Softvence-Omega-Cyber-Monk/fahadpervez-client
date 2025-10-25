@@ -10,12 +10,12 @@ interface EditShippingModalProps {
 }
 
 const EditShippingModal: React.FC<EditShippingModalProps> = ({ isVisible, onClose, order }) => {
-  if (!isVisible || !order) return null;
-
   const [address, setAddress] = useState('');
   const [method, setMethod] = useState('');
   const [phone, setPhone] = useState('');
-
+  
+  if (!isVisible || !order) return null;
+  
   const handleUpdate = () => {
     console.log('Updating shipping details:', { address, method, phone });
     onClose();
