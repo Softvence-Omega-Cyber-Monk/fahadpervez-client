@@ -1,18 +1,24 @@
 import { baseApi } from "@/Redux/BaseApi";
+import { UserFormData } from "@/types/SellerDashboardTypes/SettingsTypes";
+
+export interface ApiResponse {
+  success: boolean;
+  data: UserFormData[];
+}
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllBuyers: builder.query({
+        getAllBuyers: builder.query<ApiResponse, null> ({
             query: () => ({
                 url: "/users/customers"
             }),
-            transformResponse: (data) => data
+            // transformResponse: (data) => data
         }),
-        getAllSellers: builder.query({
+        getAllSellers: builder.query<ApiResponse, null>({
             query: () => ({
                 url: "/users/vendors"
             }),
-            transformResponse: (data) => data
+            // transformResponse: (data) => data
         }),
         updateProfile: builder.mutation({
             query: (data) => ({

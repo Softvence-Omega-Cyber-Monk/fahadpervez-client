@@ -67,9 +67,15 @@ export interface Security {
 
 
 export interface UserFormData extends BasicInformation, BusinessInformation, CurrencyAndShippingInformation, PaymentMethodInfo, TaxInformation, Notifications {
+  _id?:string,
   // Currency & Shipping
   currency: string;
   storeDescription: string;
+  isActive?: boolean;
+  totalBuy?:string,
+  createdAt?:string,
+  updatedAt?:string
+
 }
 
 
