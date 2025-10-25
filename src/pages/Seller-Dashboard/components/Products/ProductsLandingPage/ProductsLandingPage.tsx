@@ -15,7 +15,6 @@ const ProductsLandingPage = () => {
   const [products,setProducts] = useState<Product[]>([])
   const [totalProduct,setTotalProduct] = useState<number>(0)
   const [selectedProduct, setSelectedProduct] = useState<string[]>([]);
-  
   useEffect(()=>{
     if(data?.data){
       setProducts(data?.data)
@@ -32,7 +31,7 @@ const ProductsLandingPage = () => {
     <div className="space-y-10">
       <ProductsHeader/>
       <ProductStats />
-      <OrderSearchBar tableType="Button" selectedProduct={selectedProduct} refetch={refetch} />
+      <OrderSearchBar tableType="Button" selectedProduct={selectedProduct} refetch={refetch} id={selectedProduct ? selectedProduct[0] : ""}/>
       <ProductTable products={products} totalProduct={totalProduct} setSelectedProduct={setSelectedProduct} selectedProduct={selectedProduct}/>
     </div>
   );

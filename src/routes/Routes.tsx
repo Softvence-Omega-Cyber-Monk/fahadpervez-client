@@ -43,6 +43,7 @@ import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
 import Register from "@/pages/Login/Register";
 import WithAuth from "@/Config/WithAuth";
 import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
+import AddProductPage from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
 
 
 const routes = createBrowserRouter([
@@ -215,6 +216,10 @@ const routes = createBrowserRouter([
       },
       ...sellerRoutes
     ],
+  },
+  {
+        path:"/update-product/:id",
+        element:<AddProductPage/>
   },
   {
     path: "*",

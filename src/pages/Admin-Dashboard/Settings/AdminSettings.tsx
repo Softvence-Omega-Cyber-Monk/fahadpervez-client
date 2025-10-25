@@ -88,7 +88,6 @@ const AdminSettings: React.FC = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-10">
       {/* Header */}
