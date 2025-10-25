@@ -1,9 +1,9 @@
 import { Spinner } from "@/components/ui/spinner";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
-import { useUpdateProfileMutation } from "@/Redux/Features/user/user.api";
 import { CategoryType, CurrencyAndShippingInformation } from "@/types/SellerDashboardTypes/SettingsTypes";
-import React, { useEffect, useState, useMemo } from "react";
-import toast from "react-hot-toast";
+import React, { useEffect, useState, useMemo, DragEvent, ChangeEvent } from "react";
+import {toast} from "sonner";
+import useUpdateProfile from "../../../../hooks/useUpdateProfile";
 
 interface SaveButtonProps {
   type: "primary" | "danger";
@@ -44,10 +44,9 @@ interface StorePreferenceProps {
 const StorePreference: React.FC<StorePreferenceProps> = (props) => {
   const { data, isLoading } = useGetAllCategoriesQuery({});
   const categories = useMemo(() => data?.data || [], [data?.data]);
-  console.log(categories)
-  console.log(props.currencyAndShippingInformation)
   const {
     currency,
+    storeBanner,
     shippingLocation,
     country,
     holdingTime,
@@ -63,7 +62,45 @@ const StorePreference: React.FC<StorePreferenceProps> = (props) => {
   const [selectedShippingLocation, setSelectedShippingLocation] = useState<string[]>(shippingLocation || "Local within city/state");
   const [selectedCategories, setSelectedCategories] = useState<string[]>(productCategory || []);
   const [selectAll, setSelectAll] = useState(false);
-  const [updateProfile] = useUpdateProfileMutation({})
+  const {handleUpdate} = useUpdateProfile()
+  const [banner, setBanner] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [, setError] = useState<string>("");
+  useEffect(() => {
+    if (storeBanner) {
+      setPreview(storeBanner);
+    }
+  }, [storeBanner]);
+
+  const handleFileChange = (file: File) => {
+    if (!file) return;
+
+    if (!["image/png", "image/jpeg"].includes(file.type)) {
+      setError("Only PNG or JPG files are allowed.");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setError("File size must be under 10 MB.");
+      return;
+    }
+    setError("");
+    setBanner(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFileChange(file);
+  };
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileChange(file);
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => e.preventDefault();
   
   // Handle Select All for categories
   
@@ -85,26 +122,22 @@ const StorePreference: React.FC<StorePreferenceProps> = (props) => {
   };
   // Save changes handler
   const handleSaveChanges = async () => {
-    const storePreferenceUpdate: CurrencyAndShippingInformation = {
-      currency: currentCurrency,
-      shippingLocation: selectedShippingLocation,
-      country: currentShippingRegions,
-      holdingTime: currentHoldingTime,
-      storeDescription: currentStoreDescription,
-      productCategory: selectedCategories,
-    };
     try {
-      const res = await updateProfile(storePreferenceUpdate);
-      console.log(res);
-      if (res.data.success === false) {
-        toast.error("Error updating profile: " + res.error);
-      } else {
-        toast.success("Profile Updated Successfully");
+      console.log(banner)
+      const formData = new FormData();
+      if (banner) {
+        formData.append("storeBanner", banner);
       }
+        formData.append("currency", currentCurrency);
+        formData.append("shippingLocation", selectedShippingLocation.toString());
+        formData.append("country", currentShippingRegions);
+        formData.append("holdingTime", currentHoldingTime.toString());
+        formData.append("storeDescription", currentStoreDescription);
+        formData.append("productCategory", selectedCategories.toString());
+      await handleUpdate(formData);
     } catch (error) {
       toast.error("Error updating profile: " + error);
     }
-
     // Call API to save the updated preferences here
   };
 
@@ -112,12 +145,46 @@ const StorePreference: React.FC<StorePreferenceProps> = (props) => {
     <div className="space-y-6">
       {/* Store Banner */}
       <SectionTitle>Upload your store banner</SectionTitle>
-      <div className="text-center border-2 border-dashed border-gray-300 p-12 rounded-lg bg-gray-50">
-        <div className="text-5xl text-gray-400 mb-3">☁️</div>
-        <p className="text-sm text-gray-600">
-          <button className="text-blue-600 hover:text-blue-700 font-medium">Upload an image</button>{" "}
-          or drag and drop PNG, JPG, up to 10 mb (1600 x 1200) recommended
-        </p>
+     {/* Upload Area */}
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        className="text-center border-2 border-dashed border-gray-300 p-12 rounded-lg bg-gray-50 hover:bg-gray-100 transition"
+      >
+        {preview ? (
+          <div className="relative inline-block">
+            <img
+              src={preview}
+              alt="Banner Preview"
+              className="rounded-lg max-h-64 object-cover mx-auto"
+            />
+            <button
+              onClick={() => {
+                setBanner(null);
+                setPreview(null);
+              }}
+              className="absolute top-2 right-2 bg-white text-gray-700 border border-gray-300 rounded-full px-2 py-1 text-xs hover:bg-gray-200"
+            >
+              Remove
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="text-5xl text-gray-400 mb-3">☁️</div>
+            <p className="text-sm text-gray-600">
+              <label className="text-blue-600 hover:text-blue-700 font-medium cursor-pointer">
+                Upload an image
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  className="hidden"
+                  onChange={handleInputChange}
+                />
+              </label>{" "}
+              or drag and drop PNG, JPG, up to 10 MB (1600 × 1200 recommended)
+            </p>
+          </>
+        )}
       </div>
 
       {/* Currency & Shipping */}

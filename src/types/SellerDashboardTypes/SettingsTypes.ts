@@ -13,6 +13,7 @@ export interface CategoryType {
 export interface BasicInformation {
   name: string;
   phone: string;
+  profileImage?: string;
   email: string;
   country: string;
   language: string;
@@ -28,6 +29,7 @@ export interface BusinessInformation {
 }
 
 export interface CurrencyAndShippingInformation {
+  storeBanner: string;
   currency: string;
   shippingLocation: string[];
   country: string;
@@ -65,9 +67,15 @@ export interface Security {
 
 
 export interface UserFormData extends BasicInformation, BusinessInformation, CurrencyAndShippingInformation, PaymentMethodInfo, TaxInformation, Notifications {
+  _id?:string,
   // Currency & Shipping
   currency: string;
   storeDescription: string;
+  isActive?: boolean;
+  totalBuy?:string,
+  createdAt?:string,
+  updatedAt?:string
+
 }
 
 

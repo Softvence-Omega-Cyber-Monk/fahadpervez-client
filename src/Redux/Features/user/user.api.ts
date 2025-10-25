@@ -1,18 +1,24 @@
 import { baseApi } from "@/Redux/BaseApi";
+import { UserFormData } from "@/types/SellerDashboardTypes/SettingsTypes";
+
+export interface ApiResponse {
+  success: boolean;
+  data: UserFormData[];
+}
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllBuyers: builder.query({
+        getAllBuyers: builder.query<ApiResponse, null> ({
             query: () => ({
                 url: "/users/customers"
             }),
-            transformResponse: (data) => data
+            // transformResponse: (data) => data
         }),
-        getAllSellers: builder.query({
+        getAllSellers: builder.query<ApiResponse, null>({
             query: () => ({
                 url: "/users/vendors"
             }),
-            transformResponse: (data) => data
+            // transformResponse: (data) => data
         }),
         updateProfile: builder.mutation({
             query: (data) => ({
@@ -22,10 +28,10 @@ const userApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["USER_ME"]
         }),
-        diActivateAccount: builder.mutation({
+        deActivateAccount: builder.mutation({
             query: ({reason , userId}) => ({
                 url: `/users/deactivate/${userId}`,
-                method: "PUT",
+                method: "PATCH",
                 body: {reason}
             })
         }),
@@ -40,4 +46,4 @@ const userApi = baseApi.injectEndpoints({
 });
 
 
-export const { useGetAllBuyersQuery, useGetAllSellersQuery, useUpdateProfileMutation , useDiActivateAccountMutation , useChangePasswordMutation } = userApi;
+export const { useGetAllBuyersQuery, useGetAllSellersQuery, useUpdateProfileMutation , useDeActivateAccountMutation , useChangePasswordMutation } = userApi;
