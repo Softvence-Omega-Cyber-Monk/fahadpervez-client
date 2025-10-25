@@ -1,8 +1,17 @@
 // src/components/AdminSettings/PrivacySettings.tsx
 
+import { PrivacyTypes } from '@/types/SellerDashboardTypes/SettingsTypes';
 import React from 'react';
 
-const PrivacySettings: React.FC = () => (
+interface PrivacySettingsProps {
+  privacyData: PrivacyTypes
+}
+
+
+const PrivacySettings: React.FC<PrivacySettingsProps> = (props) => {
+  const { privacyPolicy, termsAndConditions} = props.privacyData
+  console.log(privacyPolicy, termsAndConditions)
+  return(
   <div className="p-6 bg-white rounded-lg shadow-sm">
     <h2 className="text-xl font-semibold text-gray-800 mb-6">Privacy Policy</h2>
 
@@ -34,6 +43,6 @@ const PrivacySettings: React.FC = () => (
       </button>
     </div>
   </div>
-);
+)};
 
 export default PrivacySettings;

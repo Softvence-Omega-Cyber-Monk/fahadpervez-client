@@ -35,9 +35,9 @@ interface PaymentSettingsProps {
 
 const PaymentSettings : React.FC<PaymentSettingsProps> = (props) => {
   console.log(props)
-    const { defaultPaymentMethod, bankAccountHolderName, bankAccountNumber, bankRoughingNumber} = props.paymentMethodInfo
+    const { defaultPaymentMethod, bankAccountHolderName, bankAccountNumber, bankRoutingNumber} = props.paymentMethodInfo
   const {taxId} = props.taxInformation
-  console.log(defaultPaymentMethod, bankAccountHolderName, bankAccountNumber, bankRoughingNumber, taxId)
+  console.log(defaultPaymentMethod, bankAccountHolderName, bankAccountNumber, bankRoutingNumber, taxId)
   return (
     <div className="space-y-6">
       <SectionTitle>Payment method</SectionTitle>

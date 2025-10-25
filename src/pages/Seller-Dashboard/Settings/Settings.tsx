@@ -40,7 +40,7 @@ const {
   paymentMethod,
   bankAccountHolderName,
   bankAccountNumber,
-  bankRoughingNumber,
+  bankRoutingNumber,
   taxId,
   currency,
   // isPrivacyPolicyAccepted,
@@ -84,7 +84,7 @@ const paymentMethodInfo = {
   defaultPaymentMethod: paymentMethod,
   bankAccountHolderName,
   bankAccountNumber,
-  bankRoughingNumber,
+  bankRoutingNumber,
 };
 
 const taxInformation = {

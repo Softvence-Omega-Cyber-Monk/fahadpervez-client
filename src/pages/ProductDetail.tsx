@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import ProductDetailsTab from "@/components/ProductDetails/ProductDetailsTab";
 import ProductCard from "@/components/ProductDetails/ProductCart";
 import ProductGalary from "@/components/ProductDetails/ProductGalary";
-import { mockProducts } from "@/pages/Admin-Dashboard/Product/Product";
 import { useGetProductByIdQuery } from "@/Redux/Features/products/products.api";
 import { Spinner } from "@/components/ui/spinner";
 import CommonWrapper from "@/common/CommonWrapper";
+import { mockProducts } from "./Admin-Dashboard/Product/Product";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +19,6 @@ export default function ProductDetail() {
     );
   }
   const product = data?.data;
-  console.log(product);
   if (!product) {
     return <div>Product not found</div>;
   }
