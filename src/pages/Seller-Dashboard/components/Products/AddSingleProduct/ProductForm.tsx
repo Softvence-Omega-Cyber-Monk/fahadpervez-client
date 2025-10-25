@@ -22,9 +22,7 @@ export interface ProductFormRef {
 const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, defaultValue, isEditMode }, ref) => {
   const { data: categories, isLoading: categoriesLoading } = useGetAllCategoriesQuery({});
   const formRef = useRef<CommonFormRef>(null);
-
-   const [isReady, setIsReady] = useState(false);
-  
+  const [isReady, setIsReady] = useState(false);
   useImperativeHandle(ref, () => ({
     submit: async () => {
       if (formRef.current) {
@@ -110,7 +108,7 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
     {
       name: "productDescription",
       label: "Product Description*",
-      type: "description",
+      type: "richText",
       placeholder: "About product",
       defaultValue: defaultValue?.productDescription,
     },

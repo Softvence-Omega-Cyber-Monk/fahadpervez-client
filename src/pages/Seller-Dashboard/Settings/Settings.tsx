@@ -13,12 +13,13 @@ const Settings = () => {
   const [activeTab, setActiveTab] = useState<Tab>('Account Information');
   const {data , isLoading} = useGetMeQuery({})
   if(isLoading) return <div className='flex items-center justify-center min-h-[70vh]'><Spinner /></div>
-  console.log(data)
 const {
   orderNotification,
   promotionNotification,
   communicationAlert,
   newReviewsNotification,
+  profileImage,
+  storeBanner,
   language,
   _id,
   name,
@@ -41,10 +42,12 @@ const {
   bankAccountNumber,
   bankRoughingNumber,
   taxId,
+  currency,
   // isPrivacyPolicyAccepted,
   // vendorSignature,
   // vendorContract,
   // isSellerPolicyAccepted,
+  holdingTime,
   address,
   phone,
 } = data.data;
@@ -53,6 +56,7 @@ const {
 const basicInformation = {
     name ,
     phone ,
+    profileImage,
     email ,
     country, 
     language,
@@ -67,10 +71,11 @@ const businessInformation = {
 };
 
 const currencyAndShippingInformation = {
-  currency: "USD", 
+  currency, 
   shippingLocation,
   country, 
-  holdingTime:24, 
+  storeBanner,
+  holdingTime, 
   storeDescription,
   productCategory,
 };

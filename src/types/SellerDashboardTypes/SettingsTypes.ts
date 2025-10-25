@@ -13,6 +13,7 @@ export interface CategoryType {
 export interface BasicInformation {
   name: string;
   phone: string;
+  profileImage?: string;
   email: string;
   country: string;
   language: string;
@@ -28,6 +29,7 @@ export interface BusinessInformation {
 }
 
 export interface CurrencyAndShippingInformation {
+  storeBanner: string;
   currency: string;
   shippingLocation: string[];
   country: string;

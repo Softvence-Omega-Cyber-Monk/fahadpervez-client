@@ -18,13 +18,14 @@ const useUpdateProfile = (): UseUpdateProfileReturn => {
       const toastId = toast.loading("Updating profile...");
       try {
         const result = await updateProfile(updateData).unwrap();
+        console.log(result)
         if (result?.success) {
           toast.success("Profile updated successfully!", { id: toastId });
         } else {
-          toast.error("Update failed. Please try again.");
+          toast.error("Update failed. Please try again.", { id: toastId });
         }
       } catch (err) {
-        toast.error("An unexpected error occurred" + err);
+        toast.error("An unexpected error occurred" + err , { id: toastId });
       }
     },
     [updateProfile]
