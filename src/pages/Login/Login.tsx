@@ -20,6 +20,7 @@ const Login: React.FC = () => {
     try {
       const data = { email, password };
       const res = await logInUser(data).unwrap();
+      console.log(res)
       if (res.success) {
         // localStorage.setItem("user", res.data);
         dispatch(setUser({token:res.data.accessToken}));

@@ -99,7 +99,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "buyer-dashboard",
-    element: <WithAuth requiredRole="BUYER"><BuyerDashboardLayout /></WithAuth>,
+    element: <WithAuth requiredRole="CUSTOMER"><BuyerDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,
