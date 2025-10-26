@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
                     <li>
                       {
                         role ? <Link
-                        to={`${role === "ADMIN" ? '/admin-dashboard' : role === "VENDOR" ? '/seller-dashboard' : role === "BUYER" ? '/buyer-dashboard' : '/login'}`}
+                        to={`${role === "ADMIN" ? '/admin-dashboard' : role === "VENDOR" ? '/seller-dashboard' : role === "CUSTOMER" ? '/buyer-dashboard' : '/login'}`}
                         className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={() => setMenuOpen(false)}
                       >
