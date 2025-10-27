@@ -36,7 +36,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "BaseApi",
   baseQuery: baseQueryWithRefreshToken,
-  
   endpoints: () => ({}),
   tagTypes: [
     "USER",
@@ -50,5 +49,6 @@ export const baseApi = createApi({
     "CATEGORY",
     "MY_ORDER",
     "ORDER_ADMIN",
+    "WISHLIST",
   ],
 });

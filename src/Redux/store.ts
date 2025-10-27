@@ -16,7 +16,6 @@ const persistedAuthReducer = persistReducer(persistConfig, authReducer)
 export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
-        // [categoryApi.reducerPath]: categoryApi.reducer,
         product: productSlice,
         auth:persistedAuthReducer,
         cart:cartSlice

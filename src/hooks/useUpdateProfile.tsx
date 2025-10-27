@@ -18,7 +18,6 @@ const useUpdateProfile = (): UseUpdateProfileReturn => {
       const toastId = toast.loading("Updating profile...");
       try {
         const result = await updateProfile(updateData).unwrap();
-        console.log(result)
         if (result?.success) {
           toast.success("Profile updated successfully!", { id: toastId });
         } else {

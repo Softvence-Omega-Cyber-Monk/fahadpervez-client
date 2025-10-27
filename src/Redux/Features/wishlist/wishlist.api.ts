@@ -1,29 +1,34 @@
 import { baseApi } from "@/Redux/BaseApi";
 
 const wishListApi = baseApi.injectEndpoints({
-    endpoints: (bulider) => ({
-        addWishList: bulider.mutation({
-            query: (productId) => ({
+    endpoints: (builder) => ({
+        addWishlist: builder.mutation({
+            query: (productId) => {
+              return({
                 url: "/wishlist",
                 method: "POST",
                 body: { productId }
             })
+            },
+            invalidatesTags : ["WISHLIST"]
         }),
-        removeWishList : bulider.mutation({
+        removeWishList : builder.mutation({
             query : (productId) =>({
                 url : `/wishlist/${productId}`,
                 method : "DELETE"
-            })
+            }),
+            invalidatesTags : ["WISHLIST"]
         }),
-        getAllWishList : bulider.query({
-            query : (userID) =>{
+        getAllWishList : builder.query({
+            query : () =>{
                 return{
-                url : `/wishlist/${userID}`,
+                url : `/wishlist`,
                 method : "GET"
             }
-            }
+            },
+            providesTags : ["WISHLIST"]
         })
     })
 });
 
-export const {useAddWishListMutation , useGetAllWishListQuery , useRemoveWishListMutation} = wishListApi;
+export const {useAddWishlistMutation , useGetAllWishListQuery , useRemoveWishListMutation} = wishListApi;
