@@ -30,7 +30,7 @@ export default function ProfilePicture(props: IProps) {
       props.setImageFile?.(file as File); // Pass file to parent if provided
     }
   };
-  console.log(imagePreview);
+
   return (
     <div className="w-full bg-white sm:p-6 lg:p-8 rounded-lg shadow-sm">
       {/* Header */}

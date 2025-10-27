@@ -2,6 +2,7 @@ import {
   useChangePasswordMutation,
   useDeActivateAccountMutation,
 } from "@/Redux/Features/user/user.api";
+import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { toast } from "sonner";
@@ -47,12 +48,24 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = (props) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+   const [showCurrent, setShowCurrent] = useState(false);
+    const [showNew, setShowNew] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
   const [deactivateMessage, setDeactivateMessage] = useState("");
   const [changePassword] = useChangePasswordMutation();
   const [deActivateAccount] = useDeActivateAccountMutation();
   const { userId } = props;
   const handlePasswordSave = async () => {
     try {
+        if (newPassword !== confirmPassword) {
+        toast.error("Password do not match.");
+        return;
+      }
+
+      if (newPassword === currentPassword) {
+        toast.error("Password cannot be the same as the current password.");
+        return;
+      }
       const res = await changePassword({
         currentPassword,
         newPassword,
@@ -95,51 +108,82 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = (props) => {
 
   return (
     <div className="space-y-6">
-      <SectionTitle>Account Security</SectionTitle>
+     <div className="">
+      {/* Heading */}
+      <h2 className="text-xl sm:text-2xl font-normal text-gray-900 mb-8">
+        Account Security
+      </h2>
 
-      <div>
+      {/* Current Password */}
+      <div className="relative mb-4">
         <label className="block text-sm text-gray-700 mb-2">
           Current password
         </label>
         <input
-          type="password"
+          type={showCurrent ? "text" : "password"}
           placeholder="Enter current password"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
-          className="w-full p-3 bg-blue-50 border-0 rounded-lg text-gray-900"
+          className="w-full p-3 bg-blue-50 border border-gray-300 rounded-lg text-gray-900 pr-12"
         />
+        <button
+          type="button"
+          className="absolute right-5 top-11 text-gray-600 hover:text-blue-600 transition-colors"
+          onClick={() => setShowCurrent(!showCurrent)}
+        >
+          {showCurrent ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
       </div>
 
+      {/* New and Confirm Password */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+        {/* New Password */}
+        <div className="relative">
           <label className="block text-sm text-gray-700 mb-2">
             New password
           </label>
           <input
-            type="password"
+            type={showNew ? "text" : "password"}
             placeholder="Enter new password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full p-3 bg-blue-50 border-0 rounded-lg text-gray-900"
+            className="w-full p-3 bg-blue-50 border border-gray-300 rounded-lg text-gray-900 pr-12"
           />
+          <button
+            type="button"
+            className="absolute right-5 top-11 text-gray-600 hover:text-blue-600 transition-colors"
+            onClick={() => setShowNew(!showNew)}
+          >
+            {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
-        <div>
+
+        {/* Confirm Password */}
+        <div className="relative">
           <label className="block text-sm text-gray-700 mb-2">
             Confirm new password
           </label>
           <input
-            type="password"
+            type={showConfirm ? "text" : "password"}
             placeholder="Confirm new password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full p-3 bg-blue-50 border-0 rounded-lg text-gray-900"
+            className="w-full p-3 bg-blue-50 border border-gray-300 rounded-lg text-gray-900 pr-12"
           />
+          <button
+            type="button"
+            className="absolute right-5 top-11 text-gray-600 hover:text-blue-600 transition-colors"
+            onClick={() => setShowConfirm(!showConfirm)}
+          >
+            {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
       </div>
 
       <SaveButton type="primary" onClick={handlePasswordSave}>
         Save changes
       </SaveButton>
+    </div>
 
       <hr className="my-8 border-gray-200" />
 

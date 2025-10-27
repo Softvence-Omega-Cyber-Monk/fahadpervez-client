@@ -35,7 +35,7 @@ export default function AccountTabs() {
             {/* Dashed Border for Account Settings */}
             {tab.id === 'account' && activeTab === tab.id && (
               <span 
-                className="absolute inset-0 border-2 border-dashed border-teal-600 rounded pointer-events-none"
+                className="absolute inset-0  rounded pointer-events-none"
                 style={{ bottom: '-2px' }}
               />
             )}

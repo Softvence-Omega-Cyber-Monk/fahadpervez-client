@@ -22,7 +22,6 @@ const Login: React.FC = () => {
       const res = await logInUser(data).unwrap();
       console.log(res)
       if (res.success) {
-        // localStorage.setItem("user", res.data);
         dispatch(setUser({token:res.data.accessToken}));
         toast.success("Logged In Successfully", { id: toastId });
         navigate("/")
