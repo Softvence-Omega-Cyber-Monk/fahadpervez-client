@@ -59,7 +59,7 @@ const WishlistGrid = () => {
       toast.error("Failed to add product to wishlist", { id: toastId });
     }
   };
-  console.log(products);
+  
   const handleAddToCart = async (id:string) => {
     const addProducts = wishlist?.data.find((item: WishlistProduct) => item.productId._id === id).productId;
     const items = {
