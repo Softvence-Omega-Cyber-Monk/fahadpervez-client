@@ -5,7 +5,6 @@ import {
   useGetAllWishListQuery,
   useRemoveWishListMutation,
 } from "@/Redux/Features/wishlist/wishlist.api";
-import { store } from "@/Redux/store";
 import { addToCart } from "@/store/Slices/CartSlice/cartSlice";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
