@@ -42,7 +42,7 @@ export default function AccountSecurity() {
 
     } catch (error) {
       console.log(error);
-      toast.error("Password Changed faild", { id: toastId });
+      toast.error("Password Changed failed", { id: toastId });
     }
   };
 

@@ -3,6 +3,7 @@ import PersonalInfo from '../../PersonalInfo/PersonalInfo';
 import ShippingAddress from '../../ShippingAddress/ShippingAddress';
 import AccountSettings from '../../AccountSettings/AccountSettings';
 import PaymentMethods from '../../PaymentMethods/PaymentMethods';
+// import { useGetMeQuery } from '@/Redux/Features/auth/auth.api';
 
 export default function AccountTabs() {
   const [activeTab, setActiveTab] = useState('personal');
