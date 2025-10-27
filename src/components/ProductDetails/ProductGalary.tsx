@@ -9,50 +9,40 @@ import {
 } from "lucide-react";
 import { Product } from "@/types/Product";
 import { toast } from "sonner";
-import { useAddWishListMutation, useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
-import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import {
+  useAddWishlistMutation,
+  useGetAllWishListQuery,
+  useRemoveWishListMutation,
+} from "@/Redux/Features/wishlist/wishlist.api";
+import { useAppDispatch } from "@/hooks/useRedux";
 import { addToCart } from "@/store/Slices/CartSlice/cartSlice";
+import { Spinner } from "../ui/spinner";
 
 const ProductGallery = ({ product }: { product: Product }) => {
-  // --- State ---
-  const {data:user}  =useGetMeQuery({})
-  const userId = useAppSelector((state) => state.auth.user?.id);
-  const [addWishlist, { isSuccess,isError }] = useAddWishListMutation({});
+  // const userId = useAppSelector((state) => state.auth.user?.id);
+
+  const [addWishlist] = useAddWishlistMutation();
+  const [removeWishlist] = useRemoveWishListMutation();
   const [images, setImages] = useState<string[]>([]);
-  const [,setUserId] = useState('');
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const {data:wishlistData,isLoading} = useGetAllWishListQuery({userID:userId});
-  const [wishlist, setWishlist] = useState(false);
+  const { data: wishlistData, isLoading } = useGetAllWishListQuery({});
   const dispatch = useAppDispatch();
-  // --- Update images when product changes ---
   useEffect(() => {
-      setImages([
-          product.mainImageUrl!,
-          product.sideImageUrl!,
-          product.sideImage2Url!,
-          product.lastImageUrl!,
-          product.videoUrl!,
-        ]);
-    }, [product]);
-    
-    useEffect(() => {
-        if (user) {
-            setUserId(user?.data?._id)
-        }
-    }, [user])
-    
-    useEffect(() => {
-        if (wishlistData) {
-            wishlistData.data.map((wish: {productId: string}) => {
-                if (wish.productId === product._id) {
-                    setWishlist(true);
-                }
-            })
-        }
-    }, [wishlistData,product._id])
-    if(isLoading) return <div>Loading...</div>
+    setImages([
+      product.mainImageUrl!,
+      product.sideImageUrl!,
+      product.sideImage2Url!,
+      product.lastImageUrl!,
+      product.videoUrl!,
+    ]);
+  }, [product]);
+
+  const isWishlist = wishlistData?.data.some(
+    (wish: { productId: Product }) => wish.productId._id === product._id
+  );
+
+  if (isLoading) return <div className="min-h-screen grid place-content-center"><Spinner/></div>;
 
   // --- Helper: Render Main Preview ---
   const renderMainPreview = () => {
@@ -101,33 +91,48 @@ const ProductGallery = ({ product }: { product: Product }) => {
       ));
 
   const handleAddToCart = () => {
-    const items ={
+    const items = {
       id: product._id!,
       image: product.mainImageUrl!,
       title: product.productName,
       pricePerUnit: product?.specialPrice || product.pricePerUnit,
       quantity,
       totalPrice: (product?.specialPrice || product.pricePerUnit) * quantity,
-      productSKU: product.productSKU
-    }
+      productSKU: product.productSKU,
+    };
     dispatch(addToCart(items));
     toast.success("Product added to cart");
-    console.log(items)
+    console.log(items);
   };
 
-  const handleAddWishlist = async() => {
-    console.log(product._id)
+  const handleAddWishlist = async () => {
+    let toastId;
+    let result;
     try {
-        await addWishlist(product._id).unwrap();
-        if (isSuccess) {
-            console.log(isSuccess)
-            toast.success("Product added to wishlist");
-        }
-        
+      toastId = toast.loading(
+        isWishlist ? "Removing from wishlist..." : "Adding to wishlist..."
+      );
+      if (isWishlist) {
+        result = await removeWishlist(product._id).unwrap();
+      } else {
+        result = await addWishlist(product._id).unwrap();
+      }
+
+      if (result?.success === true) {
+        toast.success(
+          isWishlist
+            ? "Wishlist removed successfully!"
+            : "Wishlist updated successfully!",
+          { id: toastId }
+        );
+      } else {
+        toast.error("Update failed. Please try again.", { id: toastId });
+      }
     } catch {
-        if (isError) toast.error("Failed to add product to wishlist");
+      toast.error("Failed to add product to wishlist", { id: toastId });
     }
   };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
       {/* ------------------ Left Section: Images ------------------ */}
@@ -138,12 +143,14 @@ const ProductGallery = ({ product }: { product: Product }) => {
         <div className="flex-1 bg-gray-100  h-96 relative rounded-lg">
           {/* Wishlist & Share */}
           <button
-            className={`absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 z-10 ${wishlist ? "bg-red-500" : ""}`}
+            className={`absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center shadow-md cursor-pointer z-10 ${
+              isWishlist ? "bg-red-100 text-red-500 " : "bg-white text-gray-600"
+            }`}
             onClick={handleAddWishlist}
           >
-            <Heart className="h-6 w-6 text-gray-600" />
+            <Heart className="h-6 w-6" />
           </button>
-          <button className="absolute top-20 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 z-10">
+          <button className="absolute top-20 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 z-10 cursor-pointer">
             <Share2 className="h-6 w-6 text-gray-600" />
           </button>
           <div className="rounded-lg w-full h-96 grid place-content-center overflow-hidden">
