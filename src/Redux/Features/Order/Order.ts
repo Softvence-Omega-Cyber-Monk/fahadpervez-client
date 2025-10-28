@@ -89,6 +89,14 @@ export const {
   useGetMyOrdersQuery,
   useGetMyOrderStatsQuery,
   useTrackByOrderNumberQuery,
+  useCancelOrderByIdMutation,
+  useGetAllOrdersByAdminQuery,
+  useGetOrderStatsAdminQuery,
+  useGetRecentOrdersAdminQuery,
+  useGetOrderByIdAdminQuery,
+  useDeleteOrderByIdAdminMutation,
+  useUpdateOrderStatusAdminMutation,
+  useUpdateOrderPaymentStatusAdminMutation,
 } = orderApi;
 
 export default orderApi;

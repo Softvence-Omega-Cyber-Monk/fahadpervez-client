@@ -37,9 +37,6 @@ interface ProductTableRowProps {
 
 const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTableRowProps) => {
   const navigate = useNavigate();
-  const handleProductUpdate = () => {
-    navigate(`/seller-dashboard/products/add-single-product/${product._id}`);
-  };
   return (
     <tr className="hover:bg-gray-50 transition-colors">
       <td className="px-4 py-4">
@@ -93,7 +90,8 @@ const ProductTableRow = memo(({ product, isSelected, onToggleSelect }: ProductTa
         </span> */}
       </td>
       <td className="px-4 py-4">
-        <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 transition-colors" onClick={handleProductUpdate}>
+        
+        <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 transition-colors" onClick={() => navigate(`/product-details/${product._id}`)}>
           <Eye className="w-4 h-4" />
           View
         </button>

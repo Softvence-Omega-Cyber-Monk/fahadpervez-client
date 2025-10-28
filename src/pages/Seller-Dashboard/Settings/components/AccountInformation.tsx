@@ -1,10 +1,11 @@
-import { useUpdateProfileMutation } from "@/Redux/Features/user/user.api";
 import {
   BasicInformation,
   BusinessInformation,
 } from "@/types/SellerDashboardTypes/SettingsTypes";
-import React, { useRef } from "react";
-import toast from "react-hot-toast";
+import React, { useEffect, useRef, useState } from "react";
+
+import useUpdateProfile from "../../../../hooks/useUpdateProfile";
+import { toast } from "sonner";
 
 interface SaveButtonProps {
   type: "primary" | "danger";
@@ -44,18 +45,34 @@ interface AccountInformationProps {
 }
 
 const AccountInformation: React.FC<AccountInformationProps> = (props) => {
-  const [updateProfile] = useUpdateProfileMutation();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { name, phone, email, country, language, role, address } =
+  const { name, phone, email, country, language, role, address, profileImage:image } =
     props.basicInformation;
   const { businessName, businessType, businessDescription } =
     props.businessInformation;
-  const [profileImage, setProfileImage] = React.useState<File | null>(null);
-
+  const [profileImage, setProfileImage] = useState<File | null>();
+    const [preview, setPreview] = useState<string | null>();
+  console.log(props.basicInformation)
+  // Show default image when component loads or after update
+  useEffect(() => {
+    if (image) {
+      setPreview(image);
+      return () => URL.revokeObjectURL(image);
+    }
+  }, [image]);
+  // Update preview when user selects new file
+  useEffect(() => {
+    if (profileImage) {
+      const imageUrl = URL.createObjectURL(profileImage);
+      setPreview(imageUrl);
+      return () => URL.revokeObjectURL(imageUrl);
+    }
+  }, [profileImage]);
   // States to hold updates
   const [basicUpdateInformation, setBasicUpdateInformation] = React.useState({
     name,
     phone,
+    profileImage,
     email,
     country,
     language,
@@ -63,13 +80,13 @@ const AccountInformation: React.FC<AccountInformationProps> = (props) => {
   });
 
   const [businessUpdateInformation, setBusinessUpdateInformation] =
-    React.useState({
+  useState({
       businessName,
       businessType,
       phone,
       businessDescription,
     });
-
+    const {handleUpdate} = useUpdateProfile()
   // handle change for both
   const handleBasicChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -87,33 +104,29 @@ const AccountInformation: React.FC<AccountInformationProps> = (props) => {
 
   // onClick handlers
   const handleBasicSave = async () => {
-    
     try {
-      const res = await updateProfile(basicUpdateInformation);
-      console.log(res);
-      if (res.data.success === false) {
-        toast.error("Error updating profile: " + res.error);
-      } else {
-        toast.success("Profile Updated Successfully");
+      const formData = new FormData()
+      formData.append("name", basicUpdateInformation.name)
+      formData.append("phone", basicUpdateInformation.phone)
+      formData.append("email", basicUpdateInformation.email)
+      formData.append("country", basicUpdateInformation.country)
+      formData.append("language", basicUpdateInformation.language)
+      formData.append("address", basicUpdateInformation.address)
+      if(profileImage){
+        formData.append("profileImage", profileImage)
       }
+      handleUpdate(formData);
     } catch (error) {
       toast.error("Error updating profile: " + error);
     }
   };
-
   const handleBusinessSave = async() => {
-    console.log("Business Information Updated:", businessUpdateInformation);
     try {
-      const res = await updateProfile(businessUpdateInformation);
-      console.log(res);
-      if (res.data.success === false) {
-        toast.error("Error updating profile: " + res.error);
-      } else {
-        toast.success("Profile Updated Successfully");
-      }
+      handleUpdate(businessUpdateInformation);
     } catch (error) {
       toast.error("Error updating profile: " + error);
     }
+    
 
   };
 
@@ -125,18 +138,18 @@ const AccountInformation: React.FC<AccountInformationProps> = (props) => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
             <div className="relative w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-              {profileImage ? (
-                <img
-                  src={URL.createObjectURL(profileImage)}
-                  alt="Profile"
-                  className="object-cover w-full h-full"
-                />
-              ) : (
-                <span className="text-gray-600 font-semibold">
-                  {name?.[0]?.toUpperCase() || "J"}
-                  {name?.split(" ")?.[1]?.[0]?.toUpperCase() || "D"}
-                </span>
-              )}
+              {preview ? (
+              <img
+                src={preview}
+                alt="Profile"
+                className="object-cover w-full h-full"
+              />
+            ) : (
+              <span className="text-gray-600 font-semibold">
+                {name?.[0]?.toUpperCase() || "J"}
+                {name?.split(" ")?.[1]?.[0]?.toUpperCase() || "D"}
+              </span>
+            )}
             </div>
 
             <div>

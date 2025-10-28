@@ -9,10 +9,10 @@ export interface CategoryType {
   cloudinaryId?: string;
 }
 
-
 export interface BasicInformation {
   name: string;
   phone: string;
+  profileImage?: string;
   email: string;
   country: string;
   language: string;
@@ -28,6 +28,7 @@ export interface BusinessInformation {
 }
 
 export interface CurrencyAndShippingInformation {
+  storeBanner: string;
   currency: string;
   shippingLocation: string[];
   country: string;
@@ -37,10 +38,11 @@ export interface CurrencyAndShippingInformation {
 }
 
 export interface PaymentMethodInfo {
-  defaultPaymentMethod: PaymentMethod;
+  defaultPaymentMethod: PaymentMethod | string;
   bankAccountHolderName: string;
   bankAccountNumber: string;
-  bankRoughingNumber: string;
+  bankRoutingNumber: string;
+  bankName?: string;
 }
 
 export interface TaxInformation {
@@ -63,11 +65,32 @@ export interface Security {
   vendorContract: string;
 }
 
-
-export interface UserFormData extends BasicInformation, BusinessInformation, CurrencyAndShippingInformation, PaymentMethodInfo, TaxInformation, Notifications {
+export interface UserFormData
+  extends BasicInformation,
+    BusinessInformation,
+    CurrencyAndShippingInformation,
+    PaymentMethodInfo,
+    TaxInformation,
+    Notifications {
+  _id?: string;
   // Currency & Shipping
   currency: string;
   storeDescription: string;
+  isActive?: boolean;
+  totalBuy?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
+export interface PlatformDataType {
+  siteName: string;
+  websiteLanguage: string;
+  timeZone: string;
+  currency: string;
+  logo: string;
+}
 
+export interface PrivacyTypes {
+  privacyPolicy : string;
+  termsAndConditions : string;
+}

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, Filter } from 'lucide-react';
 import { Order, OrderStatus, Tab, mockOrders } from '../data';
 import { formatCurrency } from '../utils';
+import { useGetAllOrdersByAdminQuery } from '@/Redux/Features/Order/Order';
 
 const getStatusClasses = (status: OrderStatus) => {
   const base = 'px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap';
@@ -35,7 +36,8 @@ const getStatusText = (status: OrderStatus) => {
 const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSelectOrder }) => {
   const [activeTab, setActiveTab] = useState<Tab>('All Order');
   const [searchTerm, setSearchTerm] = useState('');
-
+  const {data} = useGetAllOrdersByAdminQuery({});
+  console.log(data)
   const filteredOrders = useMemo(() => {
     return mockOrders
       .filter(order => {

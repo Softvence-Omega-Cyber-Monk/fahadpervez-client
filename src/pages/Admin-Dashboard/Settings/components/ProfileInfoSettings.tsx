@@ -2,59 +2,77 @@
 
 import React, { useState } from 'react';
 import { Camera, Save, Upload, User } from 'lucide-react';
+import useUpdateProfile from '@/hooks/useUpdateProfile';
+import { toast } from 'sonner';
 
-interface FormData {
-  firstName: string;
-  lastName: string;
+interface FormDataFields {
+  name: string;
   phone: string;
   email: string;
+  profileImage?: string;
 }
 
-const ProfileInfoSettings: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: ''
-  });
-  
-  const [isLoading, setIsLoading] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+interface ProfileInfoSettingsProps {
+  profileData: FormDataFields;
+}
 
+const ProfileInfoSettings: React.FC<ProfileInfoSettingsProps> = ({ profileData }) => {
+  const [formData, setFormData] = useState<FormDataFields>(profileData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string>(
+    profileData?.profileImage ||
+      'https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg'
+  );
+  const [file, setFile] = useState<File | null>(null);
+  const {handleUpdate} = useUpdateProfile();
+
+  // Handle Input Change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [id]: value
+      [id]: value,
     }));
   };
 
+  // Handle Image Upload (show preview + store file)
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    const uploadedFile = e.target.files?.[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
       const reader = new FileReader();
       reader.onload = (event) => {
-        setProfileImage(event.target?.result as string);
+        setPreviewImage(event.target?.result as string);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(uploadedFile);
     }
   };
 
+  // Handle Submit (append file + other data)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log('Saving data:', formData);
-    setIsLoading(false);
-    // Add success notification here
+
+    // Prepare multipart FormData
+    const data = new FormData();
+    data.append('name', formData.name.trim());
+    data.append('phone', formData.phone.trim());
+    data.append('email', formData.email.trim());
+    if (file) {
+      data.append('profileImage', file);
+    }
+    try {
+      await handleUpdate(data);
+      setIsLoading(false);
+    } catch (error) {
+      toast.error("An unexpected error occurred" + error );
+    }
+
   };
 
   return (
     <div className="w-full space-y-6">
-      {/* Admin Personal Information - Full Width */}
+      {/* Admin Personal Information */}
       <div className="w-full p-8 bg-white rounded-xl shadow-sm border border-gray-100">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
           <div className="w-full lg:w-auto">
@@ -74,17 +92,13 @@ const ProfileInfoSettings: React.FC = () => {
             </div>
           </label>
         </div>
-        
+
         <div className="flex flex-col xl:flex-row items-center xl:items-start space-y-6 xl:space-y-0 xl:space-x-8 w-full">
-          {/* Profile Photo with Edit Overlay */}
+          {/* Profile Photo */}
           <div className="relative group flex-shrink-0">
             <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center overflow-hidden shadow-md">
-              {profileImage ? (
-                <img 
-                  src={profileImage} 
-                  alt="Profile" 
-                  className="w-full h-full object-cover"
-                />
+              {previewImage ? (
+                <img src={previewImage} alt="Profile" className="w-full h-full object-cover" />
               ) : (
                 <User size={40} className="text-blue-600" />
               )}
@@ -93,9 +107,9 @@ const ProfileInfoSettings: React.FC = () => {
               <Camera size={20} className="text-white" />
             </div>
           </div>
-          
+
           <div className="text-center xl:text-left w-full">
-            <h3 className="text-xl font-semibold text-gray-900">{formData.firstName} {formData.lastName}</h3>
+            <h3 className="text-xl font-semibold text-gray-900">{formData.name}</h3>
             <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
               <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
                 Admin
@@ -109,47 +123,32 @@ const ProfileInfoSettings: React.FC = () => {
         </div>
       </div>
 
-      {/* Basic Information Form - Full Width */}
+      {/* Basic Info Form */}
       <form onSubmit={handleSubmit} className="w-full">
         <div className="w-full p-8 bg-white rounded-xl shadow-sm border border-gray-100">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900">Basic Information</h2>
             <p className="text-gray-600 mt-1">Manage your basic account details</p>
           </div>
-          
+
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 w-full">
+            {/* Name */}
             <div className="space-y-2 w-full">
-              <label htmlFor="firstName" className="block text-sm font-semibold text-gray-800">
-                First Name
-                <span className="text-red-500 ml-1">*</span>
+              <label htmlFor="name" className="block text-sm font-semibold text-gray-800">
+                Name<span className="text-red-500 ml-1">*</span>
               </label>
               <input
                 type="text"
-                id="firstName"
-                value={formData.firstName}
+                id="name"
+                value={formData.name}
                 onChange={handleInputChange}
                 className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder="Enter your first name"
+                placeholder="Enter your full name"
                 required
               />
             </div>
-            
-            <div className="space-y-2 w-full">
-              <label htmlFor="lastName" className="block text-sm font-semibold text-gray-800">
-                Last Name
-                <span className="text-red-500 ml-1">*</span>
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder="Enter your last name"
-                required
-              />
-            </div>
-            
+
+            {/* Phone */}
             <div className="space-y-2 w-full">
               <label htmlFor="phone" className="block text-sm font-semibold text-gray-800">
                 Phone Number
@@ -163,11 +162,11 @@ const ProfileInfoSettings: React.FC = () => {
                 placeholder="Enter your phone number"
               />
             </div>
-            
+
+            {/* Email */}
             <div className="space-y-2 w-full">
               <label htmlFor="email" className="block text-sm font-semibold text-gray-800">
-                Email Address
-                <span className="text-red-500 ml-1">*</span>
+                Email Address<span className="text-red-500 ml-1">*</span>
               </label>
               <input
                 type="email"
@@ -175,12 +174,13 @@ const ProfileInfoSettings: React.FC = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder="Enter your email address"
+                placeholder="Enter your e-mail address"
                 required
               />
             </div>
           </div>
 
+          {/* Buttons */}
           <div className="flex flex-col lg:flex-row justify-end items-center space-y-4 lg:space-y-0 lg:space-x-4 pt-8 mt-8 border-t border-gray-200 w-full">
             <button
               type="button"
@@ -191,6 +191,7 @@ const ProfileInfoSettings: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
+             
               className="w-full lg:w-auto px-8 py-3.5 bg-blue-600 text-white font-semibold rounded-xl shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {isLoading ? (

@@ -11,7 +11,7 @@ import CommonWrapper from "@/common/CommonWrapper";
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetProductByIdQuery({ id });
-  const { data: allProductsData, isLoading: loadingProducts } = useGetAllProductsQuery({});
+  const { data: allProductsData } = useGetAllProductsQuery({});
 
   if (isLoading) {
     return (
@@ -22,7 +22,6 @@ export default function ProductDetail() {
   }
 
   const product = data?.data;
-
   if (!product) {
     return (
       <div className="min-h-screen grid place-content-center">

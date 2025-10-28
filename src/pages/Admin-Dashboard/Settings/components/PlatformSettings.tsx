@@ -2,8 +2,16 @@
 
 import React from 'react';
 import { CloudArrowUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline'; // Assumes you have Heroicons installed
+import { PlatformDataType } from '@/types/SellerDashboardTypes/SettingsTypes';
 
-const PlatformSettings: React.FC = () => (
+interface PlatformSettingsProps {
+  platformData: PlatformDataType
+}
+
+const PlatformSettings: React.FC<PlatformSettingsProps> = (props) => {
+    const { siteName, websiteLanguage, timeZone, currency, logo } = props.platformData
+    console.log(siteName, websiteLanguage, timeZone, currency, logo)
+  return(
   <div className="p-6 bg-white rounded-lg shadow-sm">
     <h2 className="text-xl font-semibold text-gray-800 mb-6">General settings</h2>
 
@@ -72,6 +80,6 @@ const PlatformSettings: React.FC = () => (
       </button>
     </div>
   </div>
-);
+)};
 
 export default PlatformSettings;

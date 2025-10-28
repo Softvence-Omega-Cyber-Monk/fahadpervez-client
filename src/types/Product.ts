@@ -15,6 +15,12 @@ export interface Product {
   specialPriceStartingDate?: string;
   specialPriceEndingDate?: string;
   mainImage?: string;
+  seller?: {
+    name: string;
+    phone: string;
+    email: string;
+    location: string;
+  };
   sideImage?: string;
   sideImage2?: string;
   lastImage?: string;

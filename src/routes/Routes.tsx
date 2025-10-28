@@ -44,6 +44,7 @@ import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerD
 import CouponAdminPage from "@/pages/Admin-Dashboard/Coupon/Coupon";
 import CategoryDetails from "@/pages/Home/CategoryDetails";
 import Shop from "@/pages/Shop/Shop";
+import AddProductPage from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
 
 
 const routes = createBrowserRouter([
@@ -224,6 +225,10 @@ const routes = createBrowserRouter([
       },
       ...sellerRoutes
     ],
+  },
+  {
+        path:"/update-product/:id",
+        element:<AddProductPage/>
   },
   {
     path: "*",

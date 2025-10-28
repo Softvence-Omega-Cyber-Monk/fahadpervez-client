@@ -5,7 +5,7 @@ interface AuthState {
 }
 
 interface JwtPayload {
-  _id:string
+  id:string
   role: string;
   exp: number;
   iat: number;
@@ -22,7 +22,7 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       try {
         const decoded = jwtDecode<JwtPayload>(action.payload.token);
-        state.user = {id:decoded._id, role: decoded.role, token: action.payload.token };
+        state.user = {id:decoded.id, role: decoded.role, token: action.payload.token };
       } catch (error) {
         console.error("Invalid token:", error);
         state.user = null;

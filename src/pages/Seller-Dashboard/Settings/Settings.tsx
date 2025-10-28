@@ -13,20 +13,21 @@ const Settings = () => {
   const [activeTab, setActiveTab] = useState<Tab>('Account Information');
   const {data , isLoading} = useGetMeQuery({})
   if(isLoading) return <div className='flex items-center justify-center min-h-[70vh]'><Spinner /></div>
-  console.log(data)
 const {
   orderNotification,
   promotionNotification,
   communicationAlert,
   newReviewsNotification,
+  profileImage,
+  storeBanner,
   language,
-  // _id,
+  _id,
   name,
   email,
   // password,
   role,
-  isActive,
-  isVerified,
+  // isActive,
+  // isVerified,
   businessName,
   // businessCRNumber,
   // CRDocuments,
@@ -39,12 +40,14 @@ const {
   paymentMethod,
   bankAccountHolderName,
   bankAccountNumber,
-  bankRoughingNumber,
+  bankRoutingNumber,
   taxId,
-  isPrivacyPolicyAccepted,
-  vendorSignature,
-  vendorContract,
-  isSellerPolicyAccepted,
+  currency,
+  // isPrivacyPolicyAccepted,
+  // vendorSignature,
+  // vendorContract,
+  // isSellerPolicyAccepted,
+  holdingTime,
   address,
   phone,
 } = data.data;
@@ -53,6 +56,7 @@ const {
 const basicInformation = {
     name ,
     phone ,
+    profileImage,
     email ,
     country, 
     language,
@@ -67,10 +71,11 @@ const businessInformation = {
 };
 
 const currencyAndShippingInformation = {
-  currency: "USD", 
+  currency, 
   shippingLocation,
   country, 
-  holdingTime:24, 
+  storeBanner,
+  holdingTime, 
   storeDescription,
   productCategory,
 };
@@ -79,7 +84,7 @@ const paymentMethodInfo = {
   defaultPaymentMethod: paymentMethod,
   bankAccountHolderName,
   bankAccountNumber,
-  bankRoughingNumber,
+  bankRoutingNumber,
 };
 
 const taxInformation = {
@@ -93,14 +98,14 @@ const notifications = {
   newReviewsNotification,
 };
 
-const security = {
-  isActive,
-  isVerified,
-  isPrivacyPolicyAccepted,
-  isSellerPolicyAccepted,
-  vendorSignature,
-  vendorContract,
-};
+// const security = {
+//   isActive,
+//   isVerified,
+//   isPrivacyPolicyAccepted,
+//   isSellerPolicyAccepted,
+//   vendorSignature,
+//   vendorContract,
+// };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -113,7 +118,7 @@ const security = {
       case 'Notification':
         return <NotificationSettings notifications={notifications} />;
       case 'Security':
-        return <SecuritySettings security={security}/>;
+        return <SecuritySettings userId = {_id}/>;
       default:
         return null;
     }
