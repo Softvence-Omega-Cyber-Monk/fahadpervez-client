@@ -19,7 +19,6 @@ import Login from "@/pages/Login/Login";
 import Signup from "@/pages/Signup/Signup";
 import Home from "@/pages/Home/Home";
 import Categories from "@/pages/Home/Categories";
-import SingleProduct from "@/pages/Home/SingleProduct";
 import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetails";
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
@@ -43,6 +42,8 @@ import WithAuth from "@/Config/WithAuth";
 import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
 import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerDashboardLayout";
 import CouponAdminPage from "@/pages/Admin-Dashboard/Coupon/Coupon";
+import CategoryDetails from "@/pages/Home/CategoryDetails";
+import Shop from "@/pages/Shop/Shop";
 
 
 const routes = createBrowserRouter([
@@ -55,23 +56,23 @@ const routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/categories/:categoryName",
+        path: "/categories",
         element: <Categories />,
       },
       {
-        path: "/products/:id",
-        element: <SingleProduct />,
+        path: "/category/:id",
+        element: <CategoryDetails />,
       },
       {
         path: "/product-details/:id",
         element: <ProductDetail />,
       },
       {
-        path: "/my-cart/:id",
+        path: "/my-cart",
         element: <MyCartHome />,
       },
       {
-        path: "/checkout/:id",
+        path: "/checkout",
         element: <CheckOut />,
       },
       {
@@ -94,11 +95,15 @@ const routes = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
+      {
+        path: "/shop",
+        element: <Shop />
+      }
     ],
   },
   {
     path: "buyer-dashboard",
-    element: <WithAuth requiredRole="BUYER"><BuyerDashboardLayout /></WithAuth>,
+    element: <WithAuth requiredRole="CUSTOMER"><BuyerDashboardLayout /></WithAuth>,
     children: [
       {
         index: true,

@@ -1,4 +1,5 @@
 export interface Product {
+  userId: any;
   _id?: string;
   productName: string;
   productCategory: string;

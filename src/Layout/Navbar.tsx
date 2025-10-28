@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
           {/* Right icons (desktop only) */}
           <div className="hidden sm:flex items-center gap-4 relative ">
             <Search className="text-[#455058] cursor-pointer" />
-            <Link to={`/my-cart/${10}`}>
+            <Link to={`/my-cart`}>
               <ShoppingCart className="text-[#455058] cursor-pointer" />
             </Link>
 
@@ -137,7 +137,7 @@ const Navbar: React.FC = () => {
               />
             </li>
             <li className="px-6 py-2">
-              <Link to={`/my-cart/${10}`} onClick={() => setMobileOpen(false)}>
+              <Link to={`/my-cart`} onClick={() => setMobileOpen(false)}>
                 My Cart
               </Link>
             </li>

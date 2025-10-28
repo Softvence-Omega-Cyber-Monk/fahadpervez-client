@@ -1,229 +1,265 @@
-import { useState, useRef, useEffect } from 'react';
-import MessageList from '@/components/Message/MessageList';
-import ChatWindow from '@/components/Message/ChatWindow';
-import { Message as MessageType, ChatMessage as ChatMessageType } from '@/types/messageTypes';
+// VendorMessagesPage.tsx
+// Complete message center for vendors to see and respond to customer inquiries
 
-const Message = () => {
-  const [selectedChat, setSelectedChat] = useState<string | null>(null);
-  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
+import { useState } from 'react';
+import { Search, MessageSquare, Loader2, User, Package } from 'lucide-react';
+import { useGetConversationsQuery } from '@/Redux/Features/chat/chat.api';
+import { useAppSelector } from '@/hooks/useRedux';
+import VendorChatBox from '@/components/VendorChatBox/VendorChatBox';
+
+const VendorMessagesPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [newMessage, setNewMessage] = useState('');
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [chatMessages, setChatMessages] = useState<ChatMessageType[]>([]);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedConversation, setSelectedConversation] = useState<any>(null);
+  const [page, setPage] = useState(1);
 
-  // Initialize mock data
-  useEffect(() => {
-    const mockMessages: MessageType[] = [
-      {
-        id: '1',
-        name: "John Doe",
-        description: "I want to order bulk product from you",
-        date: "2 Sep, 2025",
-        unread: true
-      },
-      {
-        id: '2',
-        name: "Floyd Miles",
-        description: "Can you send me the product catalog?",
-        date: "1 Sep, 2025"
-      },
-      {
-        id: '3',
-        name: "Cameron Williamson",
-        description: "Lorem ipsum dolor sit amet, consectetur..",
-        date: "1 Sep, 2025",
-        unread: true
-      },
-      {
-        id: '4',
-        name: "Esther Howard",
-        description: "My phone number: (277) 555-0113",
-        date: "31 Aug, 2025"
-      },
-      {
-        id: '5',
-        name: "Leslie Alexander",
-        description: "Call me: (503) 555-0105",
-        date: "30 Aug, 2025"
-      },
-      {
-        id: '6',
-        name: "Darrell Steward",
-        description: "Sure sir, I'll get back to you tomorrow",
-        date: "29 Aug, 2025"
-      },
-      {
-        id: '7',
-        name: "Cody Fisher",
-        description: "Pioneering physicist and chemist, cele..",
-        date: "28 Aug, 2025"
-      },
-    ];
+  // Get current vendor info
+  const currentUser = useAppSelector((state) => state.auth.user);
+  const vendorId = currentUser?._id;
 
-    const mockChatMessages: ChatMessageType[] = [
-      {
-        id: '1',
-        message: "I want to order bulk product from you. please help me!",
-        time: "14/06/2025 | 2:06 PM",
-        isSender: false,
-        timestamp: new Date('2025-06-14T14:06:00')
-      },
-      {
-        id: '2',
-        message: "Yes. How can I help you? Just tell me your problem",
-        time: "14/06/2025 | 2:10 PM",
-        isSender: true,
-        timestamp: new Date('2025-06-14T14:10:00')
-      },
-      {
-        id: '3',
-        message: "Have you more categories available?",
-        time: "14/06/2025 | 2:35 PM",
-        isSender: false,
-        timestamp: new Date('2025-06-14T14:35:00')
-      },
-      {
-        id: '4',
-        message: "Yes. Many more categories product available here. We have over 50 different product lines.",
-        time: "14/06/2025 | 2:40 PM",
-        isSender: true,
-        timestamp: new Date('2025-06-14T14:40:00')
-      },
-    ];
-
-    setMessages(mockMessages);
-    setChatMessages(mockChatMessages);
-  }, []);
-
-  // Scroll to bottom when new messages arrive
-  useEffect(() => {
-    scrollToBottom();
-  }, [chatMessages]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleMessageSelect = (messageId: string) => {
-    setSelectedChat(messageId);
-    setIsMobileChatOpen(true);
-
-    // Mark as read when selected
-    setMessages(prev => prev.map(msg =>
-      msg.id === messageId ? { ...msg, unread: false } : msg
-    ));
-  };
-
-  const handleSendMessage = () => {
-    if (!newMessage.trim()) return;
-
-    const newChatMessage: ChatMessageType = {
-      id: Date.now().toString(),
-      message: newMessage,
-      time: new Date().toLocaleDateString('en-GB') + ' | ' + new Date().toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      }),
-      isSender: true,
-      timestamp: new Date()
-    };
-
-    setChatMessages(prev => [...prev, newChatMessage]);
-    setNewMessage('');
-
-    // Auto-reply after 2 seconds
-    setTimeout(() => {
-      const autoReply: ChatMessageType = {
-        id: (Date.now() + 1).toString(),
-        message: "Thank you for your message. We'll get back to you shortly.",
-        time: new Date().toLocaleDateString('en-GB') + ' | ' + new Date().toLocaleTimeString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true
-        }),
-        isSender: false,
-        timestamp: new Date()
-      };
-      setChatMessages(prev => [...prev, autoReply]);
-    }, 2000);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
+  // Fetch vendor's conversations
+  const { data, isLoading, error } = useGetConversationsQuery(
+    {
+      userId: vendorId || '',
+      userType: 'VENDOR',
+      page,
+      limit: 20,
+    },
+    {
+      skip: !vendorId,
+      pollingInterval: 5000, // Refresh every 5 seconds
     }
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Handle file upload logic here
-      console.log('File selected:', file.name);
-      // You can add file upload functionality here
-    }
-  };
-
-  const handleAttachmentClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const filteredMessages = messages.filter(message =>
-    message.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    message.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const selectedMessage = messages.find(msg => msg.id === selectedChat);
+  const conversations = data?.data || [];
+  const pagination = data?.pagination;
+
+  // Filter conversations based on search
+  const filteredConversations = conversations.filter((conv) => {
+    const search = searchQuery.toLowerCase();
+    const customerName = (conv.customerId as any)?.name?.toLowerCase() || '';
+    const productName = (conv.productId as any)?.productName?.toLowerCase() || '';
+    const lastMsg = conv.lastMessage.toLowerCase();
+
+    return (
+      customerName.includes(search) ||
+      productName.includes(search) ||
+      lastMsg.includes(search)
+    );
+  });
+
+  // Format time helper
+  const formatTime = (date: Date) => {
+    const now = new Date();
+    const messageDate = new Date(date);
+    const diffMs = now.getTime() - messageDate.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+
+    return messageDate.toLocaleDateString();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-10 text-red-600">
+        Failed to load conversations. Please try again.
+      </div>
+    );
+  }
 
   return (
-    <div className="flex h-screen bg-white antialiased text-gray-900 overflow-hidden">
+    <div className="h-screen flex bg-gray-50">
+      {/* Left Sidebar - Conversations List */}
+      <div className="w-96 bg-white border-r border-gray-200 flex flex-col">
+        {/* Header */}
+        <div className="p-4 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Messages</h1>
 
-      {/* Left Column: Message List */}
-      <MessageList
-        isMobileChatOpen={isMobileChatOpen}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        filteredMessages={filteredMessages}
-        selectedChat={selectedChat}
-        handleMessageSelect={handleMessageSelect}
-      />
+          {/* Search Bar */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search conversations..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
 
-      {/* Right Column: Chat Window */}
-      <ChatWindow
-        isMobileChatOpen={isMobileChatOpen}
-        selectedChat={selectedChat}
-        selectedMessage={selectedMessage}
-        chatMessages={chatMessages}
-        newMessage={newMessage}
-        setNewMessage={setNewMessage}
-        handleSendMessage={handleSendMessage}
-        handleKeyPress={handleKeyPress}
-        handleFileUpload={handleFileUpload}
-        handleAttachmentClick={handleAttachmentClick}
-        fileInputRef={fileInputRef}
-        setIsMobileChatOpen={setIsMobileChatOpen}
-        messagesEndRef={messagesEndRef}
-      />
-
-      {/* Mobile Overlay when no chat is selected */}
-      {!isMobileChatOpen && !selectedChat && (
-        <div className="hidden max-md:flex flex-1 items-center justify-center bg-gray-50 p-6">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
+          {/* Stats */}
+          <div className="mt-4 flex gap-4">
+            <div className="flex-1 bg-blue-50 rounded-lg p-3">
+              <p className="text-xs text-blue-600 font-medium">Total</p>
+              <p className="text-2xl font-bold text-blue-900">
+                {conversations.length}
+              </p>
             </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Select a conversation</h3>
-            <p className="text-sm text-gray-500">Choose a chat from the list to start messaging</p>
+            <div className="flex-1 bg-red-50 rounded-lg p-3">
+              <p className="text-xs text-red-600 font-medium">Unread</p>
+              <p className="text-2xl font-bold text-red-900">
+                {conversations.reduce((acc, conv) => acc + conv.unreadCount.vendor, 0)}
+              </p>
+            </div>
           </div>
         </div>
-      )}
+
+        {/* Conversations List */}
+        <div className="flex-1 overflow-y-auto">
+          {filteredConversations.length === 0 ? (
+            <div className="text-center py-16 px-4">
+              <MessageSquare className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                {searchQuery ? 'No conversations found' : 'No messages yet'}
+              </h3>
+              <p className="text-gray-500 text-sm">
+                {searchQuery
+                  ? 'Try searching with different keywords'
+                  : 'Customer inquiries will appear here'}
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-200">
+              {filteredConversations.map((conv) => {
+                const customer = conv.customerId as any;
+                const product = conv.productId as any;
+                const unreadCount = conv.unreadCount.vendor;
+                const isSelected = selectedConversation?._id === conv._id;
+
+                return (
+                  <button
+                    key={conv._id}
+                    onClick={() => setSelectedConversation(conv)}
+                    className={`w-full p-4 text-left hover:bg-gray-50 transition-colors ${
+                      isSelected ? 'bg-blue-50 border-l-4 border-blue-600' : ''
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      {/* Avatar */}
+                      <div className="flex-shrink-0">
+                        {customer?.avatar ? (
+                          <img
+                            src={customer.avatar}
+                            alt={customer.name}
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                            <User className="w-6 h-6 text-white" />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <h3 className="font-semibold text-gray-900 truncate">
+                            {customer?.name || 'Unknown Customer'}
+                          </h3>
+                          <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
+                            {formatTime(conv.lastMessageTime)}
+                          </span>
+                        </div>
+
+                        {/* Product Info */}
+                        {product && (
+                          <div className="flex items-center gap-1 mb-1">
+                            <Package className="w-3 h-3 text-gray-400" />
+                            <p className="text-xs text-gray-600 truncate">
+                              {product.productName}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Last Message */}
+                        <div className="flex items-center justify-between">
+                          <p
+                            className={`text-sm truncate flex-1 ${
+                              unreadCount > 0
+                                ? 'text-gray-900 font-medium'
+                                : 'text-gray-600'
+                            }`}
+                          >
+                            {conv.lastMessage}
+                          </p>
+                          {unreadCount > 0 && (
+                            <span className="ml-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0">
+                              {unreadCount}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Pagination */}
+        {pagination && pagination.total > 1 && (
+          <div className="p-4 border-t border-gray-200">
+            <div className="flex justify-between items-center">
+              <button
+                onClick={() => setPage(page - 1)}
+                disabled={page === 1}
+                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Previous
+              </button>
+              <span className="text-sm text-gray-600">
+                Page {page} of {pagination.total}
+              </span>
+              <button
+                onClick={() => setPage(page + 1)}
+                disabled={page === pagination.total}
+                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Right Side - Chat Box */}
+      <div className="flex-1 flex flex-col">
+        {selectedConversation ? (
+          <VendorChatBox
+            conversation={selectedConversation}
+            vendorId={vendorId!}
+            onClose={() => setSelectedConversation(null)}
+          />
+        ) : (
+          <div className="flex-1 flex items-center justify-center bg-gray-50">
+            <div className="text-center">
+              <MessageSquare className="w-20 h-20 mx-auto mb-4 text-gray-400" />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                Select a conversation
+              </h3>
+              <p className="text-gray-500">
+                Choose a conversation from the list to start messaging
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default Message;
+export default VendorMessagesPage;

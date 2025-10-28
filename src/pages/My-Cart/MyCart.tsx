@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Minus, Plus, Trash2, Tag } from 'lucide-react';
-// import AddToCartImg from "../../assets/addToCartImg.png"
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { decreaseQuantity, increaseQuantity, removeFromCart } from '@/store/Slices/CartSlice/cartSlice';
@@ -9,9 +8,9 @@ const MyCart: React.FC = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const dispatch = useAppDispatch();
 
-  const shipping = 1.99;
-  const discount = 2.00;
-  const tax = 0.50;
+  const shipping = 0;
+  const discount = 0;
+  const tax = 0;
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.totalPrice || 0), 0);
   const total = subtotal + shipping - discount + tax;
@@ -29,7 +28,7 @@ const deliveryDate = threeDaysLater.toLocaleDateString('en-US', {
 
 
   return (
-    <div className="">
+    <div className="max-w-[80vw] mx-auto mt-28">
       <div className="">
         {/* Cart Heading */}
         <h1 className="text-[32px] sm:text-[40px] lg:text-[48px] not-italic uppercase font-[600] text-center text-[#1C2A33] mb-8 sm:mb-10">
@@ -141,7 +140,7 @@ const deliveryDate = threeDaysLater.toLocaleDateString('en-US', {
           </div>
 
           {/* Order Summary Section */}
-          <div className="w-full lg:w-[380px] flex-shrink-0">
+          <div className="w-full lg:w-[380px] flex-shrink-0 mt-20">
             <div className="bg-white rounded-lg p-6 shadow-sm sticky top-6">
               <h3 className="text-[24px] sm:text-[28px] font-[600] text-[#1C2A33] mb-6">
                 Order Summary
@@ -191,29 +190,9 @@ const deliveryDate = threeDaysLater.toLocaleDateString('en-US', {
                   </span>
                 </div>
               </div>
-
-              {/* Promo Code */}
-              <div className="mb-6">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Promo Code"
-                    // value={promoCode}
-                    // onChange={(e) => setPromoCode(e.target.value)}
-                    className="w-full px-4 py-3 pr-12 bg-[#F1F5F8] rounded-lg text-[#1C2A33] placeholder:text-[#70797E] text-[15px] font-[500] outline-none focus:ring-2 focus:ring-[#0066FF] transition-all"
-                  />
-                  <button
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#70797E] hover:text-[#1C2A33] transition-colors"
-                    aria-label="Apply promo code"
-                  >
-                    <Tag size={20} />
-                  </button>
-                </div>
-              </div>
-
               {/* Checkout Button */}
-              <Link to={`/checkout/${10}`}>
-                <button className="w-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-[600] text-[16px] py-4 rounded-lg transition-colors shadow-sm">
+              <Link to={`/checkout`}>
+                <button className="w-full cursor-pointer bg-[#0066FF] hover:bg-[#0052CC] text-white font-[600] text-[16px] py-4 rounded-lg transition-colors shadow-sm">
                   Proceed to Checkout
                 </button>
               </Link>

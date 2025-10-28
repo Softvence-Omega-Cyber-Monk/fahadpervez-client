@@ -11,7 +11,6 @@ import { MdLocalShipping, MdOutlinePayments } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 import Logout from "@/components/Logout/Logout";
-import CouponAdminPage from "../Coupon/Coupon";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
