@@ -35,11 +35,13 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["MY_ORDER"],
     }),
-    getAllOrdersByAdmin: builder.query({
-      query: () => ({
-        url: `/orders/admin`,
+    getAllOrdersByAdminAndVendor: builder.query({
+      query: ({status}) => {
+        console.log(status)
+        return{
+        url: `/orders/admin?status=${status}`,
         method: "GET",
-      }),
+      }},
       providesTags: ["ORDER_ADMIN"],
     }),
     getOrderStatsAdmin: builder.query({
@@ -48,7 +50,7 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    getRecentOrdersAdmin: builder.query({
+    getRecentOrdersAdminAndVendor: builder.query({
       query: () => ({
         url: `/orders/admin/recent`,
         method: "GET",
@@ -90,9 +92,9 @@ export const {
   useGetMyOrderStatsQuery,
   useTrackByOrderNumberQuery,
   useCancelOrderByIdMutation,
-  useGetAllOrdersByAdminQuery,
+  useGetAllOrdersByAdminAndVendorQuery,
   useGetOrderStatsAdminQuery,
-  useGetRecentOrdersAdminQuery,
+  useGetRecentOrdersAdminAndVendorQuery,
   useGetOrderByIdAdminQuery,
   useDeleteOrderByIdAdminMutation,
   useUpdateOrderStatusAdminMutation,

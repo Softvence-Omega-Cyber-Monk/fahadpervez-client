@@ -37,7 +37,6 @@ const ProductGallery = ({ product }: { product: Product }) => {
       product.videoUrl!,
     ]);
   }, [product]);
-  console.log(product)
   const isWishlist = wishlistData?.data.some(
     (wish: { productId: Product }) => wish.productId._id === product._id
   );
@@ -102,7 +101,6 @@ const ProductGallery = ({ product }: { product: Product }) => {
     };
     dispatch(addToCart(items));
     toast.success("Product added to cart");
-    console.log(items);
   };
 
   const handleAddWishlist = async () => {
