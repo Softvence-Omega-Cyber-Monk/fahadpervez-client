@@ -52,8 +52,6 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
     return category?.categoryName;
   };
 
-  
-
   const fields = [
     {
       name: "productName",
@@ -73,7 +71,7 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
       // Convert category ID to category name for display
       defaultValue: defaultValue?.productCategory 
         ? getCategoryNameFromId(defaultValue.productCategory)
-        : undefined, 
+        : "", 
     },
     {
       name: "productSKU",
@@ -153,8 +151,8 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
       label: "Special Price From",
       type: "date",
       defaultValue: defaultValue?.specialPriceStartingDate 
-        ? new Date(defaultValue.specialPriceStartingDate).toISOString().split('T')[0]
-        : undefined,
+      ? new Date(defaultValue.specialPriceStartingDate).toISOString().split('T')[0]
+        : "",
     },
     {
       name: "specialPriceEndingDate",
@@ -162,7 +160,7 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
       type: "date",
       defaultValue: defaultValue?.specialPriceEndingDate 
         ? new Date(defaultValue.specialPriceEndingDate).toISOString().split('T')[0]
-        : undefined,
+        : "",
     },
   ];
 

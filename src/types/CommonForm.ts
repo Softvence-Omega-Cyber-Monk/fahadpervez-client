@@ -6,7 +6,7 @@ export interface FieldConfig {
   type: string;
   placeholder?: string;
   options?: string[];
-  defaultValue?: string | number | undefined;
+  defaultValue?: string | number | undefined ;
 }
 
 export interface Props<T extends Record<string, unknown>> {
