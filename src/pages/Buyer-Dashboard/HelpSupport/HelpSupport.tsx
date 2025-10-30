@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 export default function HelpSupport() {
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ export default function HelpSupport() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent page reload
     console.log('Form submitted with data:', formData);
     
