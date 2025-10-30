@@ -13,7 +13,7 @@ import Users from "@/pages/Admin-Dashboard/Users/Users";
 import Order from "@/pages/Admin-Dashboard/Order/Order";
 import Product from "@/pages/Admin-Dashboard/Product/Product";
 import Payments from "@/pages/Admin-Dashboard/Payments/Payments";
-import Shipping from "@/pages/Admin-Dashboard/Shipping/Shipping";
+import Shipping from "@/pages/Admin-Dashboard/Shipping/ShippingDashboard";
 import Support from "@/pages/Admin-Dashboard/Support/Support";
 import AdminSettings from "@/pages/Admin-Dashboard/Settings/AdminSettings";
 import AdmninDashboard from "@/pages/Admin-Dashboard/AdminDashboard/AdminDashboard";
