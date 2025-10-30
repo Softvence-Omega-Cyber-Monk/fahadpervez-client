@@ -1,12 +1,17 @@
 
+import { Spinner } from '@/components/ui/spinner';
+import { useGetMyOrderStatsQuery } from '@/Redux/Features/Order/Order.api';
 import { Package, CheckCircle, Truck, DollarSign } from 'lucide-react';
 
 export default function OrderStats() {
+  const {data,isLoading} = useGetMyOrderStatsQuery({});
+  if(isLoading) return <div className="min-h-40 grid place-content-center"><Spinner /></div>
+  console.log(data.data)
   const stats = [
     {
       icon: Package,
       title: 'Total Orders',
-      value: '16',
+      value: data?.data.totalOrders,
       bgColor: 'bg-purple-50',
       iconColor: 'text-purple-600',
       valueColor: 'text-purple-600'
@@ -14,7 +19,7 @@ export default function OrderStats() {
     {
       icon: CheckCircle,
       title: 'Complete Orders',
-      value: '11',
+      value: data?.data.completedOrders,
       bgColor: 'bg-green-50',
       iconColor: 'text-green-600',
       valueColor: 'text-green-600'
@@ -22,7 +27,7 @@ export default function OrderStats() {
     {
       icon: Truck,
       title: 'Pending Orders',
-      value: '3',
+      value: data?.data.pendingOrders,
       bgColor: 'bg-orange-50',
       iconColor: 'text-orange-500',
       valueColor: 'text-orange-500'
@@ -30,7 +35,7 @@ export default function OrderStats() {
     {
       icon: DollarSign,
       title: 'Total Spending',
-      value: '$135',
+      value: data?.data.totalSpent,
       bgColor: 'bg-red-50',
       iconColor: 'text-red-600',
       valueColor: 'text-red-600'
@@ -38,7 +43,7 @@ export default function OrderStats() {
   ];
 
   return (
-    <div className="w-full bg-gray-50 mb-6">
+    <div className="w-full  mb-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {stats.map((stat, index) => (
           <div

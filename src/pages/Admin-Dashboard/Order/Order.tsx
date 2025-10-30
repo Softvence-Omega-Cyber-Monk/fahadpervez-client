@@ -9,10 +9,10 @@ const App: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleSelectOrder = useCallback((order: Order) => {
-    setSelectedOrder(order);
-    setCurrentView('details');
-  }, []);
+  // const handleSelectOrder = useCallback((order: Order) => {
+  //   setSelectedOrder(order);
+  //   setCurrentView('details');
+  // }, []);
 
   const handleBackToList = useCallback(() => {
     setCurrentView('list');
@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
   return (
     <div className="font-sans antialiased bg-gray-50">
-      {currentView === 'list' && <OrderList onSelectOrder={handleSelectOrder} />}
+      {currentView === 'list' && <OrderList  />}
       {currentView === 'details' && selectedOrder && (
         <OrderDetails
           order={selectedOrder}

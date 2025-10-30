@@ -30,7 +30,7 @@ import MyCartHome from "@/pages/My-Cart/MyCartHome";
 import CheckOut from "@/pages/Checkout/CheckOut";
 import StoreHome from "@/pages/Store-Profile/StoreHome";
 import Notifications from "@/pages/Buyer-Dashboard/Notifications/Notifications";
-import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
+// import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
 import BuyerProfile from "@/pages/Buyer-Dashboard/BuyerProfile/BuyerProfile";
 import Message from "@/pages/Buyer-Dashboard/Message/Message";
 import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord";
@@ -44,6 +44,7 @@ import Register from "@/pages/Login/Register";
 import WithAuth from "@/Config/WithAuth";
 import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
 import AddProductPage from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
+import OrderDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/OrderDetails";
 
 
 const routes = createBrowserRouter([
@@ -133,10 +134,14 @@ const routes = createBrowserRouter([
         path: "notifications",
         element: <Notifications />,
       },
+      // {
+      //   path: "dashboard-product-details/:productId",
+      //   element: <DashboardProductDetails />,
+      // },
       {
-        path: "dashboard-product-details/:productId",
-        element: <DashboardProductDetails />,
-      },
+    path: "order-details/:id",
+    element: <OrderDetails />,
+  },
       {
         path: "buyer-profile",
         element: <BuyerProfile />,
