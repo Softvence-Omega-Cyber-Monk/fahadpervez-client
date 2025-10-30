@@ -1,4 +1,4 @@
-import OrderTable from "../../../common/OrderTable";
+// import OrderTable from "../../../common/OrderTable";
 import PrimaryButton from "../../../common/PrimaryButton";
 
 const AdminDashboardRecentOrders = () => {
@@ -13,7 +13,7 @@ const AdminDashboardRecentOrders = () => {
         />
       </div>
       <div className="mt-3">
-        <OrderTable />
+        {/* <OrderTable /> */}
       </div>
     </div>
   );
