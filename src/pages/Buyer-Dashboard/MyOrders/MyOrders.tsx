@@ -1,9 +1,22 @@
-import OrderSearchBar from "../components/MyOrders/OrderSearchBar"
-import OrderTable from "../components/MyOrders/OrderTable"
+import OrderTable from "@/common/OrderTable";
+import OrderSearchBar from "../components/MyOrders/OrderSearchBar";
+// import OrderTable from "../components/MyOrders/OrderTable"
 import OrderTabs from "../components/MyOrders/OrderTabs"
-import Pagination from "../components/MyOrders/Pagination"
+import Pagination from "../components/MyOrders/Pagination";
+import { useGetMyOrdersQuery } from "@/Redux/Features/Order/Order.api";
+import { Spinner } from "@/components/ui/spinner";
+
+import { useState } from "react";
 
 const MyOrders = () => {
+  const [status, setStatus] = useState("");
+  const { data, isLoading } = useGetMyOrdersQuery({status});
+  if (isLoading)
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   return (
     <div className="min-h-screen bg-gray-50 py-4 xs:py-5 sm:py-6 lg:py-8">
       <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
@@ -21,7 +34,8 @@ const MyOrders = () => {
         <div className="bg-white rounded-lg xs:rounded-xl shadow-xs xs:shadow-sm sm:shadow-md border border-gray-200 overflow-hidden">
           {/* Tabs Section */}
           <div className="border-b border-gray-200">
-            <OrderTabs />
+            {/* <OrderTabs setStatus={setStatus} status={status}/> */}
+            <OrderTabs setStatus={setStatus} status={status} />
           </div>
 
           {/* Search and Filters Section */}
@@ -31,7 +45,7 @@ const MyOrders = () => {
 
           {/* Table Section */}
           <div className="overflow-hidden">
-            <OrderTable />
+            <OrderTable data={data?.data} />
           </div>
 
           {/* Pagination Section */}
@@ -53,7 +67,7 @@ const MyOrders = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MyOrders
+export default MyOrders;

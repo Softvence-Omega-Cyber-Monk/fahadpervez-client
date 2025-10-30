@@ -1,56 +1,101 @@
-import React, { useState, useMemo } from 'react';
-import { Search, ChevronDown, Filter } from 'lucide-react';
-import { Order, OrderStatus, Tab, mockOrders } from '../data';
-import { formatCurrency } from '../utils';
+import { useState } from 'react';
+import { Search } from 'lucide-react';
+
+// import { formatCurrency } from '../utils';
 import { useGetAllOrdersByAdminAndVendorQuery } from '@/Redux/Features/Order/Order.api';
+import OrderTable from '@/common/OrderTable';
+import { Spinner } from '@/components/ui/spinner';
+import OrderTabs from '@/common/OrderTabs';
+// import OrderCardData from "@/utils/SellerDashboardData/OrderCardData.json";
+// const getStatusClasses = (status: OrderStatus) => {
+//   const base = 'px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap';
+//   switch (status) {
+//     case 'placed':
+//       return `${base} bg-blue-50 text-blue-700 border border-blue-200`;
+//     case 'delivery':
+//       return `${base} bg-cyan-50 text-cyan-700 border border-cyan-200`;
+//     case 'delivered':
+//       return `${base} bg-green-50 text-green-700 border border-green-200`;
+//     case 'cancelled':
+//       return `${base} bg-red-50 text-red-700 border border-red-200`;
+//     case 'preparing':
+//       return `${base} bg-amber-50 text-amber-700 border border-amber-200`;
+//     default:
+//       return `${base} bg-gray-50 text-gray-700 border border-gray-200`;
+//   }
+// };
 
-const getStatusClasses = (status: OrderStatus) => {
-  const base = 'px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap';
-  switch (status) {
-    case 'placed':
-      return `${base} bg-blue-50 text-blue-700 border border-blue-200`;
-    case 'delivery':
-      return `${base} bg-cyan-50 text-cyan-700 border border-cyan-200`;
-    case 'delivered':
-      return `${base} bg-green-50 text-green-700 border border-green-200`;
-    case 'cancelled':
-      return `${base} bg-red-50 text-red-700 border border-red-200`;
-    case 'preparing':
-      return `${base} bg-amber-50 text-amber-700 border border-amber-200`;
-    default:
-      return `${base} bg-gray-50 text-gray-700 border border-gray-200`;
-  }
-};
+// const getStatusText = (status: OrderStatus) => {
+//   switch (status) {
+//     case 'placed': return 'Order placed';
+//     case 'delivery': return 'Out of delivery';
+//     case 'delivered': return 'Delivered';
+//     case 'cancelled': return 'Cancelled';
+//     case 'preparing': return 'Preparing for Shipment';
+//     default: return 'Unknown';
+//   }
+// };
 
-const getStatusText = (status: OrderStatus) => {
-  switch (status) {
-    case 'placed': return 'Order placed';
-    case 'delivery': return 'Out of delivery';
-    case 'delivered': return 'Delivered';
-    case 'cancelled': return 'Cancelled';
-    case 'preparing': return 'Preparing for Shipment';
-    default: return 'Unknown';
-  }
-};
-
-const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSelectOrder }) => {
-  const [activeTab, setActiveTab] = useState<Tab>('All Order');
+const OrderList = () => {
+  // const [activeTab, setActiveTab] = useState<Tab>('All Order');
   const [searchTerm, setSearchTerm] = useState('');
-  const {data} = useGetAllOrdersByAdminAndVendorQuery({});
-  console.log(data)
-  const filteredOrders = useMemo(() => {
-    return mockOrders
-      .filter(order => {
-        if (activeTab === 'All Order') return true;
-        if (activeTab === 'Pending order') return ['placed', 'preparing', 'delivery'].includes(order.status);
-        if (activeTab === 'Complete Order') return order.status === 'delivered';
-        if (activeTab === 'Cancel Order') return order.status === 'cancelled';
-        return true;
-      })
-      .filter(order => order.id.toLowerCase().includes(searchTerm.toLowerCase()));
-  }, [activeTab, searchTerm]);
+  // const filteredOrders = useMemo(() => {
+  //   return mockOrders
+  //   .filter(order => {
+  //     if (activeTab === 'All Order') return true;
+  //     if (activeTab === 'Pending order') return ['placed', 'preparing', 'delivery'].includes(order.status);
+  //     if (activeTab === 'Complete Order') return order.status === 'delivered';
+  //     if (activeTab === 'Cancel Order') return order.status === 'cancelled';
+  //     return true;
+  //   })
+  //   .filter(order => order.id.toLowerCase().includes(searchTerm.toLowerCase()));
+  // }, [activeTab, searchTerm]);
 
-  const TABS: Tab[] = ['All Order', 'Pending order', 'Complete Order', 'Cancel Order'];
+  // if(isLoading) return (<div><Spinner /></div>)
+  // console.log(data,"admin")
+  
+  // const TABS: Tab[] = ['All Order', 'Pending order', 'Complete Order', 'Cancel Order'];
+
+
+
+
+
+    const [status, setStatus] = useState("");
+  
+    const { data, isLoading } = useGetAllOrdersByAdminAndVendorQuery({
+      status,
+    });
+  
+    if (isLoading) return <Spinner />;
+  
+    // const orders: Order[] = data?.data || [];
+  
+    // --- Dynamic Order Counts ---
+    // const allCount = data?.count || 0;
+    // const pendingCount = orders.filter((order) => order.status === "Pending").length;
+    // const completeCount = orders.filter((order) => order.status === "Confirmed").length;
+    // const cancelCount = orders.filter((order) => order.status === "Cancelled").length;
+  
+    // --- Merge Dynamic Values into Static Data ---
+    // const orderCardData = OrderCardData.map((item) => {
+    //   switch (item.id) {
+    //     case "allCount":
+    //       return { ...item, value: allCount };
+    //     case "pendingCount":
+    //       return { ...item, value: pendingCount };
+    //     case "completeCount":
+    //       return { ...item, value: completeCount };
+    //     case "cancelCount":
+    //       return { ...item, value: cancelCount };
+    //     default:
+    //       return item;
+    //   }
+    // });
+
+
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-50/30">
@@ -59,7 +104,7 @@ const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSele
         <p className="text-gray-600 mb-8">Manage and track your orders efficiently</p>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-8">
+        {/* <div className="border-b border-gray-200 mb-8">
           <div className="flex space-x-8 overflow-x-auto">
             {TABS.map(tab => (
               <button
@@ -77,7 +122,7 @@ const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSele
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Search and Filters */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
@@ -93,7 +138,7 @@ const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSele
               />
             </div>
             <div className="flex gap-3">
-              <button className="flex items-center px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium">
+              {/* <button className="flex items-center px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium">
                 <Filter size={18} className="mr-2 text-blue-600" />
                 Order date
                 <ChevronDown size={16} className="ml-2" />
@@ -101,13 +146,13 @@ const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSele
               <button className="flex items-center px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium">
                 Order Status
                 <ChevronDown size={16} className="ml-2" />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
 
         {/* Orders Table */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        {/* <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50/80">
@@ -173,10 +218,12 @@ const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSele
               <p className="text-gray-400 mt-2">Try adjusting your search or filter criteria</p>
             </div>
           )}
-        </div>
+        </div> */}
+        <OrderTabs setStatus={setStatus} status={status} />
+        <OrderTable data={data?.data}/>
 
         {/* Pagination */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
+        {/* <div className="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
           <p className="text-sm text-gray-600">Showing 1 to {filteredOrders.length} of {filteredOrders.length} orders</p>
           <div className="flex items-center space-x-2">
             <button className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-500 transition-colors">
@@ -189,7 +236,7 @@ const OrderList: React.FC<{ onSelectOrder: (order: Order) => void }> = ({ onSele
               <ChevronDown size={16} className="transform -rotate-90" />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

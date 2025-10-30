@@ -10,23 +10,28 @@ const orderApi = baseApi.injectEndpoints({
       }),
     }),
     getMyOrders: builder.query({
-      query: () => ({
-        url: "/orders/my-orders",
+      query: ({status}) => {
+        return{
+        url: `/orders/my-orders?status=${status.toUpperCase()}`,
         method: "GET",
-      }),
+      }
+      },
       providesTags: ["MY_ORDER"],
     }),
     getMyOrderStats: builder.query({
       query: () => ({
-        url: "/orders/my-stats",
+        url: `/orders/my-stats`,
         method: "GET",
       }),
     }),
     trackByOrderNumber: builder.query({
-      query: (orderNumber) => ({
-        url: `/orders/track/${orderNumber}`,
+      query: ({id}) => {
+       console.log(id)
+        return {
+        url: `/orders/track/${id}`,
         method: "GET",
-      }),
+      }
+      },
     }),
     cancelOrderById: builder.mutation({
       query: (orderId) => ({
@@ -37,7 +42,6 @@ const orderApi = baseApi.injectEndpoints({
     }),
     getAllOrdersByAdminAndVendor: builder.query({
       query: ({status}) => {
-        console.log(status)
         return{
         url: `/orders/admin?status=${status}`,
         method: "GET",

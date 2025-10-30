@@ -10,7 +10,6 @@ import { useState } from "react";
 
 const OrderLandingPage = () => {
   const [status, setStatus] = useState("");
-
   const { data, isLoading } = useGetAllOrdersByAdminAndVendorQuery({
     status,
   });
