@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DetailsOverview from './DetailsOverview';
 import DetailsReatingReview from './DetailsReatingReview';
 
-const ProductDetailsTab: React.FC = () => {
+const ProductDetailsTab = () => {
     const [activeTab, setActiveTab] = useState<'overview' | 'reviews'>('overview');
 
     return (
@@ -32,7 +32,7 @@ const ProductDetailsTab: React.FC = () => {
             {/* Tab Content */}
             <div className="py-8">
                 {activeTab === 'overview' ? (
-                    <DetailsOverview />
+                    <DetailsOverview/>
                 ) : (
                     <DetailsReatingReview/>
                 )}

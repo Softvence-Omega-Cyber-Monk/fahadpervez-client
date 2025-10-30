@@ -37,7 +37,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
       product.videoUrl!,
     ]);
   }, [product]);
-
+  console.log(product)
   const isWishlist = wishlistData?.data.some(
     (wish: { productId: Product }) => wish.productId._id === product._id
   );
@@ -167,7 +167,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3">
           <div className="flex items-center gap-2">
-            <span className="text-gray-600 text-base">By:</span>
+            <span className="text-gray-600 text-base">By: {product?.userId?.name}</span>
             <a
               href="#"
               className="text-blue-600 font-medium text-base hover:underline"
@@ -219,10 +219,14 @@ const ProductGallery = ({ product }: { product: Product }) => {
             </span>
           </div>
         )}
-
         {/* Product Description */}
-        <div className="text-gray-700 text-base">
-          {product.productDescription}
+        <div className="ml-4 space-y-2">
+          <li>Special Price Start: {product.specialPriceStartingDate && new Date(product.specialPriceStartingDate).toDateString()}</li>
+          <li>Special Price End: {product.specialPriceEndingDate && new Date(product.specialPriceEndingDate).toDateString()}</li>
+          <li>AvailableSize: {product.availableSize}</li>
+          <li>Company: {product.companyName}</li>
+          <li>Product Sku: {product.productSKU}</li>
+          <li>Weight: {product.weight}</li>
         </div>
       </div>
 

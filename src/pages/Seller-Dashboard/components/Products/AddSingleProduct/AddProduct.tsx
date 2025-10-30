@@ -13,9 +13,7 @@ import { MediaData } from "@/types/SellerDashboardTypes/MediaUpload";
 
 const AddProductPage = () => {
   const navigate = useNavigate();
-
   const { data: categories } = useGetAllCategoriesQuery({});
-
   const [addProduct] = useAddProductMutation();
   const [mediaData, setMediaData] = useState<MediaData | null>(null);
   const productFormRef = useRef<ProductFormRef>(null);
@@ -26,7 +24,6 @@ const AddProductPage = () => {
       await productFormRef.current.submit();
     }
   };
-
   // Handle actual form submit (Simplified for creation)
   const handleFormSubmit = async (data: Partial<ProductFormValues>) => {
     // 1. Ensure main image is uploaded for the new product
@@ -34,20 +31,16 @@ const AddProductPage = () => {
       toast.error("Please select at least a main image.");
       return;
     }
-
     // 2. Handle category lookup
     const categoryNameOrId = data.productCategory;
-
     if (!categoryNameOrId) {
       toast.error("Please select a product category.");
       return;
     }
-
     const category = categories?.data?.find(
       (item: { _id: string; categoryName: string }) =>
         item._id === categoryNameOrId || item.categoryName === categoryNameOrId
     );
-
     if (!category || !category._id) {
       toast.error("Invalid category selected.");
       return;
@@ -59,12 +52,9 @@ const AddProductPage = () => {
       categoryId,
       false 
     );
-
     try {
       toast.loading("Adding product...", { id: "productAction" });
-
       const res = await addProduct(formData).unwrap();
-
       if (res.success) {
         toast.success("Product added successfully!", { id: "productAction" });
         navigate("/seller-dashboard/products");
