@@ -76,7 +76,7 @@ const CheckoutPage = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/v1/afspay/initialize', {
+      const response = await fetch('https://fahadpervez-backend-803d.onrender.com/api/v1/afspay/initialize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

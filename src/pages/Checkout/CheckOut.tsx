@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { CreditCard, Lock, AlertCircle, CheckCircle, Loader, MapPin, Package, X, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@/hooks/useRedux';
-import { useCreateOrderMutation } from '@/Redux/Features/Order/Order';
+import { useCreateOrderMutation } from '@/Redux/Features/Order/Order.api';
 
 // Extend window for Mastercard Checkout
 declare global {
@@ -211,7 +211,7 @@ const CheckoutPage = () => {
       }
 
       // Step 2: Initialize payment
-      const paymentResponse = await fetch('http://localhost:5000/api/v1/afspay/initialize', {
+      const paymentResponse = await fetch('https://fahadpervez-backend-803d.onrender.com/api/v1/afspay/initialize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useUpdateOrderPaymentStatusAdminMutation } from "@/Redux/Features/Order/Order";
+import { useUpdateOrderPaymentStatusAdminMutation } from "@/Redux/Features/Order/Order.api";
 import { CheckCircle } from "lucide-react";
 
 const OrderSuccessPage = () => {

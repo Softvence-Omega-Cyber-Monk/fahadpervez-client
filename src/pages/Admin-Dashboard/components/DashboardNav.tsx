@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaBell, FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
-import logo from "../../../assets/logo.png";
+// import logo from "../../../assets/logo.png";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 import { Spinner } from "@/components/ui/spinner";
 import { useAppDispatch } from "@/hooks/useRedux";

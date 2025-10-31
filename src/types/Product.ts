@@ -28,7 +28,7 @@ export interface Product {
     email: string;
     location: string;
   };
-  userId: userId;
+  // userId: userId;
   sideImage?: string;
   sideImage2?: string;
   lastImage?: string;
