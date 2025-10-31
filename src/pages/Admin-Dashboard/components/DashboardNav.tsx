@@ -38,7 +38,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
 
         {/* Logo */}
           <NavLink to="/">
-        <img src={logo} alt="Logo" className="h-8 sm:h-10 w-auto" />
+        <img src="logo.png" alt="Logo" className="h-8 sm:h-10 w-auto" />
           </NavLink>
       </div>
 

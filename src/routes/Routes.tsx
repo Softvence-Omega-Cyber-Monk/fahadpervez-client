@@ -45,6 +45,7 @@ import WithAuth from "@/Config/WithAuth";
 import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
 import AddProductPage from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
 import OrderDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/OrderDetails";
+import AdminOrderDetails from "@/pages/Admin-Dashboard/Order/components/AdminOrderDetails";
 
 
 const routes = createBrowserRouter([
@@ -110,6 +111,10 @@ const routes = createBrowserRouter([
         path: "my-orders",
         element: <MyOrders />,
       },
+        {
+    path: "order-details/:id",
+    element: <OrderDetails />,
+  },
       {
         path: "wishlist",
         element: <WishList />,
@@ -138,10 +143,7 @@ const routes = createBrowserRouter([
       //   path: "dashboard-product-details/:productId",
       //   element: <DashboardProductDetails />,
       // },
-      {
-    path: "order-details/:id",
-    element: <OrderDetails />,
-  },
+    
       {
         path: "buyer-profile",
         element: <BuyerProfile />,
@@ -168,6 +170,10 @@ const routes = createBrowserRouter([
       {
         path: "orders",
         element: <Order />,
+      },
+      {
+        path: "order-details/:id",
+        element: <AdminOrderDetails />,
       },
       {
         path: "product",

@@ -1,8 +1,8 @@
 import React from 'react';
 
 interface DetailCardProps {
-  title: string;
-  children: React.ReactNode;
+  title?: string;
+  children?: React.ReactNode;
   icon?: React.ReactNode;
 }
 

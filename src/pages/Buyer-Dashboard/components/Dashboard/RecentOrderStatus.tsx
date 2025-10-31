@@ -1,11 +1,19 @@
 import { useCancelOrderByIdMutation } from "@/Redux/Features/Order/Order.api";
 import { Order } from "@/types/OrderTypes";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 
-export default function RecentOrderStatus({data}: {data:Order}) {
+export default function RecentOrderStatus({data}: {data?:Order}) {
 const [cancelOrderById] = useCancelOrderByIdMutation()
+if(!data){
+  return <div className="w-full bg-white p-6 sm:p-8 border-gray-100 border-1 rounded-md">
+    <h2 className="text-2xl sm:text-2xl font-medium text-gray-900">
+      Recent order status
+    </h2>
+    <p className="mt-4 text-gray-600">No recent orders found.</p>
+  </div>
+}
   const {_id,status,
 orderNumber,
 createdAt,
@@ -48,7 +56,7 @@ const handleDelete = async ({id} : {id:string}) => {
 
         {/* Cancel Button */}
         <div >
-        <button onClick={()=>handleDelete( {id:_id})} className="flex items-center gap-2 text-white px-4 py-px rounded-md bg-red-500 hover:bg-red-400 transition-colors self-start sm:self-auto">
+        <button onClick={()=>handleDelete( {id:_id as string})} className="flex items-center gap-2 text-white px-4 py-px rounded-md bg-red-500 hover:bg-red-400 transition-colors self-start sm:self-auto">
           <span className="text-sm sm:text-base font-medium ">Cancel Order</span>
         </button>
         </div>
@@ -76,7 +84,7 @@ const handleDelete = async ({id} : {id:string}) => {
         {/* Shipping Method Card */}
         <div className="border border-gray-200 rounded-lg p-8 text-center sm:col-span-2 lg:col-span-1">
           <div className="text-lg text-gray-600 mb-2">Shipping method</div>
-          <div className="text-xl sm:text-2xl text-[#FFA600]">{shippingMethodId.name}</div>
+          <div className="text-xl sm:text-2xl text-[#FFA600]">{shippingMethodId?.name}</div>
         </div>
       </div>
     </div>

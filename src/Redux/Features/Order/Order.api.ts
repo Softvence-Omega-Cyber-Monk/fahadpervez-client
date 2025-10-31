@@ -33,13 +33,24 @@ const orderApi = baseApi.injectEndpoints({
       }
       },
     }),
+    // cancelOrderById: builder.mutation({
+    //   query: ({orderId}) => ({
+    //     url: `/orders/${orderId}/cancel`,
+    //     method: "PUT",
+    //   }),
+    //   invalidatesTags: ["MY_ORDER"],
+    // }),
+    
+    
     cancelOrderById: builder.mutation({
-      query: ({orderId}) => ({
-        url: `/orders/${orderId}/cancel`,
-        method: "PUT",
-      }),
-      invalidatesTags: ["MY_ORDER"],
-    }),
+  query: ({ orderId, reason }) => ({
+    url: `/orders/${orderId}/cancel`,
+    method: "PUT",
+    body: { reason },
+  }),
+  invalidatesTags: ["MY_ORDER"],
+}),
+    
     getAllOrdersByAdminAndVendor: builder.query({
       query: ({status}) => {
         return{
@@ -61,7 +72,7 @@ const orderApi = baseApi.injectEndpoints({
       }),
     }),
     getOrderByIdAdmin: builder.query({
-      query: (id) => ({
+      query: ({id}) => ({
         url: `/orders/admin/${id}`,
         method: "GET",
       }),
