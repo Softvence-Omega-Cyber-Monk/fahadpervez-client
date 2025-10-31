@@ -10,11 +10,11 @@ const orderApi = baseApi.injectEndpoints({
       }),
     }),
     getMyOrders: builder.query({
-      query: ({status}) => {
-        return{
-        url: `/orders/my-orders?status=${status.toUpperCase()}`,
-        method: "GET",
-      }
+      query: ({ status }) => {
+        return {
+          url: `/orders/my-orders?status=${status.toUpperCase()}`,
+          method: "GET",
+        }
       },
       providesTags: ["MY_ORDER"],
     }),
@@ -25,12 +25,12 @@ const orderApi = baseApi.injectEndpoints({
       }),
     }),
     trackByOrderNumber: builder.query({
-      query: ({id}) => {
-       console.log(id)
+      query: ({ id }) => {
+        console.log(id)
         return {
-        url: `/orders/track/${id}`,
-        method: "GET",
-      }
+          url: `/orders/track/${id}`,
+          method: "GET",
+        }
       },
     }),
     // cancelOrderById: builder.mutation({
@@ -40,23 +40,24 @@ const orderApi = baseApi.injectEndpoints({
     //   }),
     //   invalidatesTags: ["MY_ORDER"],
     // }),
-    
-    
+
+
     cancelOrderById: builder.mutation({
-  query: ({ orderId, reason }) => ({
-    url: `/orders/${orderId}/cancel`,
-    method: "PUT",
-    body: { reason },
-  }),
-  invalidatesTags: ["MY_ORDER"],
-}),
-    
+      query: ({ orderId, reason }) => ({
+        url: `/orders/${orderId}/cancel`,
+        method: "PUT",
+        body: { reason },
+      }),
+      invalidatesTags: ["MY_ORDER"],
+    }),
+
     getAllOrdersByAdminAndVendor: builder.query({
-      query: ({status}) => {
-        return{
-        url: `/orders/admin?status=${status}`,
-        method: "GET",
-      }},
+      query: ({ status }) => {
+        return {
+          url: `/orders/admin?status=${status}`,
+          method: "GET",
+        }
+      },
       providesTags: ["ORDER_ADMIN"],
     }),
     getOrderStatsAdmin: builder.query({
@@ -72,7 +73,7 @@ const orderApi = baseApi.injectEndpoints({
       }),
     }),
     getOrderByIdAdmin: builder.query({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/orders/admin/${id}`,
         method: "GET",
       }),

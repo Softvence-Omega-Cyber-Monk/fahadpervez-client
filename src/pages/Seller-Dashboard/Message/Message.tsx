@@ -149,7 +149,7 @@ const VendorMessagesPage = () => {
                   >
                     <div className="flex items-start gap-3">
                       {/* Avatar */}
-                      <div className="flex-shrink-0">
+                      <div className="shrink-0">
                         {customer?.avatar ? (
                           <img
                             src={customer.avatar}
@@ -157,7 +157,7 @@ const VendorMessagesPage = () => {
                             className="w-12 h-12 rounded-full object-cover"
                           />
                         ) : (
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                          <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                             <User className="w-6 h-6 text-white" />
                           </div>
                         )}
@@ -169,7 +169,7 @@ const VendorMessagesPage = () => {
                           <h3 className="font-semibold text-gray-900 truncate">
                             {customer?.name || 'Unknown Customer'}
                           </h3>
-                          <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
+                          <span className="text-xs text-gray-500 shrink-0 ml-2">
                             {formatTime(conv.lastMessageTime)}
                           </span>
                         </div>
@@ -196,7 +196,7 @@ const VendorMessagesPage = () => {
                             {conv.lastMessage}
                           </p>
                           {unreadCount > 0 && (
-                            <span className="ml-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0">
+                            <span className="ml-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full shrink-0">
                               {unreadCount}
                             </span>
                           )}
