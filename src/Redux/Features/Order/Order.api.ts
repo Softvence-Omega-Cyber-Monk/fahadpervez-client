@@ -34,9 +34,9 @@ const orderApi = baseApi.injectEndpoints({
       },
     }),
     cancelOrderById: builder.mutation({
-      query: (orderId) => ({
+      query: ({orderId}) => ({
         url: `/orders/${orderId}/cancel`,
-        method: "DELETE",
+        method: "PUT",
       }),
       invalidatesTags: ["MY_ORDER"],
     }),
