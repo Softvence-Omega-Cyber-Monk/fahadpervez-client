@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { useDiActivateAccountMutation } from '@/Redux/Features/user/aure.api';
+import { useDeActivateAccountMutation } from '@/Redux/Features/user/user.api';
 import { useGetMeQuery } from '@/Redux/Features/auth/auth.api';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ export default function DeactivateAccount() {
   const [reason, setReason] = useState('');
   const navigate = useNavigate();
   const { data } = useGetMeQuery(null);
-  const [diActivateAccount] = useDiActivateAccountMutation();
+  const [deActivateAccount] = useDeActivateAccountMutation();
 
   const userId = data?.data?._id;
 
@@ -23,11 +23,11 @@ export default function DeactivateAccount() {
     }
 
     try {
-      await diActivateAccount(payload);
+      await deActivateAccount(payload);
       toast.success("Your Deactivate Successfully.", { id: toastId });
       navigate("/");
-    } catch (error) {
-      toast.error("Account Di-Activation faild", { id: toastId });
+    } catch {
+      toast.error("Account De-Activation faild", { id: toastId });
     }
   };
 
@@ -48,7 +48,7 @@ export default function DeactivateAccount() {
           {/* Warning Box */}
           <div className="bg-red-50 border border-red-100 rounded-lg p-4 sm:p-6 mb-6">
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-red-600 flex shrink-0 mt-0.5" />
               <div>
                 <h3 className="text-red-600 font-medium text-base sm:text-lg mb-2">
                   Warning

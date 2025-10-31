@@ -1,4 +1,5 @@
-import React from 'react';
+import { PaymentMethodInfo, TaxInformation } from '@/types/SellerDashboardTypes/SettingsTypes';
+
 
 interface SaveButtonProps {
   type: 'primary' | 'danger';
@@ -26,7 +27,17 @@ const SectionTitle = ({ children }: SectionTitleProps) => (
   <h3 className="text-base font-semibold text-gray-900 mb-4 mt-8 first:mt-0">{children}</h3>
 );
 
-const PaymentSettings = () => {
+interface PaymentSettingsProps {
+  paymentMethodInfo: PaymentMethodInfo;
+  taxInformation: TaxInformation;
+}
+
+
+const PaymentSettings : React.FC<PaymentSettingsProps> = (props) => {
+  console.log(props)
+    const { defaultPaymentMethod, bankAccountHolderName, bankAccountNumber, bankRoutingNumber} = props.paymentMethodInfo
+  const {taxId} = props.taxInformation
+  console.log(defaultPaymentMethod, bankAccountHolderName, bankAccountNumber, bankRoutingNumber, taxId)
   return (
     <div className="space-y-6">
       <SectionTitle>Payment method</SectionTitle>
@@ -92,6 +103,7 @@ const PaymentSettings = () => {
         <input
           type="text"
           placeholder="Enter tax ID"
+          defaultValue={taxId}
           className="w-full p-3 bg-blue-50 border-0 rounded-lg text-gray-900"
         />
       </div>

@@ -1,24 +1,24 @@
 [
     {
-      "id": "total-orders",
+      "id": "allCount",
       "title": "Total Orders",
       "value": 1243,
       "status": "This month"
     },
     {
-      "id": "pending-orders",
+      "id": "pendingCount",
       "title": "Pending Orders",
       "value": 24,
       "status": "Quick delivery"
     },
     {
-      "id": "complete-order",
+      "id": "completeCount",
       "title": "Complete Order",
       "value": 34558,
       "status": "Quick delivery"
     },
     {
-      "id": "cancelled-order",
+      "id": "cancelCount",
       "title": "Cancelled Order",
       "value": 16,
       "status": "This month"

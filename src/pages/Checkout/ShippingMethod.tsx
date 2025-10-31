@@ -1,12 +1,22 @@
 
+
+
+
+
+
+
+import { useGetAllShipmentsQuery } from "@/Redux/Features/Shipment/shipment.api";
+
 export default function ShippingMethod() {
+    const { data: shipments } = useGetAllShipmentsQuery({});
+  console.log(shipments)
   return (
     <div className="bg-gray-100">
       <div className="bg-white w-full rounded-lg shadow-sm p-6 sm:p-8">
         <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-6">
           shipping Method
         </h1>
-
+{/* fghfgh */}
         <div className="space-y-4 mb-6">
           {/* DHL Express - Selected */}
           <div className="border-2 border-blue-500 rounded-lg p-4 sm:p-5 bg-white">

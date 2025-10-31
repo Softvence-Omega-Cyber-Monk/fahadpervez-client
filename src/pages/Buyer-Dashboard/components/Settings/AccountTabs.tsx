@@ -3,6 +3,7 @@ import PersonalInfo from '../../PersonalInfo/PersonalInfo';
 import ShippingAddress from '../../ShippingAddress/ShippingAddress';
 import AccountSettings from '../../AccountSettings/AccountSettings';
 import PaymentMethods from '../../PaymentMethods/PaymentMethods';
+// import { useGetMeQuery } from '@/Redux/Features/auth/auth.api';
 
 export default function AccountTabs() {
   const [activeTab, setActiveTab] = useState('personal');
@@ -34,7 +35,7 @@ export default function AccountTabs() {
             {/* Dashed Border for Account Settings */}
             {tab.id === 'account' && activeTab === tab.id && (
               <span 
-                className="absolute inset-0 border-2 border-dashed border-teal-600 rounded pointer-events-none"
+                className="absolute inset-0  rounded pointer-events-none"
                 style={{ bottom: '-2px' }}
               />
             )}

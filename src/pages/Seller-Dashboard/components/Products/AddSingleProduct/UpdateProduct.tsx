@@ -26,7 +26,7 @@ const UpdateProduct = () => {
   const [mediaData, setMediaData] = useState<MediaData | null>(null);
   const [previewDetails,setPreviewDetails] = useState< Partial<Product> | null>(null);
   const productFormRef = useRef<ProductFormRef>(null);
-
+  
   // Fetch product data
   const { data: productResponse, refetch, isFetching } = useGetProductByIdQuery(
     { id: productId },
@@ -141,7 +141,7 @@ const UpdateProduct = () => {
       categoryId,
       true // isEditMode is always true
     );
-
+console.log(formData)
     try {
       toast.loading("Updating product...", { id: "productAction" });
 

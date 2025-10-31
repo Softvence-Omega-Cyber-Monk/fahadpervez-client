@@ -6,7 +6,6 @@ export default function Pagination() {
   const totalOrders = 24;
   const ordersPerPage = 10;
   const totalPages = Math.ceil(totalOrders / ordersPerPage);
-
   const startOrder = (currentPage - 1) * ordersPerPage + 1;
   const endOrder = Math.min(currentPage * ordersPerPage, totalOrders);
 

@@ -1,7 +1,9 @@
-import { DefaultValues, useForm } from "react-hook-form";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { forwardRef, useImperativeHandle, useCallback } from "react";
 import { CommonFormRef, Props } from "@/types/CommonForm";
+import { Editor, EditorTextChangeEvent } from "primereact/editor";
 
 function CommonFormComponent<T extends Record<string, unknown>>(
   { fields, schema, onSubmit }: Props<T>,
@@ -10,16 +12,28 @@ function CommonFormComponent<T extends Record<string, unknown>>(
   const defaultValues = fields.reduce((acc, field) => {
     acc[field.name] = field.defaultValue ?? undefined;
     return acc;
-  }, {} as Record<string, string | number | undefined>) as DefaultValues<T>; 
-
+  }, {} as Record<string, string | number | undefined>) as DefaultValues<T>;
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<T>({
     resolver: zodResolver(schema),
     defaultValues,
   });
+
+  const renderHeader = () => {
+    return (
+      <span className="ql-formats">
+        <button className="ql-bold" aria-label="Bold"></button>
+        <button className="ql-italic" aria-label="Italic"></button>
+        <button className="ql-underline" aria-label="Underline"></button>
+      </span>
+    );
+  };
+
+  const header = renderHeader();
 
   const handleFormSubmit = useCallback(
     (data: T) => {
@@ -74,14 +88,24 @@ function CommonFormComponent<T extends Record<string, unknown>>(
                 </label>
               ))}
             </div>
-          ) : field.type === "description" ? (
-            <textarea
-              {...register(field.name as import("react-hook-form").Path<T>)}
-              defaultValue={field.defaultValue}
-              placeholder={field.placeholder}
-              className="border border-border px-3 py-2 rounded w-full h-28 "
+          ) :
+          field.type === "richText" ? (
+              <Controller
+              name={field.name as import("react-hook-form").Path<T>}
+              control={control}
+              defaultValue={(field.defaultValue) as any}
+              render={({ field: controllerField }) => (
+                <Editor
+                  value={controllerField.value as string}
+                  onTextChange={(e: EditorTextChangeEvent) =>
+                    controllerField.onChange(e.htmlValue)
+                  }
+                  headerTemplate={header}
+                  style={{ height: "320px" }}
+                />
+              )}
             />
-          ) : (
+        ) :  (
             <input
               type={field.type}
               {...register(field.name as import("react-hook-form").Path<T>)}

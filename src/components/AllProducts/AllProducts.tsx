@@ -13,7 +13,7 @@ const AllProducts: React.FC = () => {
   if(isLoading) return <div className='min-h-screen grid place-content-center'><Spinner /></div>
 
   return (
-    <div className="py-20">
+    <div className="py-20 px-4 sm:px-10 ">
       <CommonWrapper>
         <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue py-10">ALL PRODUCTS</h1>
         
@@ -32,7 +32,7 @@ const AllProducts: React.FC = () => {
                 <img 
                   src={product.mainImageUrl || "./bestsell.png"} 
                   alt={product.productName}
-                  className=" w-full h-96"
+                  className=" w-full h-96 object-cover"
                 />
               </div>
               
@@ -57,7 +57,7 @@ const AllProducts: React.FC = () => {
         
         {/* Browse All Button */}
         <div className="flex justify-center">
-          <NavLink to="/categories/:categoryName">
+          <NavLink to="/shop">
             <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
               Browse All
               <MoveUpRight className='w-5 h-5'/>

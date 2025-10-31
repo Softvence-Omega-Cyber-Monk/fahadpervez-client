@@ -22,9 +22,7 @@ export interface ProductFormRef {
 const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, defaultValue, isEditMode }, ref) => {
   const { data: categories, isLoading: categoriesLoading } = useGetAllCategoriesQuery({});
   const formRef = useRef<CommonFormRef>(null);
-
-   const [isReady, setIsReady] = useState(false);
-  
+  const [isReady, setIsReady] = useState(false);
   useImperativeHandle(ref, () => ({
     submit: async () => {
       if (formRef.current) {
@@ -54,8 +52,6 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
     return category?.categoryName;
   };
 
-  
-
   const fields = [
     {
       name: "productName",
@@ -75,7 +71,7 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
       // Convert category ID to category name for display
       defaultValue: defaultValue?.productCategory 
         ? getCategoryNameFromId(defaultValue.productCategory)
-        : undefined, 
+        : "", 
     },
     {
       name: "productSKU",
@@ -110,7 +106,7 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
     {
       name: "productDescription",
       label: "Product Description*",
-      type: "description",
+      type: "richText",
       placeholder: "About product",
       defaultValue: defaultValue?.productDescription,
     },
@@ -155,8 +151,8 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
       label: "Special Price From",
       type: "date",
       defaultValue: defaultValue?.specialPriceStartingDate 
-        ? new Date(defaultValue.specialPriceStartingDate).toISOString().split('T')[0]
-        : undefined,
+      ? new Date(defaultValue.specialPriceStartingDate).toISOString().split('T')[0]
+        : "",
     },
     {
       name: "specialPriceEndingDate",
@@ -164,7 +160,7 @@ const ProductForm = forwardRef<ProductFormRef, ProductFormProps>(({ onSubmit, de
       type: "date",
       defaultValue: defaultValue?.specialPriceEndingDate 
         ? new Date(defaultValue.specialPriceEndingDate).toISOString().split('T')[0]
-        : undefined,
+        : "",
     },
   ];
 

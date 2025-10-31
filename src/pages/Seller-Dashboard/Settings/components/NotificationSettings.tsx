@@ -1,3 +1,4 @@
+import { Notifications } from '@/types/SellerDashboardTypes/SettingsTypes';
 import React from 'react';
 
 interface SaveButtonProps {
@@ -26,7 +27,16 @@ const SectionTitle = ({ children }: SectionTitleProps) => (
   <h3 className="text-base font-semibold text-gray-900 mb-4 mt-8 first:mt-0">{children}</h3>
 );
 
-const NotificationSettings = () => {
+interface NotificationSettingsProps {
+ notifications: Notifications
+}
+
+
+const NotificationSettings : React.FC<NotificationSettingsProps> = (props) => {
+  const { orderNotification, promotionNotification, communicationAlert, newReviewsNotification} = props.notifications
+
+  console.log(orderNotification, promotionNotification, communicationAlert, newReviewsNotification)
+  console.log(props)
   return (
     <>
       <div className="space-y-6">

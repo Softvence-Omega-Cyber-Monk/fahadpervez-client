@@ -1,4 +1,12 @@
+export type userId = {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+};
+
 export interface Product {
+  userId: any;
   _id?: string;
   productName: string;
   productCategory: string;
@@ -14,6 +22,13 @@ export interface Product {
   specialPriceStartingDate?: string;
   specialPriceEndingDate?: string;
   mainImage?: string;
+  seller?: {
+    name: string;
+    phone: string;
+    email: string;
+    location: string;
+  };
+  // userId: userId;
   sideImage?: string;
   sideImage2?: string;
   lastImage?: string;

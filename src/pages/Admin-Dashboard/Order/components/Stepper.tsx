@@ -21,7 +21,7 @@ const Stepper: React.FC<StepperProps> = ({ timeline }) => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {timeline.map((item, _index) => {
+        {timeline.map((item) => {
           const isComplete = item.status === 'complete';
           const isActive = item.status === 'active';
           const isPending = item.status === 'pending';

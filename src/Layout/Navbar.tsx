@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="">
       <div
-        className={`h-22 flex items-center  justify-center fixed top-0 z-50 w-full  transition-all duration-300 ${
+        className={`px-4 sm:px-8 xl:px-0  not-first: h-22 flex items-center  justify-center fixed top-0 z-50 w-full  transition-all duration-300 ${
           scrolled ? "backdrop-blur-md bg-white/30 shadow-sm" : "bg-transparent"
         }`}
       >
@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
           {/* Right icons (desktop only) */}
           <div className="hidden sm:flex items-center gap-4 relative ">
             <Search className="text-[#455058] cursor-pointer" />
-            <Link to={`/my-cart/${10}`}>
+            <Link to={`/my-cart`}>
               <ShoppingCart className="text-[#455058] cursor-pointer" />
             </Link>
 
@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
                     <li>
                       {
                         role ? <Link
-                        to={`${role === "ADMIN" ? '/admin-dashboard' : role === "VENDOR" ? '/seller-dashboard' : role === "BUYER" ? '/buyer-dashboard' : '/login'}`}
+                        to={`${role === "ADMIN" ? '/admin-dashboard' : role === "VENDOR" ? '/seller-dashboard' : role === "CUSTOMER" ? '/buyer-dashboard' : '/login'}`}
                         className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={() => setMenuOpen(false)}
                       >
@@ -137,7 +137,7 @@ const Navbar: React.FC = () => {
               />
             </li>
             <li className="px-6 py-2">
-              <Link to={`/my-cart/${10}`} onClick={() => setMobileOpen(false)}>
+              <Link to={`/my-cart`} onClick={() => setMobileOpen(false)}>
                 My Cart
               </Link>
             </li>

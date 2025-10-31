@@ -1,22 +1,24 @@
 import { useState } from "react";
-import { Search, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { Search} from "lucide-react";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
 import PrimaryButton from "./PrimaryButton";
 import { useDeleteProductByIdMutation } from "@/Redux/Features/products/products.api";
+import { useNavigate } from "react-router-dom";
 interface OrderSearchBarProps {
   tableType: string;
   selectedProduct?: string[];
   setSelectedProduct?: React.Dispatch<React.SetStateAction<string[]>>;
   refetch?: () => void;
+  id?:string
 }
 export default function OrderSearchBar(props: OrderSearchBarProps) {
     const [deleteProductById]=useDeleteProductByIdMutation({})
   const [searchValue, setSearchValue] = useState("");
-  const [orderDate] = useState("Order date");
-  const [orderStatus] = useState("Order Status");
-
+  // const [orderDate] = useState("Order date");
+  // const [orderStatus] = useState("Order Status");
+  const navigate = useNavigate()
   const handleDelete =()=>{
     deleteProductById(props.selectedProduct).unwrap()
     .then((res)=>{
@@ -28,6 +30,10 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
       console.log(err)
     })
   }
+  const handleProductUpdate = () => {
+    navigate(`/seller-dashboard/products/add-single-product/${props.id}`);
+    // navigate(`/update-product/${props.id}`);
+  };
 
   return (
     <div className="w-full md:flex space-y-5 md:space-y-0 items-center justify-between gap-4">
@@ -54,6 +60,7 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
                   type="Primary"
                   title="Edit Select"
                   rightIcon={<MdEdit className="size-5" />}
+                  onClick={handleProductUpdate}
                 />
                 <PrimaryButton
                   type="Outline"
@@ -66,15 +73,15 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
         ) :(
           <div className="flex items-center gap-3 flex-shrink-0">
             {/* Filter Icon Button */}
-            <button className="h-10 w-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex-shrink-0">
+            {/* <button className="h-10 w-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex-shrink-0">
               <SlidersHorizontal
                 className="w-5 h-5 text-gray-600"
                 strokeWidth={2}
               />
-            </button>
+            </button> */}
 
             {/* Order Date Dropdown */}
-            <button className="h-10 px-4 flex items-center justify-between gap-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors min-w-[140px]">
+            {/* <button className="h-10 px-4 flex items-center justify-between gap-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors min-w-[140px]">
               <span className="text-sm text-gray-700 whitespace-nowrap">
                 {orderDate}
               </span>
@@ -82,10 +89,10 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
                 className="w-4 h-4 text-gray-600 flex-shrink-0"
                 strokeWidth={2}
               />
-            </button>
+            </button> */}
 
             {/* Order Status Dropdown */}
-            <button className="h-10 px-4 flex items-center justify-between gap-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors min-w-[140px]">
+            {/* <button className="h-10 px-4 flex items-center justify-between gap-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors min-w-[140px]">
               <span className="text-sm text-gray-700 whitespace-nowrap">
                 {orderStatus}
               </span>
@@ -93,7 +100,7 @@ export default function OrderSearchBar(props: OrderSearchBarProps) {
                 className="w-4 h-4 text-gray-600 flex-shrink-0"
                 strokeWidth={2}
               />
-            </button>
+            </button> */}
           </div>
         ) }
       </div>

@@ -1,70 +1,33 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { Avatar} from "@/components/ui/avatar"
+import { Spinner } from "@/components/ui/spinner"
+import { useGetRecentOrdersAdminAndVendorQuery } from "@/Redux/Features/Order/Order.api"
+import { Order } from "@/types/OrderTypes";
 
-interface Order {
-  id: string
-  image:string
-  customerName: string
-  items: number
-  amount: number
-  status: "preparing" | "placed" | "delivery" | "cancelled"
-}
-
-const orders: Order[] = [
-  {
-    id: "#12748",
-    customerName: "John Smith",
-    items: 2,
-    amount: 78,
-    status: "preparing",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    id: "#12749",
-    customerName: "Emily Johnson",
-    items: 3,
-    amount: 120,
-    status: "placed",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    id: "#12750",
-    customerName: "Michael Brown",
-    items: 1,
-    amount: 45,
-    status: "delivery",
-    image: "https://randomuser.me/api/portraits/men/65.jpg",
-  },
-  {
-    id: "#12751",
-    customerName: "Sophia Williams",
-    items: 4,
-    amount: 200,
-    status: "cancelled",
-    image: "https://randomuser.me/api/portraits/women/22.jpg",
-  },
-];
-
-
-const statusConfig = {
-  preparing: {
+const statusConfig : Record<
+  string,
+  { label: string; className: string }
+> = {
+  "Preparing for Shipment": {
     label: "Preparing for Shipment",
     className: "bg-primary-yellow/10 text-primary-yellow",
   },
-  placed: {
+  "Pending": {
     label: "Order placed",
     className: "bg-primary-purple/10 text-primary-purple",
   },
-  delivery: {
+  "Confirmed": {
     label: "Out of delivery",
     className: "bg-primary-cyan/10 text-primary-cyan",
   },
-  cancelled: {
+  "Cancelled": {
     label: "Cancelled",
     className: "bg-primary-red/10 text-primary-red",
   },
 }
-
 export default function RecentOrders() {
+  const {data,isLoading} = useGetRecentOrdersAdminAndVendorQuery({});
+  if(isLoading) return (<div><Spinner /></div>)
+  const orders = data.data
   return (
     <div className="bg-light-background rounded-xl p-6 border border-border w-full">
       {/* Header */}
@@ -77,28 +40,29 @@ export default function RecentOrders() {
 
       {/* Orders List */}
       <div className="space-y-4">
-        {orders.map((order, index) => (
-          <div key={index} className="flex items-center justify-between gap-4 py-2">
+        {orders.map((order: Order) => (
+          <div key={order._id} className="flex items-center justify-between gap-4 py-2">
             {/* Left: Avatar + Order Info */}
             <div className="sm:flex items-center gap-2 flex-1 min-w-0">
               <Avatar  className="size-12 flex-shrink-0">
-                <AvatarImage src={order.image}/>
+                {/* <AvatarImage src={order.image}/> */}
+                {
+                }
+
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="p1">Order {order.id}</p>
+                <p className="p1">Order : {order.orderNumber}</p>
                 <p className="p2">
-                  {order.customerName} · {order.items} items · ${order.amount}
+                  {order.userId.name} · {order.products.length} items · ${order.grandTotal}
                 </p>
               </div>
             </div>
 
             {/* Right: Status Badge */}
             <div
-              className={` rounded-xl text-sm font-medium px-4 py-2 whitespace-nowrap flex-shrink-0 ${
-                statusConfig[order.status].className
-              }`}
+              className={` rounded-xl text-sm font-medium px-4 py-2 whitespace-nowrap flex-shrink-0 ${statusConfig[order.status]?.className}`}
             >
-              {statusConfig[order.status].label}
+              {statusConfig[order.status]?.label}
             </div>
           </div>
         ))}

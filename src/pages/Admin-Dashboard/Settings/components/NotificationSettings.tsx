@@ -1,5 +1,6 @@
 // src/components/AdminSettings/NotificationSettings.tsx
 
+import { Notifications } from '@/types/SellerDashboardTypes/SettingsTypes';
 import React from 'react';
 
 // Helper component for a group of notification settings
@@ -30,7 +31,13 @@ const NotificationGroup: React.FC<NotificationGroupProps> = ({ title, options })
   </div>
 );
 
-const NotificationSettings: React.FC = () => {
+export interface NotificationSettingsProps {
+  notificationData : Notifications
+}
+
+const NotificationSettings: React.FC<NotificationSettingsProps> = (props) => {
+  const { orderNotification, promotionNotification, communicationAlert, newReviewsNotification } = props.notificationData
+  console.log( orderNotification, promotionNotification, communicationAlert, newReviewsNotification)
   return (
     <div className="p-6 bg-white rounded-lg shadow-sm">
       <h2 className="text-xl font-semibold text-gray-800 mb-8">Notification settings</h2>
