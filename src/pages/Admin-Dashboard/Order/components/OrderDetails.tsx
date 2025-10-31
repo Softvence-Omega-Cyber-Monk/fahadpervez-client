@@ -1,3 +1,15 @@
+ 
+
+
+
+
+
+
+
+
+
+
+
 import React from 'react';
 import { Calendar, Edit3, XCircle, ArrowLeft } from 'lucide-react';
 import { Order, OrderStatus } from '../data';
@@ -41,7 +53,7 @@ const OrderDetails: React.FC<{ order: Order, onBack: () => void, onEditShipping:
 
   return (
     <div className="min-h-screen bg-gray-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <button
@@ -62,11 +74,11 @@ const OrderDetails: React.FC<{ order: Order, onBack: () => void, onEditShipping:
               </span>
             </div>
           </div>
-        </div>
+        </div> 
 
         {/* Information Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-          <DetailCard title="Buyer" icon={<UserIcon />}>
+          <DetailCard  title="Buyer" icon={<UserIcon />}>
             <p className="font-semibold text-gray-900">{order.buyer.name}</p>
             <p>Phone: {order.buyer.phone}</p>
             <p>Email: {order.buyer.email}</p>
