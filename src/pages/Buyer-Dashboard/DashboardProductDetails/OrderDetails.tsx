@@ -15,7 +15,7 @@ const OrderDetails = () => {
     console.log(data?.data)
     return (
         <div>   
-            <RecentOrderStatus />
+            <RecentOrderStatus data = {data.data} />
             <OrderStatusTracker />
             <div className="flex flex-col lg:flex-row gap-4">
                 {/* Left side */}

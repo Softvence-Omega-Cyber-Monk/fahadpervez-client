@@ -13,13 +13,13 @@ const MyOrders = () => {
   const { data, isLoading } = useGetMyOrdersQuery({status});
   if (isLoading)
     return (
-      <div>
+      <div className="min-h-screen  py-4 xs:py-5 sm:py-6 lg:py-8">
         <Spinner />
       </div>
     );
   return (
-    <div className="min-h-screen bg-gray-50 py-4 xs:py-5 sm:py-6 lg:py-8">
-      <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  py-4 xs:py-5 sm:py-6 lg:py-8">
+      <div className=" mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="mb-6 xs:mb-7 sm:mb-8 lg:mb-10">
           <h1 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
