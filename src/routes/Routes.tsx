@@ -131,6 +131,10 @@ const routes = createBrowserRouter([
         path: "my-orders",
         element: <MyOrders />,
       },
+
+
+
+      
         {
     path: "order-details/:id",
     element: <OrderDetails />,
@@ -191,6 +195,12 @@ const routes = createBrowserRouter([
         path: "orders",
         element: <Order />,
       },
+      {
+        path: "orders/:id",
+        element: <OrderDetails />,
+      },
+       
+
       {
         path: "order-details/:id",
         element: <AdminOrderDetails />,
