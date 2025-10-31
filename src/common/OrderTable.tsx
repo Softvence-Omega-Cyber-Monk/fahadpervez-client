@@ -1,3 +1,9 @@
+ 
+
+
+
+
+
 import { useAppSelector } from "@/hooks/useRedux";
 import { Order } from "@/types/OrderTypes";
 import { Link } from "react-router-dom";
@@ -83,20 +89,22 @@ export default function OrderTable({ data }: { data: Order[] }) {
                   {order.grandTotal}
                 </td>
                 <td className="py-4 px-4">
-                  {/* <Link
-                    to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?.orderNumber}` : role === "VENDOR" ? `/buyer-dashboard/order-details/${order?.orderNumber}` : `/buyer-dashboard/order-details/${order?.orderNumber}` }
-                  > */}
+                  <Link
+                    to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?._id}` : role === "VENDOR" ? `/buyer-dashboard/order-details/${order?._id}` : `/buyer-dashboard/order-details/${order?.orderNumber}` }
+                  >
 
-<Link
-//  to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?.orderNumber}` : role === "VENDOR" ? `/buyer-dashboard/order-details/${order?.orderNumber}` : `/buyer-dashboard/order-details/${order?.orderNumber}` }
-  to={
-    role === "ADMIN"
-      ? `/admin-dashboard/order-details/${order?._id}`
-     : role === "VENDOR"
-      ? `/vendor-dashboard/order-details/${order?._id}`
-      : `/buyer-dashboard/order-details/${order?._id}`
- }
-> 
+{/* <Link
+ to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?.orderNumber}` : role === "VENDOR" ? `/buyer-dashboard/order-details/${order?.orderNumber}` : `/buyer-dashboard/order-details/${order?.orderNumber}` }
+
+
+//   to={
+//     role === "ADMIN"
+//       ? `/admin-dashboard/orders/${order?._id}`
+//      : role === "VENDOR"
+//       ? `/vendor-dashboard/orders/${order?._id}`
+//       : `/buyer-dashboard/orders/${order?._id}`
+//  }
+>  */}
 
                   
                     <button className="text-sm lg:text-md text-blue-500 hover:text-blue-600 font-medium">
