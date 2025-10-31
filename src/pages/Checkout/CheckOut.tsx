@@ -276,7 +276,7 @@ const CheckoutPage = () => {
       const session = sessionRef.current;
       
       // Step 3: Update order with payment history
-      const updatePaymentResponse = await fetch(`http://localhost:5000/api/v1/orders/admin/${databaseOrderId}/payment-history`, {
+      const updatePaymentResponse = await fetch(`https://mditems.com/api/v1/orders/admin/${databaseOrderId}/payment-history`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
