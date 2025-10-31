@@ -1,3 +1,10 @@
+export type userId = {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+};
+
 export interface Product {
   userId: any;
   _id?: string;
@@ -21,6 +28,7 @@ export interface Product {
     email: string;
     location: string;
   };
+  // userId: userId;
   sideImage?: string;
   sideImage2?: string;
   lastImage?: string;

@@ -36,13 +36,6 @@ const PaymentFailedPage = () => {
           >
             Try Again
           </button>
-
-          <button
-            onClick={() => navigate("/support")}
-            className="px-6 py-2 rounded-lg border border-red-600 text-red-600 hover:bg-red-50 transition-colors duration-200"
-          >
-            Contact Support
-          </button>
         </div>
       </div>
     </div>

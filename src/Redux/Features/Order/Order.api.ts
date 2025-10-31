@@ -10,36 +10,54 @@ const orderApi = baseApi.injectEndpoints({
       }),
     }),
     getMyOrders: builder.query({
-      query: () => ({
-        url: "/orders/my-orders",
-        method: "GET",
-      }),
+      query: ({ status }) => {
+        return {
+          url: `/orders/my-orders?status=${status.toUpperCase()}`,
+          method: "GET",
+        }
+      },
       providesTags: ["MY_ORDER"],
     }),
     getMyOrderStats: builder.query({
       query: () => ({
-        url: "/orders/my-stats",
+        url: `/orders/my-stats`,
         method: "GET",
       }),
     }),
     trackByOrderNumber: builder.query({
-      query: (orderNumber) => ({
-        url: `/orders/track/${orderNumber}`,
-        method: "GET",
-      }),
+      query: ({ id }) => {
+        console.log(id)
+        return {
+          url: `/orders/track/${id}`,
+          method: "GET",
+        }
+      },
     }),
+    // cancelOrderById: builder.mutation({
+    //   query: ({orderId}) => ({
+    //     url: `/orders/${orderId}/cancel`,
+    //     method: "PUT",
+    //   }),
+    //   invalidatesTags: ["MY_ORDER"],
+    // }),
+
+
     cancelOrderById: builder.mutation({
-      query: (orderId) => ({
+      query: ({ orderId, reason }) => ({
         url: `/orders/${orderId}/cancel`,
-        method: "DELETE",
+        method: "PUT",
+        body: { reason },
       }),
       invalidatesTags: ["MY_ORDER"],
     }),
-    getAllOrdersByAdmin: builder.query({
-      query: () => ({
-        url: `/orders/admin`,
-        method: "GET",
-      }),
+
+    getAllOrdersByAdminAndVendor: builder.query({
+      query: ({ status }) => {
+        return {
+          url: `/orders/admin?status=${status}`,
+          method: "GET",
+        }
+      },
       providesTags: ["ORDER_ADMIN"],
     }),
     getOrderStatsAdmin: builder.query({
@@ -48,14 +66,14 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    getRecentOrdersAdmin: builder.query({
+    getRecentOrdersAdminAndVendor: builder.query({
       query: () => ({
         url: `/orders/admin/recent`,
         method: "GET",
       }),
     }),
     getOrderByIdAdmin: builder.query({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/orders/admin/${id}`,
         method: "GET",
       }),
@@ -101,9 +119,9 @@ export const {
   useGetMyOrderStatsQuery,
   useTrackByOrderNumberQuery,
   useCancelOrderByIdMutation,
-  useGetAllOrdersByAdminQuery,
+  useGetAllOrdersByAdminAndVendorQuery,
   useGetOrderStatsAdminQuery,
-  useGetRecentOrdersAdminQuery,
+  useGetRecentOrdersAdminAndVendorQuery,
   useGetOrderByIdAdminQuery,
   useDeleteOrderByIdAdminMutation,
   useUpdateOrderStatusAdminMutation,

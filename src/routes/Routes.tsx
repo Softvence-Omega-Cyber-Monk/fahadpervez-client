@@ -11,7 +11,7 @@ import Users from "@/pages/Admin-Dashboard/Users/Users";
 import Order from "@/pages/Admin-Dashboard/Order/Order";
 import Product from "@/pages/Admin-Dashboard/Product/Product";
 import Payments from "@/pages/Admin-Dashboard/Payments/Payments";
-import Shipping from "@/pages/Admin-Dashboard/Shipping/Shipping";
+import Shipping from "@/pages/Admin-Dashboard/Shipping/ShippingDashboard";
 import Support from "@/pages/Admin-Dashboard/Support/Support";
 import AdminSettings from "@/pages/Admin-Dashboard/Settings/AdminSettings";
 import AdmninDashboard from "@/pages/Admin-Dashboard/AdminDashboard/AdminDashboard";
@@ -27,7 +27,7 @@ import MyCartHome from "@/pages/My-Cart/MyCartHome";
 import CheckOut from "@/pages/Checkout/CheckOut";
 import StoreHome from "@/pages/Store-Profile/StoreHome";
 import Notifications from "@/pages/Buyer-Dashboard/Notifications/Notifications";
-import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
+// import DashboardProductDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/DashboardProductDetails";
 import BuyerProfile from "@/pages/Buyer-Dashboard/BuyerProfile/BuyerProfile";
 import Message from "@/pages/Buyer-Dashboard/Message/Message";
 import PaymentsDasbord from "@/components/Admin/paymentsDasbord/PaymentsDasbord";
@@ -45,6 +45,8 @@ import CouponAdminPage from "@/pages/Admin-Dashboard/Coupon/Coupon";
 import CategoryDetails from "@/pages/Home/CategoryDetails";
 import Shop from "@/pages/Shop/Shop";
 import AddProductPage from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
+import OrderDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/OrderDetails";
+import AdminOrderDetails from "@/pages/Admin-Dashboard/Order/components/AdminOrderDetails";
 import CheckoutPage from "@/pages/AFSPay/AFSPay";
 import OrderSuccessPage from "@/pages/OrderSuccess/OrderSuccess";
 import PaymentFailedPage from "@/pages/OrderFailed/OrderFailed";
@@ -129,6 +131,10 @@ const routes = createBrowserRouter([
         path: "my-orders",
         element: <MyOrders />,
       },
+        {
+    path: "order-details/:id",
+    element: <OrderDetails />,
+  },
       {
         path: "wishlist",
         element: <WishList />,
@@ -153,10 +159,11 @@ const routes = createBrowserRouter([
         path: "notifications",
         element: <Notifications />,
       },
-      {
-        path: "dashboard-product-details/:productId",
-        element: <DashboardProductDetails />,
-      },
+      // {
+      //   path: "dashboard-product-details/:productId",
+      //   element: <DashboardProductDetails />,
+      // },
+    
       {
         path: "buyer-profile",
         element: <BuyerProfile />,
@@ -183,6 +190,10 @@ const routes = createBrowserRouter([
       {
         path: "orders",
         element: <Order />,
+      },
+      {
+        path: "order-details/:id",
+        element: <AdminOrderDetails />,
       },
       {
         path: "product",

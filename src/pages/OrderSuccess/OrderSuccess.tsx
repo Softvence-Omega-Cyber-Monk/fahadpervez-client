@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useUpdateOrderPaymentStatusAdminMutation } from "@/Redux/Features/Order/Order";
+import { useUpdateOrderPaymentStatusAdminMutation } from "@/Redux/Features/Order/Order.api";
 import { CheckCircle } from "lucide-react";
 
 const OrderSuccessPage = () => {
@@ -36,13 +36,6 @@ const OrderSuccessPage = () => {
             className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
           >
             Return Home
-          </button>
-
-          <button
-            onClick={() => navigate("/dashboard/orders")}
-            className="px-6 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors duration-200"
-          >
-            View Orders
           </button>
         </div>
       </div>

@@ -5,6 +5,7 @@ import CommonWrapper from "@/common/CommonWrapper";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
 import logo from "../assets/logo.png"
+import { toast } from "sonner";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -93,8 +94,11 @@ const Navbar: React.FC = () => {
                     {
                       role && <li>
                       <li
-                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
-                        onClick={() => dispatch(logout())}
+                        className="cursor-pointer block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                        onClick={() => {
+                          dispatch(logout())
+                          toast.success("Logged out successfully.");
+                        }}
                       >
                         Logout
                       </li>
