@@ -1,13 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FahadParvez</title>
+    <title>MDItems</title>
+    
+    <!-- Anti-Clickjacking Protection -->
+    <style id="antiClickjack">
+      body { display: none !important; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Mastercard Gateway Hosted Session Script -->
+    <!-- Replace YOUR_MERCHANT_ID with your actual merchant ID -->
+    <script src="https://afs.gateway.mastercard.com/form/version/100/merchant/TEST100275818/session.js"></script>
+    
+    <!-- Frame-Breaker JavaScript for Clickjacking Protection -->
+    <script>
+      if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        if (antiClickjack) {
+          antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+      } else {
+        top.location = self.location;
+      }
+    </script>
   </body>
 </html>

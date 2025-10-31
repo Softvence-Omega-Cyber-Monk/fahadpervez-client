@@ -77,7 +77,7 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-     deleteOrderByIdAdmin: builder.mutation({
+    deleteOrderByIdAdmin: builder.mutation({
       query: (id) => ({
         url: `/orders/admin/${id}`,
         method: "DELETE",
@@ -85,18 +85,29 @@ const orderApi = baseApi.injectEndpoints({
       invalidatesTags: ["ORDER"],
     }),
     updateOrderStatusAdmin: builder.mutation({
-      query: ({ id}) => ({
+      query: ({ id, data }) => ({
         url: `/orders/admin/${id}/status`,
         method: "PUT",
+        body: data,
       }),
       invalidatesTags: ["ORDER_ADMIN"],
     }),
     updateOrderPaymentStatusAdmin: builder.mutation({
-      query: ({ id }) => ({
+      query: ({ id, data }) => ({
         url: `/orders/admin/${id}/payment-status`,
         method: "PUT",
+        body: data,
       }),
       invalidatesTags: ["ORDER_ADMIN"],
+    }),
+    // NEW: Update payment with payment history
+    updatePaymentWithHistory: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/orders/admin/${id}/payment-history`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["ORDER_ADMIN", "MY_ORDER"],
     }),
   }),
 });
@@ -114,6 +125,7 @@ export const {
   useDeleteOrderByIdAdminMutation,
   useUpdateOrderStatusAdminMutation,
   useUpdateOrderPaymentStatusAdminMutation,
+  useUpdatePaymentWithHistoryMutation, // NEW: Export the new mutation
 } = orderApi;
 
 export default orderApi;

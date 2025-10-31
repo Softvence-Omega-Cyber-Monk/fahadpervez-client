@@ -31,7 +31,7 @@ const Hero : React.FC<IHeroProps> = ({ data }) => {
                     Your trusted destination for premium products across all categories.
                 </p>
                 <div>
-                    <Link to="/products/:id">
+                    <Link to="/shop">
                     <Button className="font-montserrat text-base sm:text-lg text-gray-100 flex items-center gap-2">
                         Start Shopping Now
                         <MoveUpRight />
