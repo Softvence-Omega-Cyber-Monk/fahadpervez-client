@@ -2,26 +2,26 @@ import { baseApi } from "@/Redux/BaseApi";
 
 
 const promoCodeApi = baseApi.injectEndpoints({  
-    endpoints: (builder) => ({
+    endpoints: (builder : any) => ({
         getAllCouponCode: builder.query({
             query: () => ({
                 url: `/coupons/active`,
             }),
         }),
         validateCoupon: builder.mutation({
-            query: (data) => ({
+            query: (data : any) => ({
                 url: `/coupons/validate`,
                 method: "POST",
                 body: data,
             }),
         }),
         getCouponByCode: builder.query({
-            query: (code) => ({
+            query: (code : any) => ({
                 url: `/coupons/code/${code}`,
             }),
         }),
         createNewCoupon: builder.mutation({
-            query: (data) => ({
+            query: (data : any) => ({
                 url: `/coupons/admin`,
                 method: "POST",
                 body: data,
@@ -38,19 +38,19 @@ const promoCodeApi = baseApi.injectEndpoints({
             }),
         }),
         getCouponById: builder.query({
-            query: (id) => ({
+            query: (id : any) => ({
                 url: `/coupons/admin/${id}`,
             }),
         }),
         updateCouponAdmin: builder.mutation({
-            query: (data) => ({
+            query: (data : any) => ({
                 url: `/coupons/admin/${data.id}`,
                 method: "PUT",
                 body: data,
             }),
         }),
         deleteCouponAdmin: builder.mutation({
-            query: (id) => ({
+            query: (id : any) => ({
                 url: `/coupons/admin/${id}`,
                 method: "DELETE",
             }),

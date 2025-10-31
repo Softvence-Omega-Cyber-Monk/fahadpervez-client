@@ -1,13 +1,15 @@
-import QuestionAnswer from "./QuestionAnswer"
-import Review from "./Review"
+import Review from "./Review";
 
-const DetailsReatingReview = () => {
-  return (
-    <div className="space-y-10">
-        <QuestionAnswer/>
-        <Review/>
-    </div>
-  )
+interface DetailsReatingReviewProps {
+  productId: string;
 }
 
-export default DetailsReatingReview
+const DetailsReatingReview = ({ productId }: DetailsReatingReviewProps) => {
+  return (
+    <div className="space-y-10">
+      <Review productId={productId} />
+    </div>
+  );
+};
+
+export default DetailsReatingReview;

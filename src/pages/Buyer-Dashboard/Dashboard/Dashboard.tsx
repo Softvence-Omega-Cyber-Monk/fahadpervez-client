@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <div>
      <DashboardStats/>
-     <RecentOrderStatus/>
+     <RecentOrderStatus />
      <div className="flex gap-x-4">
       <CartSummary/>
      <RecentActivity/>

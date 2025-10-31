@@ -11,12 +11,12 @@ const OrderDetails = () => {
     const { id } = useParams()
     console.log(id)
     const {data,isLoading} = useTrackByOrderNumberQuery({id});
+    console.log(data)
     if(isLoading) return <div className="min-h-40 grid place-content-center"><Spinner /></div>
-    console.log(data?.data)
     return (
         <div>   
-            <RecentOrderStatus data = {data.data} />
-            <OrderStatusTracker />
+            <RecentOrderStatus data = {data?.data} />
+            <OrderStatusTracker data = {data?.data}/>
             <div className="flex flex-col lg:flex-row gap-4">
                 {/* Left side */}
                 <div className="w-full lg:w-1/2">

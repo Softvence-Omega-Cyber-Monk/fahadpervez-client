@@ -1,7 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-
-import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerDashboardLayout";
 import Dashboard from "@/pages/Buyer-Dashboard/Dashboard/Dashboard";
 import MyOrders from "@/pages/Buyer-Dashboard/MyOrders/MyOrders";
 import WishList from "@/pages/Buyer-Dashboard/WishList/WishList";
@@ -21,7 +19,6 @@ import Login from "@/pages/Login/Login";
 import Signup from "@/pages/Signup/Signup";
 import Home from "@/pages/Home/Home";
 import Categories from "@/pages/Home/Categories";
-import SingleProduct from "@/pages/Home/SingleProduct";
 import ProductDetails from "@/pages/Buyer-Dashboard/ProductDetails/ProductDetails";
 import SellerDashboardLayout from "@/pages/Seller-Dashboard/DashboardLayout/SellerDashboardLayout";
 import { sellerRoutes } from "./SellerRoutes";
@@ -43,8 +40,16 @@ import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
 import Register from "@/pages/Login/Register";
 import WithAuth from "@/Config/WithAuth";
 import CustomerSupport from "@/pages/CustomerSupport/CustomerSupport";
+import BuyerDashboardLayout from "@/pages/Buyer-Dashboard/DashboardLayout/BuyerDashboardLayout";
+import CouponAdminPage from "@/pages/Admin-Dashboard/Coupon/Coupon";
+import CategoryDetails from "@/pages/Home/CategoryDetails";
+import Shop from "@/pages/Shop/Shop";
 import AddProductPage from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
 import OrderDetails from "@/pages/Buyer-Dashboard/DashboardProductDetails/OrderDetails";
+import AdminOrderDetails from "@/pages/Admin-Dashboard/Order/components/AdminOrderDetails";
+import CheckoutPage from "@/pages/AFSPay/AFSPay";
+import OrderSuccessPage from "@/pages/OrderSuccess/OrderSuccess";
+import PaymentFailedPage from "@/pages/OrderFailed/OrderFailed";
 
 
 const routes = createBrowserRouter([
@@ -57,23 +62,27 @@ const routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/categories/:categoryName",
+        path: "/afs",
+        element: <CheckoutPage />
+      },
+      {
+        path: "/categories",
         element: <Categories />,
       },
       {
-        path: "/products/:id",
-        element: <SingleProduct />,
+        path: "/category/:id",
+        element: <CategoryDetails />,
       },
       {
         path: "/product-details/:id",
         element: <ProductDetail />,
       },
       {
-        path: "/my-cart/:id",
+        path: "/my-cart",
         element: <MyCartHome />,
       },
       {
-        path: "/checkout/:id",
+        path: "/checkout",
         element: <CheckOut />,
       },
       {
@@ -96,6 +105,18 @@ const routes = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
+      {
+        path: "/shop",
+        element: <Shop />
+      },
+      {
+        path: "/checkout/success",
+        element: <OrderSuccessPage />
+      },
+      {
+        path: "/checkout/failed",
+        element: <PaymentFailedPage />
+      }
     ],
   },
   {
@@ -110,6 +131,10 @@ const routes = createBrowserRouter([
         path: "my-orders",
         element: <MyOrders />,
       },
+        {
+    path: "order-details/:id",
+    element: <OrderDetails />,
+  },
       {
         path: "wishlist",
         element: <WishList />,
@@ -138,10 +163,7 @@ const routes = createBrowserRouter([
       //   path: "dashboard-product-details/:productId",
       //   element: <DashboardProductDetails />,
       // },
-      {
-    path: "order-details/:id",
-    element: <OrderDetails />,
-  },
+    
       {
         path: "buyer-profile",
         element: <BuyerProfile />,
@@ -170,12 +192,20 @@ const routes = createBrowserRouter([
         element: <Order />,
       },
       {
+        path: "order-details/:id",
+        element: <AdminOrderDetails />,
+      },
+      {
         path: "product",
         element: <Product />,
       },
       {
         path: "message",
         element: <AdminMessage />,
+      },
+      {
+        path: "coupons",
+        element: <CouponAdminPage />
       },
       {
         path: "cms",

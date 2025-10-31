@@ -49,7 +49,12 @@ export const baseApi = createApi({
     "CATEGORY",
     "MY_ORDER",
     "ORDER_ADMIN",
+    "REVIEWS",
+    "Conversations",
+    "Conversation",
+    "UnreadCount",
     "WISHLIST",
     "SHIPMENTS",
+    "Payment"
   ],
 });

@@ -57,7 +57,7 @@ const AllProducts: React.FC = () => {
         
         {/* Browse All Button */}
         <div className="flex justify-center">
-          <NavLink to="/categories/:categoryName">
+          <NavLink to="/shop">
             <Button className="font-montserrat text-lg text-gray-100 flex items-center gap-2">
               Browse All
               <MoveUpRight className='w-5 h-5'/>
