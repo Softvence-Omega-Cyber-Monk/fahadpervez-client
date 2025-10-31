@@ -37,13 +37,6 @@ const OrderSuccessPage = () => {
           >
             Return Home
           </button>
-
-          <button
-            onClick={() => navigate("/dashboard/orders")}
-            className="px-6 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors duration-200"
-          >
-            View Orders
-          </button>
         </div>
       </div>
     </div>
