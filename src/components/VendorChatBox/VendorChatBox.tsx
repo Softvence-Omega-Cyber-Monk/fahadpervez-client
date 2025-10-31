@@ -117,7 +117,7 @@ const VendorChatBox = ({ conversation, vendorId, onClose }: VendorChatBoxProps) 
                 className="w-12 h-12 rounded-full object-cover"
               />
             ) : (
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                 <User className="w-6 h-6 text-white" />
               </div>
             )}
@@ -206,7 +206,6 @@ const VendorChatBox = ({ conversation, vendorId, onClose }: VendorChatBoxProps) 
         ) : (
           <div className="space-y-4">
             {messages.map((msg, index) => {
-              const isVendor = msg.senderType === 'VENDOR';
               const isCurrentUser = msg.senderId === vendorId;
 
               return (
@@ -221,7 +220,7 @@ const VendorChatBox = ({ conversation, vendorId, onClose }: VendorChatBoxProps) 
                         : 'bg-white text-gray-800 border border-gray-200'
                     }`}
                   >
-                    <p className="text-sm break-words whitespace-pre-wrap">
+                    <p className="text-sm whitespace-pre-wrap">
                       {msg.message}
                     </p>
                     <p

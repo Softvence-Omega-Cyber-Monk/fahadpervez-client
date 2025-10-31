@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Search, X, Mic, Came
 import { Link, useParams } from 'react-router-dom';
 import { useGetAllCategoriesQuery } from '@/Redux/Features/categories/categories.api';
 import { useGetAllProductsQuery } from '@/Redux/Features/products/products.api';
-import { useAddWishListMutation } from '@/Redux/Features/wishlist/wishlist.api';
+import { useAddWishlistMutation } from '@/Redux/Features/wishlist/wishlist.api';
 
 interface Product {
   _id: string;
@@ -29,7 +29,7 @@ const CategoryDetails = () => {
   const { id } = useParams();
   const { data: allCategoriesResponse } = useGetAllCategoriesQuery({});
   const { data: allProductsResponse } = useGetAllProductsQuery({});
-  const { addWishList } = useAddWishListMutation()
+  const [addWishlist] = useAddWishlistMutation()
   
   const [mainCategories, setMainCategories] = useState<string[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -351,7 +351,7 @@ const CategoryDetails = () => {
                   {currentProducts.map(product => (
                     <Link to={`/product-details/${product._id}`} key={product._id} className="rounded-lg relative">
                       {/* Favorite Button */}
-                      <button onClick={() => addWishList(product._id)} className="absolute top-3 right-3 w-6 h-6 bg-gray-500 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors z-10">
+                      <button onClick={() => addWishlist(product._id)} className="absolute top-3 right-3 w-6 h-6 bg-gray-500 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors z-10">
                         <svg
                           className="w-4 h-4 text-white"
                           fill="none"

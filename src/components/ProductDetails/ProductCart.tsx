@@ -2,7 +2,7 @@
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useAddWishListMutation, useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
+import { useAddWishlistMutation, useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 import { toast } from "sonner";
 
@@ -22,7 +22,7 @@ export default function ProductCard({ product }: { product: ProductData }) {
   const {data} = useGetMeQuery({})
   console.log(data)
   const userId = data?.data?._id;
-  const [addWishlist, { isSuccess, isError }] = useAddWishListMutation({});
+  const [addWishlist, { isSuccess, isError }] = useAddWishlistMutation({});
   const { data: wishlistData } = useGetAllWishListQuery(
     { userID: userId },
     { skip: !userId }

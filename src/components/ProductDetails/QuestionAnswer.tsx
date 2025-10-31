@@ -2,11 +2,9 @@
 import { useState } from "react";
 import { Search, ThumbsUp, MessageCircle, ChevronRight } from "lucide-react";
 
-interface QuestionAnswerProps {
-  productId: string;
-}
 
-const QuestionAnswer = ({ productId }: QuestionAnswerProps) => {
+
+const QuestionAnswer = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showAnswerModal, setShowAnswerModal] = useState<string | null>(null);
   const [answerText, setAnswerText] = useState("");

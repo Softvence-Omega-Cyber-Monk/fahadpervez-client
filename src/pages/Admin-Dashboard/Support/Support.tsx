@@ -48,7 +48,7 @@ const TicketModal: React.FC<{
   ticket: ISupportMessage;
   onClose: () => void;
   onReplySuccess: () => void;
-}> = ({ ticket, onClose, onReplySuccess }) => {
+}> = ({ ticket, onClose }) => {
   const [reply, setReply] = useState<ReplyState>({
     subject: `RE: ${ticket.subject}`,
     message: "",
@@ -63,16 +63,10 @@ const TicketModal: React.FC<{
     }
 
     try {
-      const result = await replyToMessage({
+       await replyToMessage({
         id: ticket._id,
         reply: reply.message,
       }).unwrap();
-
-      if (result.success) {
-        alert("Reply sent successfully!");
-        onReplySuccess();
-        onClose();
-      }
     } catch (error: any) {
       console.error("Error sending reply:", error);
       alert(error?.data?.error || "Failed to send reply");
@@ -230,12 +224,12 @@ const Support: React.FC = () => {
   const {
     data: statsData,
     isLoading: isLoadingStats,
-  } = useGetSupportStatsQuery();
+  } = useGetSupportStatsQuery({});
 
   const [deleteMessage] = useDeleteSupportMessageMutation();
   console.log(statsData)
-  const tickets = messagesData?.data || [];
-  const stats = statsData?.data || {
+  const tickets : any = [];
+  const stats =  {
     pending: 0,
     resolved: 0,
     todayCount: 0,
@@ -253,10 +247,7 @@ const Support: React.FC = () => {
     }
 
     try {
-      const result = await deleteMessage(id).unwrap();
-      if (result.success) {
-        alert("Ticket deleted successfully!");
-      }
+      await deleteMessage(id).unwrap();
     } catch (error: any) {
       console.error("Error deleting ticket:", error);
       alert(error?.data?.error || "Failed to delete ticket");

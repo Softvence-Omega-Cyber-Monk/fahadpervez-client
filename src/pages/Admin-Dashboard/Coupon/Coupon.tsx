@@ -52,8 +52,8 @@ const CouponAdminPage = () => {
     endDate: ''
   });
 
-  const { data: couponsData, isLoading: couponsLoading, refetch } = useGetAllCouponsAdminQuery();
-  const { data: stats, isLoading: statsLoading } = useGetCouponStatsAdminQuery();
+  const { data: couponsData, isLoading: couponsLoading, refetch } = useGetAllCouponsAdminQuery({});
+  const { data: stats, isLoading: statsLoading } = useGetCouponStatsAdminQuery({});
   const [createCoupon, { isLoading: creating }] = useCreateNewCouponMutation();
   const [updateCoupon, { isLoading: updating }] = useUpdateCouponAdminMutation();
   const [deleteCoupon, { isLoading: deleting }] = useDeleteCouponAdminMutation();

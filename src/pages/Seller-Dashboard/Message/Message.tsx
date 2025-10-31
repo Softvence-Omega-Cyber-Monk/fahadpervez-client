@@ -14,7 +14,7 @@ const VendorMessagesPage = () => {
 
   // Get current vendor info
   const currentUser = useAppSelector((state) => state.auth.user);
-  const vendorId = currentUser?._id;
+  const vendorId = currentUser?.id;
 
   // Fetch vendor's conversations
   const { data, isLoading, error } = useGetConversationsQuery(

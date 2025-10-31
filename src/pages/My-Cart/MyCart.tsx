@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Minus, Plus, Trash2, Tag } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { decreaseQuantity, increaseQuantity, removeFromCart } from '@/store/Slices/CartSlice/cartSlice';

@@ -109,7 +109,7 @@ export const chatApi = baseApi.injectEndpoints({
         method: 'PUT',
         body: { userType },
       }),
-      invalidatesTags: (_result, error, { conversationId }) => [
+      invalidatesTags: (_result, _error, { conversationId }) => [
         { type: 'Conversation' as const, id: conversationId },
         'Conversations',
         'UnreadCount',

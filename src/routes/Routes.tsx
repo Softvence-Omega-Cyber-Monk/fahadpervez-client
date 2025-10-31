@@ -45,6 +45,9 @@ import CouponAdminPage from "@/pages/Admin-Dashboard/Coupon/Coupon";
 import CategoryDetails from "@/pages/Home/CategoryDetails";
 import Shop from "@/pages/Shop/Shop";
 import AddProductPage from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/AddProduct";
+import CheckoutPage from "@/pages/AFSPay/AFSPay";
+import OrderSuccessPage from "@/pages/OrderSuccess/OrderSuccess";
+import PaymentFailedPage from "@/pages/OrderFailed/OrderFailed";
 
 
 const routes = createBrowserRouter([
@@ -55,6 +58,10 @@ const routes = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/afs",
+        element: <CheckoutPage />
       },
       {
         path: "/categories",
@@ -99,6 +106,14 @@ const routes = createBrowserRouter([
       {
         path: "/shop",
         element: <Shop />
+      },
+      {
+        path: "/checkout/success",
+        element: <OrderSuccessPage />
+      },
+      {
+        path: "/checkout/failed",
+        element: <PaymentFailedPage />
       }
     ],
   },

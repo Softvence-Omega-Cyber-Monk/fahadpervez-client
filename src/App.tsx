@@ -1,5 +1,5 @@
 import { Toaster } from 'react-hot-toast'
-import ScrollToTop from './components/Reuse/ScrollToTop'
+// import ScrollToTop from './components/Reuse/ScrollToTop'
 import Layout from './Layout/Layout'
 import { useGetMeQuery } from './Redux/Features/auth/auth.api'
 import { SocketProvider } from './contexts/SocketProvider'
@@ -13,14 +13,14 @@ function App() {
       {user ?
         <SocketProvider userId={user._id} userType={user.role === 'VENDOR' ? 'VENDOR' : 'CUSTOMER'} >
           <Toaster position="top-center" />
-          <ScrollToTop />
+          {/* <ScrollToTop /> */}
           <Layout>
           </Layout>
         </SocketProvider>
         :
         <div>
           <Toaster position="top-center" />
-          <ScrollToTop />
+          {/* <ScrollToTop /> */}
           <Layout>
           </Layout>
         </div>

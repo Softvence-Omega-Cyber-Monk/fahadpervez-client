@@ -3,7 +3,7 @@ import { Heart, SlidersHorizontal, X, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGetAllProductsQuery } from '@/Redux/Features/products/products.api';
 import { useGetAllCategoriesQuery } from '@/Redux/Features/categories/categories.api';
-import { useAddWishListMutation, useGetAllWishListQuery } from '@/Redux/Features/wishlist/wishlist.api';
+import { useAddWishlistMutation, useGetAllWishListQuery } from '@/Redux/Features/wishlist/wishlist.api';
 import { Spinner } from '@/components/ui/spinner';
 import { Product } from '@/types/Product';
 import CommonWrapper from '@/common/CommonWrapper';
@@ -21,7 +21,7 @@ const Shop: React.FC = () => {
   const { data: productsData, isLoading: productsLoading } = useGetAllProductsQuery({});
   const { data: categoriesData, isLoading: categoriesLoading } = useGetAllCategoriesQuery({});
   const { data: wishlistData } = useGetAllWishListQuery({ userID: userId });
-  const [addWishlist] = useAddWishListMutation({});
+  const [addWishlist] = useAddWishlistMutation({});
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');

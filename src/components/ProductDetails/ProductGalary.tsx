@@ -228,7 +228,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
 
               {/* Add to Cart Button */}
               <button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors mb-3"
+                className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors mb-3"
                 onClick={handleAddToCart}
               >
                 <ShoppingCart className="h-5 w-5" />
@@ -238,7 +238,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
               {/* Send Inquiry Button */}
               <button 
                 onClick={handleOpenChat}
-                className="w-full bg-[#E6F3FF] hover:bg-[#E6F3F0] text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-300 flex items-center justify-center gap-2 transition-colors mt-4"
+                className="w-full cursor-pointer bg-[#E6F3FF] hover:bg-[#E6F3F0] text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-300 flex items-center justify-center gap-2 transition-colors mt-4"
               >
                 <MessageSquare className="h-5 w-5" />
                 Send Inquiry

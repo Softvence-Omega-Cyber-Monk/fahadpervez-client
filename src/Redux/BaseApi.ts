@@ -54,5 +54,6 @@ export const baseApi = createApi({
     "Conversation",
     "UnreadCount",
     "WISHLIST",
+    "Payment"
   ],
 });
