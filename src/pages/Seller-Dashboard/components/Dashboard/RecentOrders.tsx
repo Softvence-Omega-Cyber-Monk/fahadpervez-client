@@ -1,3 +1,5 @@
+  
+
 import { Avatar} from "@/components/ui/avatar"
 import { Spinner } from "@/components/ui/spinner"
 import { useGetRecentOrdersAdminAndVendorQuery } from "@/Redux/Features/Order/Order.api"
@@ -27,6 +29,7 @@ const statusConfig : Record<
 export default function RecentOrders() {
   const {data,isLoading} = useGetRecentOrdersAdminAndVendorQuery({});
   if(isLoading) return (<div><Spinner /></div>)
+    console.log(data)
   const orders = data.data
   return (
     <div className="bg-light-background rounded-xl p-6 border border-border w-full">

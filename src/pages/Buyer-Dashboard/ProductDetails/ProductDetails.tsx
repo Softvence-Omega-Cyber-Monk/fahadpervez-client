@@ -1,8 +1,8 @@
-import HelpCard from "../components/ProductDetails/HelpCard"
-import OrderStatusTracker from "../components/ProductDetails/OrderStatusTracker"
-import PaymentInformation from "../components/ProductDetails/PaymentInformation"
-import RecentOrderStatus from "../components/ProductDetails/RecentOrderStatus"
-import ShippingInformation from "../components/ProductDetails/ShippingInformation"
+import HelpCard from "../DashboardProductDetails/ProductDetails/HelpCard"
+import OrderStatusTracker from "../DashboardProductDetails/ProductDetails/OrderStatusTracker"
+import PaymentInformation from "../DashboardProductDetails/ProductDetails/PaymentInformation"
+import RecentOrderStatus from "../DashboardProductDetails/ProductDetails/RecentOrderStatus"
+import ShippingInformation from "../DashboardProductDetails/ProductDetails/ShippingInformation"
 
 const ProductDetails = () => {
     return (

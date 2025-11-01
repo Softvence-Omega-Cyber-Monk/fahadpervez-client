@@ -2,7 +2,7 @@ import OrderTable from "@/common/OrderTable";
 import OrderSearchBar from "../components/MyOrders/OrderSearchBar";
 // import OrderTable from "../components/MyOrders/OrderTable"
 import OrderTabs from "../components/MyOrders/OrderTabs"
-import Pagination from "../components/MyOrders/Pagination";
+// import Pagination from "../components/MyOrders/Pagination";
 import { useGetMyOrdersQuery } from "@/Redux/Features/Order/Order.api";
 import { Spinner } from "@/components/ui/spinner";
 
@@ -19,7 +19,7 @@ const MyOrders = () => {
     );
   return (
     <div className="min-h-screen  py-4 xs:py-5 sm:py-6 lg:py-8">
-      <div className=" mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
+      <div className=" mx-auto    ">
         {/* Header Section */}
         <div className="mb-6 xs:mb-7 sm:mb-8 lg:mb-10">
           <h1 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
@@ -49,9 +49,9 @@ const MyOrders = () => {
           </div>
 
           {/* Pagination Section */}
-          <div className="border-t border-gray-200 bg-white p-3 xs:p-4 sm:p-5 lg:p-6">
+          {/* <div className="border-t border-gray-200 bg-white p-3 xs:p-4 sm:p-5 lg:p-6">
             <Pagination />
-          </div>
+          </div> */}
         </div>
 
         {/* Mobile Action Buttons */}

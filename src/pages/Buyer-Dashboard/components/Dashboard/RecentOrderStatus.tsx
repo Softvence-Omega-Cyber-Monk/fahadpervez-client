@@ -12,7 +12,7 @@ interface RecentOrderStatusProps {
 export default function RecentOrderStatus({ data }: RecentOrderStatusProps) {
   const [cancelOrderById] = useCancelOrderByIdMutation();
   const [orderStatus, setOrderStatus] = useState(data?.status);
-
+console.log(data)
   if (!data) {
     return (
       <div className="w-full bg-white p-6 sm:p-8 border border-gray-100 rounded-md text-center text-gray-500">
@@ -28,7 +28,7 @@ export default function RecentOrderStatus({ data }: RecentOrderStatusProps) {
     actualDeliveryDate,
     grandTotal,
     products,
-    shippingMethodId,
+     shippingMethodId,
   } = data;
 
   const handleDelete = async ({ id }: { id: string }) => {
@@ -108,12 +108,12 @@ export default function RecentOrderStatus({ data }: RecentOrderStatusProps) {
 
         <div className="border border-gray-200 rounded-lg p-8 text-center">
           <div className="text-lg text-gray-600 mb-2">Total product</div>
-          <div className="text-3xl font-bold text-gray-900">{products.length}</div>
+          <div className="text-3xl font-bold text-gray-900">{products.length|| "N/A"}</div>
         </div>
 
         <div className="border border-gray-200 rounded-lg p-8 text-center sm:col-span-2 lg:col-span-1">
-          <div className="text-lg text-gray-600 mb-2">Shipping method</div>
-          <div className="text-xl sm:text-2xl text-[#FFA600]">{shippingMethodId?.name}</div>
+          <div className="text-lg text-gray-600 mb-2">Shipping method</div> 
+          <div className="text-xl sm:text-2xl text-[#FFA600]">{shippingMethodId?.name||"N/A"}</div>
         </div>
       </div>
     </div>

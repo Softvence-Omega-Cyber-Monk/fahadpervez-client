@@ -118,10 +118,10 @@
 
 import { useParams } from "react-router-dom"
 import RecentOrderStatus from "../components/Dashboard/RecentOrderStatus"
-import HelpCard from "../components/ProductDetails/HelpCard"
-import OrderStatusTracker from "../components/ProductDetails/OrderStatusTracker"
-import PaymentInformation from "../components/ProductDetails/PaymentInformation"
-import ShippingInformation from "../components/ProductDetails/ShippingInformation"
+import HelpCard from "./ProductDetails/HelpCard"
+import OrderStatusTracker from "./ProductDetails/OrderStatusTracker"
+import PaymentInformation from "./ProductDetails/PaymentInformation"
+import ShippingInformation from "./ProductDetails/ShippingInformation"
 import { useTrackByOrderNumberQuery } from "@/Redux/Features/Order/Order.api"
 import { Spinner } from "@/components/ui/spinner"
 

@@ -16,6 +16,7 @@ import OrderLandingPage from "@/pages/Seller-Dashboard/components/Order/OrderLan
 import OrderTracking from "@/pages/Seller-Dashboard/components/Order/OrderTracking";
 import SellerCategory from "@/pages/Seller-Dashboard/components/SellerCategory/SellerCategory";
 import UpdateProduct from "@/pages/Seller-Dashboard/components/Products/AddSingleProduct/UpdateProduct";
+import Orderdetails from "@/pages/Seller-Dashboard/components/SellerOrderDetails/Orderdetails";
 
 export const sellerRoutes = [
   {
@@ -80,7 +81,11 @@ export const sellerRoutes = [
       {
         path:"order-status",
         element:<OrderTracking />
-      }
+      },
+      {
+        path:"order-detilse/:id",
+        element:<Orderdetails />
+      },
     ]
   },
   {
