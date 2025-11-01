@@ -50,6 +50,7 @@ import AdminOrderDetails from "@/pages/Admin-Dashboard/Order/components/AdminOrd
 import CheckoutPage from "@/pages/AFSPay/AFSPay";
 import OrderSuccessPage from "@/pages/OrderSuccess/OrderSuccess";
 import PaymentFailedPage from "@/pages/OrderFailed/OrderFailed";
+import Orderdetails from "@/pages/Seller-Dashboard/components/SellerOrderDetails/Orderdetails";
 
 
 const routes = createBrowserRouter([
@@ -134,7 +135,7 @@ const routes = createBrowserRouter([
 
 
 
-      
+
         {
     path: "order-details/:id",
     element: <OrderDetails />,
@@ -270,6 +271,10 @@ const routes = createBrowserRouter([
     path: "*",
     element: <NotFound />,
   },
+    {
+        path:"/order-detilse/:id",
+        element:<Orderdetails />
+      },
   {
     path: "/un-authoraised",
     element: <UnAuthoraised />
