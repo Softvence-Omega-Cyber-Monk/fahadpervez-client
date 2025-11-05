@@ -6,6 +6,7 @@ export type userId = {
 };
 
 export interface Product {
+  userId: any;
   _id?: string;
   productName: string;
   productCategory: string;
@@ -27,7 +28,7 @@ export interface Product {
     email: string;
     location: string;
   };
-  userId: userId;
+  // userId: userId;
   sideImage?: string;
   sideImage2?: string;
   lastImage?: string;
