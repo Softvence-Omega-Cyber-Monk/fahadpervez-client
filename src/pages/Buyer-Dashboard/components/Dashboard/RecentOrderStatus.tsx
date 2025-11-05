@@ -1,6 +1,5 @@
 import { useCancelOrderByIdMutation } from "@/Redux/Features/Order/Order.api";
 import { Order } from "@/types/OrderTypes";
-import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 
@@ -48,7 +47,7 @@ const handleDelete = async ({id} : {id:string}) => {
 
         {/* Cancel Button */}
         <div >
-        <button onClick={()=>handleDelete( {id:_id})} className="flex items-center gap-2 text-white px-4 py-px rounded-md bg-red-500 hover:bg-red-400 transition-colors self-start sm:self-auto">
+        <button onClick={()=>handleDelete( {id:_id as string})} className="flex items-center gap-2 text-white px-4 py-px rounded-md bg-red-500 hover:bg-red-400 transition-colors self-start sm:self-auto">
           <span className="text-sm sm:text-base font-medium ">Cancel Order</span>
         </button>
         </div>

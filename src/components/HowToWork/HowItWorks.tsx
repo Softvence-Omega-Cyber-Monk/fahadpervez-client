@@ -40,7 +40,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <div className="py-16 px-4">
+    <div className="py-16 px-4 ">
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Steps */}
@@ -70,7 +70,8 @@ const HowItWorks = () => {
 
           {/* Right side - Medical Kit Illustration */}
           <div className="flex items-center justify-center">
-            <img src="./medicalbox.png" alt="medicalbox" />
+            {/* <img src="./medicalbox.png" alt="medicalbox" /> */}
+            <video src="../../../public/fastAid.mp4" autoPlay loop muted className="" />
           </div>
         </div>
       </div>

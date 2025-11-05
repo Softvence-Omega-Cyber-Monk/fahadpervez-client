@@ -18,7 +18,7 @@ const AllProducts: React.FC = () => {
         <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue py-10">ALL PRODUCTS</h1>
         
         {/* Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-8">
           {products?.data?.map((product : Product) => (
             <Link to={`/product-details/${product._id}`} key={product._id} className="rounded-lg overflow-hidden relative">
               <div className="absolute top-3 right-3 z-10">
