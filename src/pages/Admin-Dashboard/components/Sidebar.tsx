@@ -5,6 +5,7 @@ import {
   FaUser,
   FaClipboardList,
 } from "react-icons/fa";
+import { RiCoupon2Line } from "react-icons/ri";
 import { TbReportSearch } from "react-icons/tb";
 import { MdLocalShipping, MdOutlinePayments } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
@@ -49,6 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { path: "/admin-dashboard/message", icon: <TbReportSearch />, label: "Message" },
     { path: "/admin-dashboard/cms", icon: <TbReportSearch />, label: "CMS" },
     { path: "/admin-dashboard/payments", icon: <MdOutlinePayments />, label: "Payments" },
+    { path: "/admin-dashboard/coupons", icon: <RiCoupon2Line />, label: "Coupons" },
     { path: "/admin-dashboard/shipping", icon: <MdLocalShipping />, label: "Shipping" },
     { path: "/admin-dashboard/support", icon: <BiSupport />, label: "Support" },
     { path: "/admin-dashboard/settings", icon: <FaCog />, label: "Settings" },
