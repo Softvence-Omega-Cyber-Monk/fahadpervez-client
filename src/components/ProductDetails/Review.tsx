@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Review.tsx
 import { useState } from "react";
 import { Star, Grid3x3, X } from "lucide-react";
@@ -155,7 +156,8 @@ const Review = ({ productId }: ReviewProps) => {
     }
     
     try {
-      await upvoteReview(reviewId).unwrap();
+      const res = await upvoteReview(reviewId).unwrap();
+      console.log(res)
       toast.success("Review upvoted!");
       await refetch();
     } catch (error: any) {

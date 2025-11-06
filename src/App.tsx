@@ -3,10 +3,10 @@ import { Toaster } from 'react-hot-toast'
 import Layout from './Layout/Layout'
 import { useGetMeQuery } from './Redux/Features/auth/auth.api'
 import { SocketProvider } from './contexts/SocketProvider'
+import ScrollToTopButton from './common/ScrollToTop'
 
 function App() {
   const { data: userData } = useGetMeQuery({})
-  console.log(userData)
   const user = userData?.data
   return (
     <>
@@ -25,7 +25,9 @@ function App() {
           </Layout>
         </div>
       }
-
+    <div className="fixed border size-20">
+        <ScrollToTopButton/>
+        </div>
     </>
   )
 }

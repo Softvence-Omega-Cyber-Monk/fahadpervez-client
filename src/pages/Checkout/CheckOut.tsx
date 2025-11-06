@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useRef } from 'react';
 import { CreditCard, Lock, AlertCircle, CheckCircle, Loader, MapPin, Package, X, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +19,8 @@ declare global {
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const {data : userProfileData} = useGetMeQuery({})
-  console.log(userProfileData)
-  const cartItems = useAppSelector((state) => state.cart.items);
+  const carts = useAppSelector((state) => state.cart.items);
+  const cartItems = carts.filter(item => item.selectedProduct);
   const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
 
   // Redirect if cart is empty

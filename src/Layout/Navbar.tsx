@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
+import { Search, CircleUserRound, Menu, X } from "lucide-react";
 import CommonWrapper from "@/common/CommonWrapper";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
-<<<<<<< HEAD
-import logo from "../assets/logo.png";
-=======
 import logo from "../assets/logo.png"
 import { toast } from "sonner";
->>>>>>> 25312676e024612d4f3ba1ad5a8c498017c76e20
+import { FaShoppingCart } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -18,9 +15,9 @@ const Navbar: React.FC = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const role = useAppSelector((state) => state?.auth?.user?.role);
   const dispatch = useAppDispatch();
-
+  const cartItems = useAppSelector((state) => state.cart.items);
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 200);
     window.addEventListener("scroll", handleScroll);
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,7 +32,7 @@ const Navbar: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  console.log(scrolled)
   return (
     <nav className="fixed top-0 w-full z-50">
       <div
@@ -49,7 +46,7 @@ const Navbar: React.FC = () => {
           <div
             className={`flex items-center justify-between rounded-full transition-all duration-500 ${
               scrolled
-                ? "bg-white/10 px-4 py-3"
+                ? "bg-transparent px-4 py-3"
                 : "bg-white shadow-md px-5 py-4 mt-2"
             }`}
           >
@@ -61,10 +58,12 @@ const Navbar: React.FC = () => {
             {/* Desktop Icons */}
             <div className="hidden sm:flex items-center gap-4">
               <Search className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110" />
-              <Link to={`/my-cart/${10}`}>
-                <ShoppingCart className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110" />
-              </Link>
-
+              <Link to={`/my-cart`} className="relative">
+                        <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
+                        <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
+                          {cartItems?.length}
+                        </span>
+                        </Link>
               {/* User Dropdown */}
               <div className="relative" ref={menuRef}>
                 <CircleUserRound
@@ -152,7 +151,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu with Animation */}
       <div
-        className={`fixed top-[80px] left-0 w-full bg-white shadow-md z-40 transform transition-all duration-500 ease-in-out ${
+        className={`fixed top-20 left-0 w-full bg-white shadow-md z-40 transform transition-all duration-500 ease-in-out ${
           mobileOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0 pointer-events-none"
         }`}
       >
@@ -165,9 +164,12 @@ const Navbar: React.FC = () => {
             />
           </li>
           <li className="px-6 py-2">
-            <Link to={`/my-cart/${10}`} onClick={() => setMobileOpen(false)}>
-              My Cart
-            </Link>
+           <Link to={`/my-cart`} className="relative">
+          <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
+          <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
+            {cartItems?.length}
+          </span>
+          </Link>
           </li>
           <li className="px-6 py-2">
             <Link to="/" onClick={() => setMobileOpen(false)}>

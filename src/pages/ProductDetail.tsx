@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // ProductDetail.tsx
 import { ChevronRight } from "lucide-react";
 import { useParams } from "react-router-dom";
 import ProductDetailsTab from "@/components/ProductDetails/ProductDetailsTab";
-import ProductCard from "@/components/ProductDetails/ProductCart";
+import ProductCard from "@/components/ProductDetails/ProductCard";
 import ProductGalary from "@/components/ProductDetails/ProductGalary";
 import { useGetProductByIdQuery, useGetAllProductsQuery } from "@/Redux/Features/products/products.api";
 import { Spinner } from "@/components/ui/spinner";
@@ -69,10 +70,10 @@ export default function ProductDetail() {
         {relatedProducts.length > 0 && (
           <div className="py-[60px] mt-16">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Related Products</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
-              {relatedProducts.map((relatedProduct: any) => (
-                <ProductCard key={relatedProduct._id} product={relatedProduct} />
-              ))}
+            <div className="">
+              {/* {relatedProducts.map((relatedProduct: any) => ( */}
+                <ProductCard products={relatedProducts} />
+              {/* ))} */}
             </div>
           </div>
         )}

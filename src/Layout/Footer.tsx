@@ -3,7 +3,7 @@ import { SendHorizontal } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#212a31] text-white py-8">
+    <footer className="bg-website-color-black text-white py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-15">
         <div className="flex flex-col md:flex-row md:justify-between gap-30">
           
