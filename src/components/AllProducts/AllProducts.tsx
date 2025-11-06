@@ -28,11 +28,11 @@ const AllProducts: React.FC = () => {
               </div>
               
               {/* Product Image */}
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center bg-white py-8">
                 <img 
                   src={product.mainImageUrl || "./bestsell.png"} 
                   alt={product.productName}
-                  className=" w-full h-96 object-cover"
+                  className="w-[80%] h-80 object-cover"
                 />
               </div>
               
