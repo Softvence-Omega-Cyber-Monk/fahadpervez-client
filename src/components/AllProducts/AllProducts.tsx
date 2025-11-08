@@ -87,9 +87,9 @@ const AllProducts: React.FC = () => {
 
                   {/* Product Info */}
                   <div className="pb-4">
-                    <h3 className="text-md font-montserrat font-medium text-gray-800 my-2 mt-3">
+                    <h4 className="line-clamp-2 font-montserrat font-medium text-gray-800 my-2 mt-3">
                       {product.productName}
-                    </h3>
+                    </h4>
                     <div className="flex items-center gap-2">
                       {product.specialPrice && (
                         <span className="text-lg font-montserrat font-medium text-website-color-blue">

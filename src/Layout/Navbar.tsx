@@ -4,9 +4,10 @@ import { Search, CircleUserRound, Menu, X } from "lucide-react";
 import CommonWrapper from "@/common/CommonWrapper";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
 import { toast } from "sonner";
 import { FaShoppingCart } from "react-icons/fa";
+import GoogleTranslate from "@/common/GoogleTranslate";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -32,14 +33,12 @@ const Navbar: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  console.log(scrolled)
+  console.log(scrolled);
   return (
     <nav className="fixed top-0 w-full z-50">
       <div
         className={`px-4 py-2 transition-all duration-500 ${
-          scrolled
-            ? "backdrop-blur-lg bg-white/60 shadow-sm"
-            : "bg-transparent"
+          scrolled ? "backdrop-blur-lg bg-white/60 shadow-sm" : "bg-transparent"
         }`}
       >
         <CommonWrapper>
@@ -51,19 +50,23 @@ const Navbar: React.FC = () => {
             }`}
           >
             {/* Logo */}
-            <Link to="/" className="transition-transform duration-300 hover:scale-105">
+            <Link
+              to="/"
+              className="transition-transform duration-300 hover:scale-105"
+            >
               <img src={logo} alt="Logo" className="h-8 sm:h-10 w-auto" />
             </Link>
 
             {/* Desktop Icons */}
             <div className="hidden sm:flex items-center gap-4">
               <Search className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110" />
+              {/* Cart */}
               <Link to={`/my-cart`} className="relative">
-                        <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
-                        <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
-                          {cartItems?.length}
-                        </span>
-                        </Link>
+                <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
+                <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
+                  {cartItems?.length}
+                </span>
+              </Link>
               {/* User Dropdown */}
               <div className="relative" ref={menuRef}>
                 <CircleUserRound
@@ -119,7 +122,7 @@ const Navbar: React.FC = () => {
                       <li
                         className="cursor-pointer block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={() => {
-                          dispatch(logout())
+                          dispatch(logout());
                           toast.success("Logged out successfully.");
                         }}
                       >
@@ -129,6 +132,7 @@ const Navbar: React.FC = () => {
                   </ul>
                 </div>
               </div>
+              <GoogleTranslate />
             </div>
 
             {/* Mobile Hamburger */}
@@ -152,7 +156,9 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu with Animation */}
       <div
         className={`fixed top-20 left-0 w-full bg-white shadow-md z-40 transform transition-all duration-500 ease-in-out ${
-          mobileOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0 pointer-events-none"
+          mobileOpen
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-10 opacity-0 pointer-events-none"
         }`}
       >
         <ul className="flex flex-col py-6 space-y-2">
@@ -164,12 +170,12 @@ const Navbar: React.FC = () => {
             />
           </li>
           <li className="px-6 py-2">
-           <Link to={`/my-cart`} className="relative">
-          <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
-          <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
-            {cartItems?.length}
-          </span>
-          </Link>
+            <Link to={`/my-cart`} className="relative">
+              <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
+              <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
+                {cartItems?.length}
+              </span>
+            </Link>
           </li>
           <li className="px-6 py-2">
             <Link to="/" onClick={() => setMobileOpen(false)}>

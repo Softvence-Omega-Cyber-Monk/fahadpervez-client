@@ -13,6 +13,7 @@ import {
 } from "@/Redux/Features/wishlist/wishlist.api";
 import { toast } from "sonner";
 import { FaHeart } from "react-icons/fa";
+import PrimaryButton from "@/common/PrimaryButton";
 
 const BestSeller: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -105,9 +106,18 @@ const BestSeller: React.FC = () => {
   return (
     <CommonWrapper>
       <div className="w-full px-4 sm:px-8 xl:px-0   bg-[#F1F5F8] ">
+        <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue py-10">
           BEST SELLERS
         </h2>
+        <Link to="/shop" className="mb-4 inline-block">
+        <PrimaryButton 
+          type="Primary"
+          title="View All Products"
+          className="text-sm!"
+        />
+        </Link>
+        </div>
 
         <div className="relative">
           {/* Previous Button - hidden on mobile */}
@@ -175,9 +185,9 @@ const BestSeller: React.FC = () => {
                   
                                     {/* Product Info */}
                                     <div className="pb-4">
-                                      <h3 className="text-md font-montserrat font-medium text-gray-800 my-2 mt-3">
+                                      <h4 className=" font-montserrat font-medium text-gray-800 my-2 mt-3 line-clamp-2">
                                         {product.productName}
-                                      </h3>
+                                      </h4>
                                       <div className="flex items-center gap-2">
                                         {product.specialPrice && (
                                           <span className="text-lg font-montserrat font-medium text-website-color-blue">
