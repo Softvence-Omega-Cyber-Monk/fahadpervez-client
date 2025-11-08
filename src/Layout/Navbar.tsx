@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Search, CircleUserRound, Menu, X } from "lucide-react";
+import { Search, CircleUserRound, Menu, X, HeartIcon } from "lucide-react";
 import CommonWrapper from "@/common/CommonWrapper";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
@@ -8,13 +8,18 @@ import logo from "../assets/logo.png";
 import { toast } from "sonner";
 import { FaShoppingCart } from "react-icons/fa";
 import GoogleTranslate from "@/common/GoogleTranslate";
+import { useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
+import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { data } = useGetMeQuery({});
   const role = useAppSelector((state) => state?.auth?.user?.role);
+  const { data: wishlistProducts } = useGetAllWishListQuery({});
+  const user = data?.data;
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   useEffect(() => {
@@ -33,7 +38,6 @@ const Navbar: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  console.log(scrolled);
   return (
     <nav className="fixed top-0 w-full z-50">
       <div
@@ -58,19 +62,26 @@ const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Icons */}
-            <div className="hidden sm:flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-5">
               <Search className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110" />
               {/* Cart */}
               <Link to={`/my-cart`} className="relative">
-                <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
+                <FaShoppingCart className="text-gray-600 text-lg cursor-pointer size-5 hover:scale-110" />
                 <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
                   {cartItems?.length}
                 </span>
               </Link>
+              {/* wishlist */}
+              <div className="relative">
+                <HeartIcon className="text-gray-600 size-5 cursor-pointer hover:scale-110" />
+                <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
+                  {wishlistProducts?.data?.length}
+                </span>
+              </div>
               {/* User Dropdown */}
               <div className="relative" ref={menuRef}>
                 <CircleUserRound
-                  className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110"
+                  className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110 "
                   onClick={() => setMenuOpen((prev) => !prev)}
                 />
 
@@ -83,6 +94,25 @@ const Navbar: React.FC = () => {
                   }`}
                 >
                   <ul className="py-2">
+                    {user && (
+                      <li className=" px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2">
+                        <img
+                          src={user.profileImage}
+                          alt=""
+                          className="size-10 rounded-full"
+                        />
+                        <div className="grid gap-px">
+                          <p className="text-sm font-medium text-gray-900">
+                            {user.name}
+                          </p>
+                          {user.role && (
+                            <span className="text-[8px] bg-gray-200 px-2 py-1 rounded-full">
+                              {user.role}
+                            </span>
+                          )}
+                        </div>
+                      </li>
+                    )}
                     <li>
                       {role ? (
                         <Link
@@ -155,29 +185,48 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu with Animation */}
       <div
-        className={`fixed top-20 left-0 w-full bg-white shadow-md z-40 transform transition-all duration-500 ease-in-out ${
+        className={`fixed top-22 left-0 w-full bg-white shadow-md z-40 transform transition-all duration-500 ease-in-out ${
           mobileOpen
             ? "translate-y-0 opacity-100"
             : "-translate-y-10 opacity-0 pointer-events-none"
         }`}
       >
         <ul className="flex flex-col py-6 space-y-2">
-          <li className="px-4">
+            <li className="px-4">
             <input
               type="text"
               placeholder="Search..."
               className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all"
             />
           </li>
+          <div className="flex items-center justify-between">
+          {user && (
+            <li className=" px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2">
+              <img
+                src={user.profileImage}
+                alt=""
+                className="size-10 rounded-full"
+              />
+              <div className="grid gap-px">
+                <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                {user.role && (
+                  <span className="text-[8px] bg-gray-200 px-2 py-1 rounded-full">
+                    {user.role}
+                  </span>
+                )}
+              </div>
+            </li>
+          )}
           <li className="px-6 py-2">
             <Link to={`/my-cart`} className="relative">
-              <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
-              <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
+              <FaShoppingCart className="text-gray-600 size-6 cursor-pointer" />
+              <span className="absolute top-0 left-4 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
                 {cartItems?.length}
               </span>
             </Link>
           </li>
-          <li className="px-6 py-2">
+          </div>
+          <li className="px-4 py-2">
             <Link to="/" onClick={() => setMobileOpen(false)}>
               My Account
             </Link>

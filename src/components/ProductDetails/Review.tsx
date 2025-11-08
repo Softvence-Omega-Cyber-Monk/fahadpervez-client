@@ -20,7 +20,7 @@ interface ReviewProps {
 const Review = ({ productId }: ReviewProps) => {
   const { data: userData } = useGetMeQuery({});
   const userId = userData?.data?._id;
-
+  console.log(userId)
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
@@ -33,7 +33,7 @@ const Review = ({ productId }: ReviewProps) => {
     sortBy,
     sortOrder,
   });
-
+  console.log(reviewsData)
   const [createReview] = useCreateReviewMutation();
   const [updateReview] = useUpdateReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();

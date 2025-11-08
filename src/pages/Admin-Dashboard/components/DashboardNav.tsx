@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaBell, FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
-// import logo from "../../../assets/logo.png";
+import logo from "../../../assets/logo.png";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 import { Spinner } from "@/components/ui/spinner";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
@@ -39,7 +39,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
 
         {/* Logo */}
           <NavLink to="/">
-        <img src="logo.png" alt="Logo" className="h-8 sm:h-10 w-auto" />
+        <img src={logo} alt="Logo" className="h-8 sm:h-10 w-auto" />
           </NavLink>
       </div>
 

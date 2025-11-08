@@ -40,7 +40,7 @@ export default function ProductDetail() {
     .slice(0, 3) || [];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8 mt-20 pt-[50px]">
+    <div className="min-h-screen  py-6 px-4 sm:px-6 lg:px-8 mt-20 pt-[50px]">
       <CommonWrapper>
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 flex-wrap">

@@ -123,10 +123,12 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onMenuToggle }) => {
         <div className="flex items-center space-x-4 md:space-x-6">
           <FaBell className="text-gray-600 text-lg cursor-pointer" />
           <div className="relative">
+            <Link to="/my-cart">
             <FaShoppingCart className="text-gray-600 text-lg cursor-pointer" />
             <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
               {cartItems.length}
             </span>
+            </Link>
           </div>
         </div>
       </div>
