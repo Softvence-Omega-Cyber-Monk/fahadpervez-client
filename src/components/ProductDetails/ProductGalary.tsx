@@ -14,8 +14,11 @@ import {
   useGetAllWishListQuery,
   useRemoveWishListMutation,
 } from "@/Redux/Features/wishlist/wishlist.api";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import { FaHeart } from "react-icons/fa";
-
+import InnerImageZoom from "react-inner-image-zoom";
+import 'react-inner-image-zoom/lib/styles.min.css';
 const ProductGallery = ({ product }: { product: Product }) => {
   const [images, setImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -27,6 +30,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
   const [addWishlist, { isError, error }] = useAddWishlistMutation();
   const [removeWishList] = useRemoveWishListMutation();
   const { data } = useGetMeQuery({});
+   const [open, setOpen] = useState(false);
   const currentUserId = data?.data?._id; // TODO: Get from auth state
 
   const averageRating = reviewsData?.data?.length
@@ -47,22 +51,56 @@ const ProductGallery = ({ product }: { product: Product }) => {
 
     setImages(productImages);
   }, [product]);
-
+  console.log(selectedImage, images)
   // Render Main Preview
   const renderMainPreview = () => {
     const selected = images[selectedImage];
-    return selected === product.videoUrl ? (
+    const isVideo = selected === product.videoUrl;
+
+    return isVideo ? (
       <video
         src={product.videoUrl}
         controls
         className="w-full h-full object-cover rounded-lg"
       />
     ) : (
-      <img
-        src={selected || "/placeholder.svg"}
-        alt="Main product preview"
-        className="rounded-lg"
-      />
+      <>
+        <button type="button" onClick={() => setOpen(true)}>
+          <InnerImageZoom
+            src={selected}
+            zoomSrc={selected}
+            zoomType="hover"
+            className="rounded-lg"
+          />
+        </button>
+
+        <Lightbox
+          open={open}
+          close={() => setOpen(false)}
+          index={selectedImage}
+          slides={images.map((url) => ({ src: url }))}
+          render={{
+            slide: ({ slide }) =>
+              slide.src === product.videoUrl ? (
+                <video
+                  src={slide.src}
+                  controls
+                  autoPlay
+                  className="max-h-[80vh] mx-auto rounded-lg"
+                />
+              ) : (
+                <img
+                  src={slide.src}
+                  alt="Product preview"
+                  className="max-h-[80vh] mx-auto rounded-lg object-contain"
+                />
+              ),
+          }}
+          on={{
+            view: ({ index }) => setSelectedImage(index),
+          }}
+        />
+      </>
     );
   };
   // Render Thumbnails
