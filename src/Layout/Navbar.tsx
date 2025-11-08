@@ -72,12 +72,18 @@ const Navbar: React.FC = () => {
                 </span>
               </Link>
               {/* wishlist */}
-              <div className="relative">
+             {
+              role === "CUSTOMER" && (
+                <Link to={`/buyer-dashboard/wishlist`}>
+                 <div className="relative">
                 <HeartIcon className="text-gray-600 size-5 cursor-pointer hover:scale-110" />
                 <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
                   {wishlistProducts?.data?.length}
                 </span>
               </div>
+                </Link>
+              )
+             }
               {/* User Dropdown */}
               <div className="relative" ref={menuRef}>
                 <CircleUserRound
@@ -192,7 +198,7 @@ const Navbar: React.FC = () => {
         }`}
       >
         <ul className="flex flex-col py-6 space-y-2">
-            <li className="px-4">
+          <li className="px-4">
             <input
               type="text"
               placeholder="Search..."
@@ -200,34 +206,47 @@ const Navbar: React.FC = () => {
             />
           </li>
           <div className="flex items-center justify-between">
-          {user && (
-            <li className=" px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2">
-              <img
-                src={user.profileImage}
-                alt=""
-                className="size-10 rounded-full"
-              />
-              <div className="grid gap-px">
-                <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                {user.role && (
-                  <span className="text-[8px] bg-gray-200 px-2 py-1 rounded-full">
-                    {user.role}
-                  </span>
-                )}
-              </div>
+            {user && (
+              <li className=" px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2">
+                <img
+                  src={user.profileImage}
+                  alt=""
+                  className="size-10 rounded-full"
+                />
+                <div className="grid gap-px">
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.name}
+                  </p>
+                  {user.role && (
+                    <span className="text-[8px] bg-gray-200 px-2 py-1 rounded-full">
+                      {user.role}
+                    </span>
+                  )}
+                </div>
+              </li>
+            )}
+            <li className="px-6 py-2">
+              <Link to={`/my-cart`} className="relative">
+                <FaShoppingCart className="text-gray-600 size-6 cursor-pointer" />
+                <span className="absolute top-0 left-4 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
+                  {cartItems?.length}
+                </span>
+              </Link>
             </li>
-          )}
-          <li className="px-6 py-2">
-            <Link to={`/my-cart`} className="relative">
-              <FaShoppingCart className="text-gray-600 size-6 cursor-pointer" />
-              <span className="absolute top-0 left-4 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
-                {cartItems?.length}
-              </span>
-            </Link>
-          </li>
           </div>
           <li className="px-4 py-2">
-            <Link to="/" onClick={() => setMobileOpen(false)}>
+            <Link
+              to={
+                role === "ADMIN"
+                  ? "/admin-dashboard"
+                  : role === "VENDOR"
+                  ? "/seller-dashboard"
+                  : role === "CUSTOMER"
+                  ? "/buyer-dashboard"
+                  : "/login"
+              }
+              onClick={() => setMobileOpen(false)}
+            >
               My Account
             </Link>
           </li>
