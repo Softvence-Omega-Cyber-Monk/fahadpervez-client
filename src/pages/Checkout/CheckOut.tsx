@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import "react-phone-number-input/style.css";
 import {
   CreditCard,
   Lock,
@@ -17,6 +18,8 @@ import { useCreateOrderMutation } from "@/Redux/Features/Order/Order.api";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 import countryList from "react-select-country-list";
 import Select from "react-select";
+import PhoneInput from "react-phone-number-input";
+import { E164Number } from "libphonenumber-js";
 // Extend window for Mastercard Checkout
 declare global {
   interface Window {
@@ -36,7 +39,6 @@ const CheckoutPage = () => {
     useCreateOrderMutation();
   const options = useMemo(() => countryList().getData(), []);
   const [value, setValue] = useState(null);
-
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -59,7 +61,7 @@ const CheckoutPage = () => {
     shippingMethod: "aramex",
   });
   const [formErrors, setFormErrors] = useState<any>({});
-
+  const [phone, setPhone] = useState<E164Number | undefined>();
   // Shipping methods
   const shippingMethods = {
     aramex: {
@@ -200,7 +202,7 @@ const CheckoutPage = () => {
     if (!formData.email.trim()) errors.email = "Required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       errors.email = "Invalid email";
-    if (!formData.phone.trim()) errors.phone = "Required";
+    if (!phone) errors.phone = "Required";
     if (!formData.country.trim()) errors.country = "Required";
     if (!formData.address.trim()) errors.address = "Required";
     if (!formData.city.trim()) errors.city = "Required";
@@ -210,7 +212,7 @@ const CheckoutPage = () => {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
-
+  console.log(phone);
   // Create order first, then initialize payment
   const handlePlaceOrder = async () => {
     if (!validateForm() || isProcessingRef.current) return;
@@ -226,7 +228,7 @@ const CheckoutPage = () => {
       // Step 1: Create order in database with PENDING payment status
       const orderData = {
         fullName: formData.fullName,
-        mobileNumber: formData.phone,
+        mobileNumber: phone,
         country: formData.country,
         addressSpecific: formData.address,
         city: formData.city,
@@ -248,7 +250,7 @@ const CheckoutPage = () => {
         orderNotes: formData.remarks || "",
         transactionId: `TXN-${Date.now()}`, // Temporary transaction ID
       };
-      console.log(orderData)
+      console.log(orderData);
       const orderResponse = await createOrder(orderData).unwrap();
       console.log("Order created:", orderResponse);
 
@@ -516,7 +518,7 @@ const CheckoutPage = () => {
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Phone *
                     </label>
-                    <input
+                    {/* <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
@@ -525,10 +527,19 @@ const CheckoutPage = () => {
                         formErrors.phone ? "border-red-500" : "border-gray-300"
                       }`}
                       placeholder="+1234567890"
+                    /> */}
+                    <PhoneInput
+                      defaultCountry="BH"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${
+                        !phone ? "border-red-500" : "border-gray-300"
+                      }`}
+                      placeholder="Enter phone number"
+                      value={phone}
+                      onChange={setPhone}
                     />
-                    {formErrors.phone && (
+                    {!phone && (
                       <p className="text-red-500 text-xs mt-1">
-                        {formErrors.phone}
+                        {phone}
                       </p>
                     )}
                   </div>
