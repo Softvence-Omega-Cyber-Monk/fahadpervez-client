@@ -1,4 +1,12 @@
+import { useAppSelector } from "@/hooks/useRedux";
+
 export default function CartSummary() {
+  const cartItems = useAppSelector((state) => state.cart.items);
+
+  // Calculate total items and total value
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalValue = cartItems.reduce((sum, item) => sum + (item.totalPrice || 0), 0);
+
   return (
     <div className="w-full max-w-3xl mt-6">
       <div className="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
@@ -8,7 +16,7 @@ export default function CartSummary() {
             Cart summary
           </h2>
           <a
-            href="#"
+            href="/my-cart"
             className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base"
           >
             View Cart
@@ -18,7 +26,7 @@ export default function CartSummary() {
         {/* Total Items */}
         <div className="mb-3">
           <p className="text-gray-900 text-base sm:text-lg">
-            Total item: <span className="font-normal">8</span>
+            Total items: <span className="font-normal">{totalItems}</span>
           </p>
         </div>
 
@@ -27,15 +35,15 @@ export default function CartSummary() {
           <p className="text-gray-900 text-base sm:text-lg">
             Total value:{' '}
             <span className="text-red-600 font-bold text-xl sm:text-2xl">
-              $120
+              ${totalValue}
             </span>
           </p>
         </div>
 
         {/* Checkout Button */}
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-base sm:text-lg py-4 rounded-lg transition-colors">
+        {/* <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-base sm:text-lg py-4 rounded-lg transition-colors">
           Proceed to Checkout
-        </button>
+        </button> */}
       </div>
     </div>
   );
