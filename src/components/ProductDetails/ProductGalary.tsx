@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// ProductGallery.tsx
 import { useEffect, useState } from "react";
-import { ShoppingCart, MessageSquare, Minus, Plus, Star } from "lucide-react";
+import {
+  ShoppingCart,
+  MessageSquare,
+  Minus,
+  Plus,
+  Star,
+  Share2,
+  X,
+} from "lucide-react";
 import { Product } from "@/types/Product";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/hooks/useRedux";
@@ -18,7 +25,14 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { FaHeart } from "react-icons/fa";
 import InnerImageZoom from "react-inner-image-zoom";
-import 'react-inner-image-zoom/lib/styles.min.css';
+import "react-inner-image-zoom/lib/styles.min.css";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  WhatsappShareButton,
+} from "react-share";
+
 const ProductGallery = ({ product }: { product: Product }) => {
   const [images, setImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -30,8 +44,11 @@ const ProductGallery = ({ product }: { product: Product }) => {
   const [addWishlist, { isError, error }] = useAddWishlistMutation();
   const [removeWishList] = useRemoveWishListMutation();
   const { data } = useGetMeQuery({});
-   const [open, setOpen] = useState(false);
-  const currentUserId = data?.data?._id; // TODO: Get from auth state
+  const [open, setOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+
+  const shareUrl = window.location.href;
+  const currentUserId = data?.data?._id;
 
   const averageRating = reviewsData?.data?.length
     ? reviewsData.data.reduce(
@@ -47,12 +64,12 @@ const ProductGallery = ({ product }: { product: Product }) => {
       product.sideImageUrl,
       product.sideImage2Url,
       product.lastImageUrl,
+      product.videoUrl,
     ].filter(Boolean) as string[];
 
     setImages(productImages);
   }, [product]);
-  console.log(selectedImage, images)
-  // Render Main Preview
+
   const renderMainPreview = () => {
     const selected = images[selectedImage];
     const isVideo = selected === product.videoUrl;
@@ -103,7 +120,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
       </>
     );
   };
-  // Render Thumbnails
+
   const renderThumbnails = () =>
     images.map((img, index) => (
       <button
@@ -113,13 +130,23 @@ const ProductGallery = ({ product }: { product: Product }) => {
           selectedImage === index ? "border-blue-500" : "border-transparent"
         }`}
       >
-        <img
-          src={img}
-          alt={`Thumbnail ${index + 1}`}
-          className="w-full h-full object-cover"
-        />
+        {img === product.videoUrl ? (
+          <video
+            src={img}
+            className="w-full h-full object-cover"
+            muted
+            playsInline
+          />
+        ) : (
+          <img
+            src={img}
+            alt={`Thumbnail ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+        )}
       </button>
     ));
+
   const handleAddToCart = () => {
     const items = {
       id: product._id!,
@@ -133,32 +160,32 @@ const ProductGallery = ({ product }: { product: Product }) => {
     dispatch(addToCart(items));
     toast.success("Product added to cart");
   };
+
   const handleOpenChat = () => {
     setIsChatOpen(true);
   };
-  const StarRating = ({ rating }: { rating: number }) => {
-    return (
-      <div className="flex items-center gap-1">
-        {[...Array(5)].map((_, i) => {
-          const filled = i < Math.floor(rating);
-          const halfFilled = i === Math.floor(rating) && rating % 1 !== 0;
 
-          return (
-            <Star
-              key={i}
-              className={`w-5 h-5 ${
-                filled
-                  ? "fill-yellow-400 text-yellow-400"
-                  : halfFilled
-                  ? "fill-yellow-400 text-yellow-400"
-                  : "fill-gray-300 text-gray-300"
-              }`}
-            />
-          );
-        })}
-      </div>
-    );
-  };
+  const StarRating = ({ rating }: { rating: number }) => (
+    <div className="flex items-center gap-1">
+      {[...Array(5)].map((_, i) => {
+        const filled = i < Math.floor(rating);
+        const halfFilled = i === Math.floor(rating) && rating % 1 !== 0;
+
+        return (
+          <Star
+            key={i}
+            className={`w-5 h-5 ${
+              filled
+                ? "fill-yellow-400 text-yellow-400"
+                : halfFilled
+                ? "fill-yellow-400 text-yellow-400"
+                : "fill-gray-300 text-gray-300"
+            }`}
+          />
+        );
+      })}
+    </div>
+  );
 
   const handleWishlist = async (id: string) => {
     let toastId;
@@ -184,13 +211,15 @@ const ProductGallery = ({ product }: { product: Product }) => {
       toast.error("Something went wrong", { id: toastId });
     }
   };
+
   const wishlist = wishlistProducts?.data?.find(
     (item: any) => item.productId?._id === product?._id
   );
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-        {/* Left Section: Images */}
+        {/* Left Section */}
         <div className="lg:col-span-5 flex flex-col-reverse sm:flex-row gap-4">
           <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible">
             {renderThumbnails()}
@@ -198,77 +227,67 @@ const ProductGallery = ({ product }: { product: Product }) => {
           <div className="flex-1 bg-white h-full relative rounded-lg">
             <div className="rounded-lg w-full h-full grid place-content-center overflow-hidden">
               {renderMainPreview()}
-              <div className="absolute top-3 right-3 z-10">
-              <button
-                onClick={() => handleWishlist(product._id as string)}
-                className={`w-8 h-8  rounded-xl flex items-center justify-center hover:bg-opacity-90 transition ${
-                  wishlist ? "bg-red-500" : "bg-gray-500"
-                }`}
-              >
-                <FaHeart className="w-4 h-4 text-white" />
-              </button>
-            </div>
+              <div className="absolute top-3 right-3 z-10 space-y-2">
+                <button
+                  onClick={() => handleWishlist(product._id as string)}
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center hover:bg-opacity-90 transition ${
+                    wishlist ? "bg-red-500" : "bg-gray-500"
+                  }`}
+                >
+                  <FaHeart className="w-4 h-4 text-white" />
+                </button>
+                <button
+                  onClick={() => setShareModalOpen(true)}
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center hover:bg-opacity-90 transition bg-blue-500`}
+                >
+                  <Share2 className="w-4 h-4 text-white" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Middle Section: Product Info */}
+        {/* Middle Section */}
         <div className="lg:col-span-4">
           <h1 className="text-3xl font-semibold text-[#1C2A33] mb-4">
             {product.productName}
           </h1>
-
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3 mt-5">
-            <div className="text-[#70797E] text-[16px] font-normal">
+          <div className="flex items-center gap-4 mb-3">
+            <div className="text-[#70797E]">
               By: <span className="font-medium">{product.userId.name}</span>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3 mt-5">
-            <div className="text-[#70797E] text-[16px] font-normal">
+          <div className="flex items-center gap-4 mb-3">
+            <div className="text-[#70797E]">
               SKU: <span className="font-medium">{product.productSKU}</span>
             </div>
           </div>
-
-          {/* Ratings */}
-          <div className="flex flex-wrap items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-4">
             <StarRating rating={averageRating} />
-            <div className="flex items-center gap-2 text-base">
-              <span className="font-medium text-gray-900">
-                {averageRating.toFixed(1)}/5.0
-              </span>
-              <span className="text-gray-500">({totalReviews} Reviews)</span>
+            <div className="text-gray-500">
+              {averageRating.toFixed(1)}/5.0 ({totalReviews} Reviews)
             </div>
           </div>
-
-          {/* Stock Info */}
-          {product.stock && product.stock > 0 && (
+          {product.stock && (
             <div className="inline-block mb-6 mt-4">
               <span className="px-3 py-1 bg-[#E6F3FF] border-2 border-blue-400 text-blue-600 rounded-md text-base font-medium">
                 In Stock - {product.stock} left
               </span>
             </div>
           )}
-          {/* Product Description */}
           <div className="text-gray-700 text-base leading-relaxed flex flex-col gap-3">
-            <div className="text-[#70797E] text-[16px] font-normal">
-              Weight: <span className="font-medium">{product.weight} KG</span>
-            </div>
-            <div className="text-[#70797E] text-[16px] font-normal">
-              Size: <span className="font-medium">{product.availableSize}</span>
-            </div>
-            <div className="text-[#70797E] text-[16px] font-normal">
-              Gender: <span className="font-medium">{product.gender}</span>
-            </div>
+            <div>Weight: {product.weight} KG</div>
+            <div>Size: {product.availableSize}</div>
+            <div>Gender: {product.gender}</div>
           </div>
         </div>
 
-        {/* Right Section: Price & Actions */}
+        {/* Right Section */}
         <div className="lg:col-span-3">
           <div className="bg-white rounded-lg p-6 shadow-sm sticky top-6">
             <div className="mb-6">
-              {/* Price */}
               <div className="flex items-center gap-3 mb-6">
-                {product.specialPrice && (
+                {product.specialPrice ? (
                   <>
                     <span className="text-2xl font-bold text-[#1C2A33]">
                       ${product.specialPrice?.toFixed(2)}
@@ -277,19 +296,17 @@ const ProductGallery = ({ product }: { product: Product }) => {
                       ${product.pricePerUnit?.toFixed(2)}
                     </span>
                   </>
-                )}
-                {!product.specialPrice && (
+                ) : (
                   <span className="text-2xl font-bold text-[#1C2A33]">
                     ${product.pricePerUnit?.toFixed(2)}
                   </span>
                 )}
               </div>
 
-              {/* Quantity Selector */}
               <div className="flex justify-around items-center mb-20 border border-white shadow p-2 rounded-full">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-12 h-12 rounded-full bg-[#E6F3FF] flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  className="w-12 h-12 rounded-full bg-[#E6F3FF] flex items-center justify-center"
                 >
                   <Minus className="h-6 w-6 text-gray-600" />
                 </button>
@@ -298,25 +315,23 @@ const ProductGallery = ({ product }: { product: Product }) => {
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-12 h-12 rounded-full bg-[#E6F3FF] flex items-center justify-center hover:bg-gray-50 transition-colors"
+                  className="w-12 h-12 rounded-full bg-[#E6F3FF] flex items-center justify-center"
                 >
                   <Plus className="h-6 w-6 text-gray-600" />
                 </button>
               </div>
 
-              {/* Add to Cart Button */}
               <button
-                className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors mb-3"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors mb-3"
                 onClick={handleAddToCart}
               >
                 <ShoppingCart className="h-5 w-5" />
                 Add To Cart
               </button>
 
-              {/* Send Inquiry Button */}
               <button
                 onClick={handleOpenChat}
-                className="w-full cursor-pointer bg-[#E6F3FF] hover:bg-[#E6F3F0] text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-300 flex items-center justify-center gap-2 transition-colors mt-4"
+                className="w-full bg-[#E6F3FF] hover:bg-[#E6F3F0] text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-300 flex items-center justify-center gap-2 transition-colors mt-4"
               >
                 <MessageSquare className="h-5 w-5" />
                 Send Inquiry
@@ -336,6 +351,71 @@ const ProductGallery = ({ product }: { product: Product }) => {
         productName={product.productName}
         customerId={currentUserId}
       />
+
+      {/* Share Modal */}
+      {shareModalOpen && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white/40 backdrop-blur-sm z-50">
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 w-full m-4 md:w-1/3 relative shadow-xl border border-gray-200">
+      <button
+        onClick={() => setShareModalOpen(false)}
+        className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition"
+      >
+        <X className="w-6 h-6" />
+      </button>
+
+      <h3 className="text-xl font-semibold text-center mb-6 text-gray-800">
+        Share this Product
+      </h3>
+
+      <div className="flex justify-between items-center gap-4">
+        <FacebookShareButton url={shareUrl} className="flex-1">
+          <div className="flex flex-col items-center gap-2 group">
+            <div className="size-14 flex items-center justify-center rounded-full bg-blue-600 text-white shadow-md group-hover:scale-105 transition">
+              <span className="text-lg font-bold">f</span>
+            </div>
+            <span className="text-xs text-gray-600 group-hover:text-blue-600 transition">
+              Facebook
+            </span>
+          </div>
+        </FacebookShareButton>
+
+        <TwitterShareButton url={shareUrl} className="flex-1">
+          <div className="flex flex-col items-center gap-2 group">
+            <div className="size-14 flex items-center justify-center rounded-full bg-sky-500 text-white shadow-md group-hover:scale-105 transition">
+              <span className="text-lg font-bold">X</span>
+            </div>
+            <span className="text-xs text-gray-600 group-hover:text-sky-500 transition">
+              Twitter
+            </span>
+          </div>
+        </TwitterShareButton>
+
+        <LinkedinShareButton url={shareUrl} className="flex-1">
+          <div className="flex flex-col items-center gap-2 group">
+            <div className="size-14 flex items-center justify-center rounded-full bg-blue-700 text-white shadow-md group-hover:scale-105 transition">
+              <span className="text-lg font-bold">in</span>
+            </div>
+            <span className="text-xs text-gray-600 group-hover:text-blue-700 transition">
+              LinkedIn
+            </span>
+          </div>
+        </LinkedinShareButton>
+
+        <WhatsappShareButton url={shareUrl} className="flex-1">
+          <div className="flex flex-col items-center gap-2 group">
+            <div className="size-14 flex items-center justify-center rounded-full bg-green-500 text-white shadow-md group-hover:scale-105 transition">
+              <span className="text-sm font-bold">WA</span>
+            </div>
+            <span className="text-xs text-gray-600 group-hover:text-green-500 transition">
+              WhatsApp
+            </span>
+          </div>
+        </WhatsappShareButton>
+      </div>
+    </div>
+  </div>
+)}
+
     </>
   );
 };

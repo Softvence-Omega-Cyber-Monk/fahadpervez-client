@@ -221,7 +221,6 @@ const CheckoutPage = () => {
     setError("");
     setPaymentSuccess(false);
     isProcessingRef.current = true;
-
     sessionRef.current = null;
 
     try {
