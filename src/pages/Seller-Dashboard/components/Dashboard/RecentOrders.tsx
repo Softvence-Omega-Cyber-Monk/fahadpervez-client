@@ -27,13 +27,13 @@ const statusConfig : Record<
 export default function RecentOrders() {
   const {data,isLoading} = useGetRecentOrdersAdminAndVendorQuery({});
   if(isLoading) return (<div><Spinner /></div>)
-  const orders = data.data
+  const orders = data?.data
   return (
     <div className="bg-light-background rounded-xl p-6 border border-border w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-dark-blue">Recent Orders</h2>
-        <a href="#" className="text-primary-blue text-base font-medium hover:underline">
+        <a href="orders" className="text-primary-blue text-base font-medium hover:underline">
           View All
         </a>
       </div>
@@ -44,7 +44,7 @@ export default function RecentOrders() {
           <div key={order._id} className="flex items-center justify-between gap-4 py-2">
             {/* Left: Avatar + Order Info */}
             <div className="sm:flex items-center gap-2 flex-1 min-w-0">
-              <Avatar  className="size-12 flex-shrink-0">
+              <Avatar  className="size-12 shrink-0">
                 {/* <AvatarImage src={order.image}/> */}
                 {
                 }
@@ -60,7 +60,7 @@ export default function RecentOrders() {
 
             {/* Right: Status Badge */}
             <div
-              className={` rounded-xl text-sm font-medium px-4 py-2 whitespace-nowrap flex-shrink-0 ${statusConfig[order.status]?.className}`}
+              className={` rounded-xl text-sm font-medium px-4 py-2 whitespace-nowrap shrink-0 ${statusConfig[order.status]?.className}`}
             >
               {statusConfig[order.status]?.label}
             </div>

@@ -90,7 +90,7 @@ export default function OrderTable({ data }: { data: Order[] }) {
                 </td>
                 <td className="py-4 px-4">
                   <Link
-                    to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?._id}` : role === "VENDOR" ? `/buyer-dashboard/order-details/${order?._id}` : `/buyer-dashboard/order-details/${order?.orderNumber}` }
+                    to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?._id}` : role === "VENDOR" ? `/seller-dashboard/order-details/${order?._id}` : `/buyer-dashboard/order-details/${order?.orderNumber}` }
                   >
 
 {/* <Link
@@ -178,7 +178,7 @@ export default function OrderTable({ data }: { data: Order[] }) {
               </td>
               <td className="py-3 px-3">
                  <Link
-                    to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?.orderNumber}` : role === "VENDOR" ? `/buyer-dashboard/order-details/${order?.orderNumber}` : `/buyer-dashboard/order-details/${order?.orderNumber}` }
+                    to={role === "ADMIN" ? `/admin-dashboard/order-details/${order?.orderNumber}` : role === "VENDOR" ? `/seller-dashboard/order-details/${order?.orderNumber}` : `/buyer-dashboard/order-details/${order?.orderNumber}`}
                   >
                     <button className="text-sm lg:text-md text-blue-500 hover:text-blue-600 font-medium">
                       View
