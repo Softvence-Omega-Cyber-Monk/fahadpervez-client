@@ -61,16 +61,16 @@ const MyCart: React.FC = () => {
               </span>
             </h3>
 
-            {/* Cart Items */}
+            {/* Cart Items */} 
             <div className="space-y-4">
               {cartItems.map((item) => {
                 return (
                   <div
                     key={item.id}
-                    className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center border-b-2 border-[#C9CCCE]"
+                    className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center border-b border-[#C9CCCE]"
                   >
                     {/* Real Radio Button */}
-                    <label className="shrink-0 relative cursor-pointer bottom-[68px] right-3">
+                    <label className="shrink-0 relative cursor-pointer  right-3">
                       <input
                         type="checkbox"
                         name="selectedCartItem"
@@ -93,11 +93,11 @@ const MyCart: React.FC = () => {
 
                     {/* Product Image */}
                     <div className="shrink-0 w-full sm:w-[120px] md:w-40">
-                      <div className="bg-[#E8EBED] rounded-lg aspect-square flex items-center justify-center">
+                      <div className="bg-[#E8EBED] rounded-lg aspect-square flex items-center justify-center p-2">
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="w-full h-full object-contain p-4"
+                          className="w-full h-full object-contain rounded-sm"
                         />
                       </div>
                     </div>
@@ -150,7 +150,7 @@ const MyCart: React.FC = () => {
                     </div>
 
                     {/* Price */}
-                    <div className="shrink-0 self-start sm:self-center relative bottom-[58px]">
+                    <div className="shrink-0 self-start sm:self-center relative sm:bottom-[58px]">
                       <p className="font-semibold text-[#0082FA] text-[24px] not-italic">
                         ${item?.totalPrice?.toFixed(2)}
                       </p>
