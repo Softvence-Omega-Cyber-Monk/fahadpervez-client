@@ -6,7 +6,6 @@ import { Package, CheckCircle, Truck, DollarSign } from 'lucide-react';
 export default function OrderStats() {
   const {data,isLoading} = useGetMyOrderStatsQuery({});
   if(isLoading) return <div className="min-h-40 grid place-content-center"><Spinner /></div>
-  console.log(data.data)
   const stats = [
     {
       icon: Package,
