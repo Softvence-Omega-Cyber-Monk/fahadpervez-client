@@ -1,3 +1,4 @@
+import PrimaryButton from "@/common/PrimaryButton";
 import { Spinner } from "@/components/ui/spinner";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
@@ -77,10 +78,37 @@ const WishlistGrid = () => {
     await removeWishlist(id).unwrap();
   };
 
+  const handleMoveAllToCart = async () => {
+    console.log(wishlist.data)
+    for (const item of wishlist?.data || []) {
+      console.log(item)
+      const prod = item.productId;
+      const items = {
+        id: prod._id!,
+        image: prod.mainImageUrl!,
+        title: prod.productName,
+        pricePerUnit: prod?.specialPrice || prod.pricePerUnit,
+        quantity: 1,
+        totalPrice: (prod?.specialPrice || prod.pricePerUnit) * 1,
+        productSKU: prod.productSKU,
+      };
+      dispatch(addToCart(items));
+      await removeWishlist( prod._id).unwrap();
+    }
+    toast.success("All products moved to cart successfully!");
+  }
   return (
     <div className="mb-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-row items-center justify-between gap-3 mb-6">
         <h2 className="text-lg font-semibold text-gray-800">WISHLIST</h2>
+        <PrimaryButton
+        type="Primary"
+        title={wishlist?.data.length ? "Move All to Cart" : "Wishlist is empty"}
+        className="text-base!"
+        disabled={wishlist?.data.length ? false : true}
+        onClick={handleMoveAllToCart}
+        />
+
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
@@ -96,7 +124,7 @@ const WishlistGrid = () => {
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover rounded-t-xl"
+                className="w-full h-full object-contain rounded-t-xl"
               />
               <button
                 onClick={() => handleRemove(product.id)}

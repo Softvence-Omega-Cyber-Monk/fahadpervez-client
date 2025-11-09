@@ -14,7 +14,7 @@ const OrderTabs = ({setStatus,status}:{setStatus:Dispatch<SetStateAction<string>
   const {data,isLoading} = useGetAllOrdersByAdminAndVendorQuery({status:""});
   
   if(isLoading) return (<div><Spinner /></div>)
-  const orders = data.data
+  const orders = data?.data
   const pendingCount = orders.filter((order :Order )=> order.status === "Pending").length;
   const completeCount = orders.filter((order :Order )=> order.status === "Confirmed").length;
   const cancelCount = orders.filter((order : Order )=> order.status === "Cancelled").length;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Review.tsx
 import { useState } from "react";
 import { Star, Grid3x3, X } from "lucide-react";
@@ -19,7 +20,7 @@ interface ReviewProps {
 const Review = ({ productId }: ReviewProps) => {
   const { data: userData } = useGetMeQuery({});
   const userId = userData?.data?._id;
-
+  console.log(userId)
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
@@ -32,7 +33,7 @@ const Review = ({ productId }: ReviewProps) => {
     sortBy,
     sortOrder,
   });
-
+  console.log(reviewsData)
   const [createReview] = useCreateReviewMutation();
   const [updateReview] = useUpdateReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
@@ -155,7 +156,8 @@ const Review = ({ productId }: ReviewProps) => {
     }
     
     try {
-      await upvoteReview(reviewId).unwrap();
+      const res = await upvoteReview(reviewId).unwrap();
+      console.log(res)
       toast.success("Review upvoted!");
       await refetch();
     } catch (error: any) {

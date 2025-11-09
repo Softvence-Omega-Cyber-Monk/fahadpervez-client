@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider } from "react-router-dom";
@@ -10,7 +10,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Toaster} from "sonner";
 import { PrimeReactProvider } from 'primereact/api';
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider store={store}>
        <PrimeReactProvider>
       <PersistGate loading={null} persistor={persistor}>
@@ -19,5 +19,5 @@ createRoot(document.getElementById("root")!).render(
         <Toaster richColors />
        </PrimeReactProvider>
     </Provider>
-  </StrictMode>
+  // {/* </StrictMode> */}
 );

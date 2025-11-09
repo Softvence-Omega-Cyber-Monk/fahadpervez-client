@@ -1,12 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // ProductGallery.tsx
 import { useEffect, useState } from "react";
-import {
-  ShoppingCart,
-  MessageSquare,
-  Minus,
-  Plus,
-  Star,
-} from "lucide-react";
+import { ShoppingCart, MessageSquare, Minus, Plus, Star } from "lucide-react";
 import { Product } from "@/types/Product";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/hooks/useRedux";
@@ -14,7 +9,16 @@ import { addToCart } from "@/store/Slices/CartSlice/cartSlice";
 import { useGetReviewsQuery } from "@/Redux/Features/Review/review.api";
 import ChatModal from "../ChatModal/ChatModal";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
-
+import {
+  useAddWishlistMutation,
+  useGetAllWishListQuery,
+  useRemoveWishListMutation,
+} from "@/Redux/Features/wishlist/wishlist.api";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import { FaHeart } from "react-icons/fa";
+import InnerImageZoom from "react-inner-image-zoom";
+import 'react-inner-image-zoom/lib/styles.min.css';
 const ProductGallery = ({ product }: { product: Product }) => {
   const [images, setImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -22,15 +26,21 @@ const ProductGallery = ({ product }: { product: Product }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { data: reviewsData } = useGetReviewsQuery({ product: product._id });
-  
-  const {data} = useGetMeQuery({})
+  const { data: wishlistProducts } = useGetAllWishListQuery({});
+  const [addWishlist, { isError, error }] = useAddWishlistMutation();
+  const [removeWishList] = useRemoveWishListMutation();
+  const { data } = useGetMeQuery({});
+   const [open, setOpen] = useState(false);
   const currentUserId = data?.data?._id; // TODO: Get from auth state
-  
+
   const averageRating = reviewsData?.data?.length
-    ? reviewsData.data.reduce((acc: number, review: any) => acc + review.rating, 0) / reviewsData.data.length
+    ? reviewsData.data.reduce(
+        (acc: number, review: any) => acc + review.rating,
+        0
+      ) / reviewsData.data.length
     : 0;
   const totalReviews = reviewsData?.data?.length || 0;
-  
+
   useEffect(() => {
     const productImages = [
       product.mainImageUrl,
@@ -41,33 +51,67 @@ const ProductGallery = ({ product }: { product: Product }) => {
 
     setImages(productImages);
   }, [product]);
-
+  console.log(selectedImage, images)
   // Render Main Preview
   const renderMainPreview = () => {
     const selected = images[selectedImage];
-    return selected === product.videoUrl ? (
+    const isVideo = selected === product.videoUrl;
+
+    return isVideo ? (
       <video
         src={product.videoUrl}
         controls
         className="w-full h-full object-cover rounded-lg"
       />
     ) : (
-      <img
-        src={selected || "/placeholder.svg"}
-        alt="Main product preview"
-        className="w-full h-full object-cover rounded-lg"
-      />
+      <>
+        <button type="button" onClick={() => setOpen(true)}>
+          <InnerImageZoom
+            src={selected}
+            zoomSrc={selected}
+            zoomType="hover"
+            className="rounded-lg"
+          />
+        </button>
+
+        <Lightbox
+          open={open}
+          close={() => setOpen(false)}
+          index={selectedImage}
+          slides={images.map((url) => ({ src: url }))}
+          render={{
+            slide: ({ slide }) =>
+              slide.src === product.videoUrl ? (
+                <video
+                  src={slide.src}
+                  controls
+                  autoPlay
+                  className="max-h-[80vh] mx-auto rounded-lg"
+                />
+              ) : (
+                <img
+                  src={slide.src}
+                  alt="Product preview"
+                  className="max-h-[80vh] mx-auto rounded-lg object-contain"
+                />
+              ),
+          }}
+          on={{
+            view: ({ index }) => setSelectedImage(index),
+          }}
+        />
+      </>
     );
   };
-
   // Render Thumbnails
   const renderThumbnails = () =>
     images.map((img, index) => (
       <button
         key={index}
         onClick={() => setSelectedImage(index)}
-        className={`relative flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index ? "border-blue-500" : "border-transparent"
-          }`}
+        className={`relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-lg overflow-hidden border-2 transition-all ${
+          selectedImage === index ? "border-blue-500" : "border-transparent"
+        }`}
       >
         <img
           src={img}
@@ -76,7 +120,6 @@ const ProductGallery = ({ product }: { product: Product }) => {
         />
       </button>
     ));
-
   const handleAddToCart = () => {
     const items = {
       id: product._id!,
@@ -90,11 +133,9 @@ const ProductGallery = ({ product }: { product: Product }) => {
     dispatch(addToCart(items));
     toast.success("Product added to cart");
   };
-
   const handleOpenChat = () => {
     setIsChatOpen(true);
   };
-
   const StarRating = ({ rating }: { rating: number }) => {
     return (
       <div className="flex items-center gap-1">
@@ -105,12 +146,13 @@ const ProductGallery = ({ product }: { product: Product }) => {
           return (
             <Star
               key={i}
-              className={`w-5 h-5 ${filled
-                ? "fill-yellow-400 text-yellow-400"
-                : halfFilled
+              className={`w-5 h-5 ${
+                filled
+                  ? "fill-yellow-400 text-yellow-400"
+                  : halfFilled
                   ? "fill-yellow-400 text-yellow-400"
                   : "fill-gray-300 text-gray-300"
-                }`}
+              }`}
             />
           );
         })}
@@ -118,6 +160,33 @@ const ProductGallery = ({ product }: { product: Product }) => {
     );
   };
 
+  const handleWishlist = async (id: string) => {
+    let toastId;
+    try {
+      toastId = toast.loading("Loading...");
+      const wishlist = wishlistProducts.data.find(
+        (item: any) => item.productId?._id === id
+      );
+      if (!wishlist) {
+        const res = await addWishlist(id).unwrap();
+        if (isError) console.log(error);
+        if (res.success) {
+          toast.success("Product added to wishlist", { id: toastId });
+        } else {
+          toast.error("Something went wrong!", { id: toastId });
+        }
+      } else {
+        const res = await removeWishList(id).unwrap();
+        if (res.success) toast.success(res.message, { id: toastId });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong", { id: toastId });
+    }
+  };
+  const wishlist = wishlistProducts?.data?.find(
+    (item: any) => item.productId?._id === product?._id
+  );
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
@@ -126,9 +195,19 @@ const ProductGallery = ({ product }: { product: Product }) => {
           <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible">
             {renderThumbnails()}
           </div>
-          <div className="flex-1 bg-gray-100 h-96 relative rounded-lg">
-            <div className="rounded-lg w-full h-96 grid place-content-center overflow-hidden">
+          <div className="flex-1 bg-white h-full relative rounded-lg">
+            <div className="rounded-lg w-full h-full grid place-content-center overflow-hidden">
               {renderMainPreview()}
+              <div className="absolute top-3 right-3 z-10">
+              <button
+                onClick={() => handleWishlist(product._id as string)}
+                className={`w-8 h-8  rounded-xl flex items-center justify-center hover:bg-opacity-90 transition ${
+                  wishlist ? "bg-red-500" : "bg-gray-500"
+                }`}
+              >
+                <FaHeart className="w-4 h-4 text-white" />
+              </button>
+            </div>
             </div>
           </div>
         </div>
@@ -140,12 +219,12 @@ const ProductGallery = ({ product }: { product: Product }) => {
           </h1>
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3 mt-5">
-            <div className="text-[#70797E] text-[16px] font-[400]">
+            <div className="text-[#70797E] text-[16px] font-normal">
               By: <span className="font-medium">{product.userId.name}</span>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-3 mt-5">
-            <div className="text-[#70797E] text-[16px] font-[400]">
+            <div className="text-[#70797E] text-[16px] font-normal">
               SKU: <span className="font-medium">{product.productSKU}</span>
             </div>
           </div>
@@ -169,16 +248,15 @@ const ProductGallery = ({ product }: { product: Product }) => {
               </span>
             </div>
           )}
-
           {/* Product Description */}
           <div className="text-gray-700 text-base leading-relaxed flex flex-col gap-3">
-            <div className="text-[#70797E] text-[16px] font-[400]">
+            <div className="text-[#70797E] text-[16px] font-normal">
               Weight: <span className="font-medium">{product.weight} KG</span>
             </div>
-            <div className="text-[#70797E] text-[16px] font-[400]">
+            <div className="text-[#70797E] text-[16px] font-normal">
               Size: <span className="font-medium">{product.availableSize}</span>
             </div>
-            <div className="text-[#70797E] text-[16px] font-[400]">
+            <div className="text-[#70797E] text-[16px] font-normal">
               Gender: <span className="font-medium">{product.gender}</span>
             </div>
           </div>
@@ -236,7 +314,7 @@ const ProductGallery = ({ product }: { product: Product }) => {
               </button>
 
               {/* Send Inquiry Button */}
-              <button 
+              <button
                 onClick={handleOpenChat}
                 className="w-full cursor-pointer bg-[#E6F3FF] hover:bg-[#E6F3F0] text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-300 flex items-center justify-center gap-2 transition-colors mt-4"
               >

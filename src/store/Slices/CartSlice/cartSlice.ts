@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface CartItem {
+export interface CartItem {
   id: string;
   image: string;
   title: string;
@@ -8,6 +8,7 @@ interface CartItem {
   quantity: number;
   totalPrice?: number;
   productSKU: string;
+  selectedProduct?:boolean
 }
 
 interface CartState {
@@ -45,7 +46,13 @@ const cartSlice = createSlice({
         localStorage.setItem("cart", JSON.stringify(state.items));
       }
     },
-
+    updateStatus: (state, action: PayloadAction<{ id: string; status: boolean }>) => {
+      const item = state.items.find((i) => i.id === action.payload.id);
+      if (item) {
+        item.selectedProduct = action.payload.status;
+        localStorage.setItem("cart", JSON.stringify(state.items));
+      }
+    },
     decreaseQuantity: (state, action: PayloadAction<string>) => {
       const item = state.items.find((i) => i.id === action.payload);
       if (item && item.quantity > 1) { // prevent quantity from going below 1
@@ -67,5 +74,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity, updateStatus } = cartSlice.actions;
 export default cartSlice.reducer;

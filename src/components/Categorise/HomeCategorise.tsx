@@ -22,7 +22,7 @@ const HomeCategories = () => {
           CATEGORIES
         </h1>
         
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
           {categories?.data?.map((category:Category) => (
             <NavLink key={category._id} to={`/category/${category._id}`}>
               <div
@@ -30,7 +30,7 @@ const HomeCategories = () => {
                 className="rounded-2xl p-3 w-full h-full overflow-hidden cursor-pointer"
                 >
                 <div className="flex flex-col items-center justify-center h-full space-y-4">
-                  <div className="flex items-center justify-center overflow-hidden h-40 md:h-48 rounded-xl ">
+                  <div className="flex items-center justify-center overflow-hidden w-full h-full rounded-xl ">
                     <img 
                       src={category.imageUrl} 
                       alt={category.categoryName}

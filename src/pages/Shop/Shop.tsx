@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useMemo } from 'react';
 import { Heart, SlidersHorizontal, X, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -67,7 +68,7 @@ const Shop: React.FC = () => {
     try {
       await addWishlist(productId).unwrap();
       toast.success('Added to wishlist');
-    } catch (error) {
+    } catch {
       toast.error('Failed to add to wishlist');
     }
   };
@@ -321,7 +322,7 @@ const Shop: React.FC = () => {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Desktop Filters */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
+          <aside className="hidden lg:block w-64 shrink-0">
             <div className="bg-white rounded-lg p-6 shadow-sm sticky top-24">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-gray-900">Filters</h2>

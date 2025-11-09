@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import CommonWrapper from '@/common/CommonWrapper';
-import { useGetAllProductsQuery } from '@/Redux/Features/products/products.api';
-import { Spinner } from '../ui/spinner';
-import { Product } from '@/types/Product';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import CommonWrapper from "@/common/CommonWrapper";
+import { useGetAllProductsQuery } from "@/Redux/Features/products/products.api";
+import { Spinner } from "../ui/spinner";
+import { Product } from "@/types/Product";
+import {
+  useAddWishlistMutation,
+  useGetAllWishListQuery,
+  useRemoveWishListMutation,
+} from "@/Redux/Features/wishlist/wishlist.api";
+import { toast } from "sonner";
+import { FaHeart } from "react-icons/fa";
+import PrimaryButton from "@/common/PrimaryButton";
 
 const BestSeller: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const [favorites, setFavorites] = useState<Set<number>>(new Set());
-  const { data, isLoading } = useGetAllProductsQuery({})
-  if (isLoading) return <div className='min-h-screen grid place-content-center'><Spinner /></div>
-  const products = data?.data.slice(0, 6);
-  // Mobile: 1 item, Tablet: 2, Desktop: 3
+  // const [favorites, setFavorites] = useState<Set<string>>(new Set());
+   const { data: wishlistProducts } = useGetAllWishListQuery({});
+    const [addWishlist, { isError, error }] = useAddWishlistMutation();
+    const [removeWishList]= useRemoveWishListMutation();
+  const { data, isLoading } = useGetAllProductsQuery({});
+  if (isLoading)
+    return (
+      <div className="min-h-screen grid place-content-center">
+        <Spinner />
+      </div>
+    );
+  const products = data?.data.slice(0, 10);
+
   const getItemsPerPage = () => {
-    if (window.innerWidth < 640) return 1;
-    if (window.innerWidth < 768) return 2;
-    return 3;
+    if (window.innerWidth < 640) return 1; 
+    if (window.innerWidth < 768) return 2; 
+    if (window.innerWidth < 1024) return 3; 
+    if (window.innerWidth < 1280) return 4; 
+    return 6; 
   };
 
   const itemsPerPage = getItemsPerPage();
@@ -31,7 +49,7 @@ const BestSeller: React.FC = () => {
     setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
 
-  // const toggleFavorite = (id: number) => {
+  // const toggleFavorite = (id: string) => {
   //   setFavorites((prev) => {
   //     const newFavorites = new Set(prev);
   //     if (newFavorites.has(id)) newFavorites.delete(id);
@@ -62,83 +80,130 @@ const BestSeller: React.FC = () => {
       prevSlide(); // swipe right → prev
     }
   };
+   const handleWishlist = async (id: string) => {
+    let toastId
+      try {
+        toastId = toast.loading("Loading...");
+        const wishlist = wishlistProducts.data.find((item :any) => item.productId?._id === id);
+        if (!wishlist) {
+          const res = await addWishlist(id).unwrap();
+          if(isError) console.log(error)
+          if (res.success) {
+            toast.success("Product added to wishlist" , { id: toastId });
+          } else {
+            toast.error("Something went wrong!" , { id: toastId });
+          }
+        } else {
+          const res = await removeWishList(id).unwrap();
+          if(res.success) toast.success(res.message , { id: toastId });
+        }
+      } catch (error){
+        console.log(error)
+        toast.error("Something went wrong" , { id: toastId });
+      }
+    };
 
   return (
     <CommonWrapper>
       <div className="w-full px-4 sm:px-8 xl:px-0   bg-[#F1F5F8] ">
-        <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue py-10">BEST SELLERS</h2>
+        <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-semibold font-montserrat mb-8 text-website-color-blue py-10">
+          BEST SELLERS
+        </h2>
+        <Link to="/shop" className="mb-4 inline-block">
+        <PrimaryButton 
+          type="Primary"
+          title="View All Products"
+          className="text-sm!"
+        />
+        </Link>
+        </div>
 
         <div className="relative">
           {/* Previous Button - hidden on mobile */}
           <button
             onClick={prevSlide}
             disabled={currentIndex === 0}
-            className="hidden sm:flex absolute top-1/3 translate-y-1/3 -translate-x-1/2 left-0 z-10 w-10 h-10 rounded-full bg-white shadow-lg items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="hidden sm:flex absolute top-1/3 translate-y-1/3 -translate-x-1/2 left-0 border border-gray-200 z-10 size-12 rounded-full bg-white shadow-2xl items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             aria-label="Previous products"
           >
-            <ChevronLeft className="w-6 h-6 text-gray-600" />
+            <ChevronLeft className="size-7 text-blue-600" />
           </button>
 
           {/* Products Container */}
           <div className="overflow-hidden">
             <div
               className="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6"
-              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
+              style={{
+                transform: `translateX(-${
+                  currentIndex * (100 / itemsPerPage)
+                }%)`,
+              }}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {products?.map((product: Product) => (
-                <Link
-                  to={`/product-details/${product._id}`}
+              {products?.map((product: Product) => {
+                 const wishlist = wishlistProducts?.data?.find(
+              (item: any) => item.productId?._id === product?._id
+            );
+                return (
+                <div
                   key={product._id}
-                  className={`flex-none w-[calc(100%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)]`}
+                  className={`flex-none ${
+                    itemsPerPage === 1
+                      ? "w-full"
+                      : itemsPerPage === 2
+                      ? "w-1/2"
+                      : itemsPerPage === 3
+                      ? "w-1/3"
+                      : itemsPerPage === 4
+                      ? "w-1/4"
+                      : "w-1/6"
+                  }`}
                 >
-                  <div className="rounded-lg overflow-hidden group">
-                    <div className="flex flex-col items-center justify-start">
-                      {/* Favorite Button */}
-                      {/* <button
-                      onClick={() => toggleFavorite(product._id)}
-                      className="absolute top-3 right-3 w-8 h-8 rounded-xl cursor-pointer bg-gray-500 flex items-center justify-center"
-                      aria-label="Add to favorites"
-                    >
-                      <Heart
-                        className={`w-5 h-5 ${
-                          favorites.has(product._id )
-                            ? 'fill-red-500 text-red-500'
-                            : 'text-white'
-                        }`}
-                      />
-                    </button> */}
-
-                      {/* Product Image */}
-                      <div className='bg-white w-full py-8 flex justify-center items-center'>
-                        <img
-                          src={product.mainImageUrl}
-                          alt={product.productName}
-                          className="w-[80%] h-80 object-cover"
-                        />
-                      </div>
-                      {/* Product Info */}
-                      <div className="w-full text-center sm:text-left">
-                        <h3 className="text-md font-montserrat font-medium text-website-color-blue mb-2 mt-3">
-                          {product.productName}
-                        </h3>
-                        <div className="flex items-center justify-center sm:justify-start gap-2">
-                          {product?.specialPrice && (
-                            <span className="text-lg font-montserrat font-medium text-website-color-blue">
-                              {product.specialPrice}
-                            </span>
-                          )}
-                          <span className="text-sm text-gray-400 line-through">
-                            {product.pricePerUnit}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                  <div className="rounded-lg overflow-hidden relative">
+                                  <div className="absolute top-3 right-3 z-10">
+                                    <button
+                                      onClick={() => handleWishlist(product._id as string)}
+                                      className={`w-8 h-8  rounded-xl flex items-center justify-center hover:bg-opacity-90 transition ${
+                                        wishlist ? "bg-red-500" : "bg-gray-500"
+                                      }`}
+                                    >
+                                      <FaHeart className="w-4 h-4 text-white" />
+                                    </button>
+                                  </div>
+                                  <Link to={`/product-details/${product._id}`} key={product._id}>
+                                    {/* Product Image */}
+                                    <div className="flex items-center justify-center bg-white py-8">
+                                      <img
+                                        src={product.mainImageUrl || "./bestsell.png"}
+                                        alt={product.productName}
+                                        className="w-full h-80 object-cover"
+                                      />
+                                    </div>
+                  
+                                    {/* Product Info */}
+                                    <div className="pb-4">
+                                      <h4 className=" font-montserrat font-medium text-gray-800 my-2 mt-3 line-clamp-2">
+                                        {product.productName}
+                                      </h4>
+                                      <div className="flex items-center gap-2">
+                                        {product.specialPrice && (
+                                          <span className="text-lg font-montserrat font-medium text-website-color-blue">
+                                            ${product?.specialPrice?.toFixed(2)}
+                                          </span>
+                                        )}
+                                        <span className="text-sm text-gray-400 line-through">
+                                          ${product?.pricePerUnit?.toFixed(2)}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </Link>
+                                </div>
+                </div>
+              )
+              })}
             </div>
           </div>
 
@@ -146,10 +211,10 @@ const BestSeller: React.FC = () => {
           <button
             onClick={nextSlide}
             disabled={currentIndex === maxIndex}
-            className="hidden sm:flex absolute top-1/3 translate-y-1/3 translate-x-1/2 right-0 z-10 w-10 h-10 rounded-full bg-white shadow-lg items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="hidden sm:flex absolute top-1/3 translate-y-1/3 translate-x-1/2  right-0 z-10 size-12 rounded-full bg-white shadow-2xl border border-gray-200 items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             aria-label="Next products"
           >
-            <ChevronRight className="w-6 h-6 text-gray-600" />
+            <ChevronRight className="size-7 text-blue-600" />
           </button>
         </div>
 
@@ -159,10 +224,11 @@ const BestSeller: React.FC = () => {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all ${index === currentIndex
-                  ? 'bg-gray-800 w-6'
-                  : 'bg-gray-300 hover:bg-gray-400'
-                }`}
+              className={`w-2 h-2 rounded-full transition-all ${
+                index === currentIndex
+                  ? "bg-gray-800 w-6"
+                  : "bg-gray-300 hover:bg-gray-400"
+              }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StoreProduct from "./StoreProduct";
+// import StoreProduct from "./StoreProduct";
 import StoreReviewRating from "./StoreReviewRating";
 
 
@@ -32,7 +32,8 @@ const StoreProfileTab = () => {
             {/* Tab Content */}
             <div className="py-8">
                 {activeTab === 'overview' ? (
-                    <StoreProduct />
+                    // <StoreProduct />
+                    <></>
                 ) : (
                     <StoreReviewRating />
                 )}
