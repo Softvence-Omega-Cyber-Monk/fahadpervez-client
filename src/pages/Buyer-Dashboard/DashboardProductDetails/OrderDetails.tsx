@@ -127,10 +127,7 @@ import { Spinner } from "@/components/ui/spinner"
 
 const OrderDetails = () => {
     const { id } = useParams()
-    console.log(id)
     const {data,isLoading} = useTrackByOrderNumberQuery({id});
-      
-    console.log(data)
     if(isLoading) return <div className="min-h-40 grid place-content-center"><Spinner /></div>
     return (
         <div>   
