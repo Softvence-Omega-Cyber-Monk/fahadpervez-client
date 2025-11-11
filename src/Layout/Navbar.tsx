@@ -20,11 +20,10 @@ const Navbar: React.FC = () => {
   const { data } = useGetMeQuery({});
   const role = useAppSelector((state) => state?.auth?.user?.role);
   const { data: wishlistProducts } = useGetAllWishListQuery({});
-  const [userLogout,{data:logoutData}] = useUserLogoutMutation();
+  const [userLogout] = useUserLogoutMutation();
 
   const user = data?.data;
-  console.log(user);
-
+  
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   useEffect(() => {
@@ -48,8 +47,7 @@ const Navbar: React.FC = () => {
     try {
       const res = await userLogout().unwrap();
       if(res.success){
-        console.log(logoutData,"logout data");
-        console.log(res,"logout response");
+
         toast.success("Logged out successfully.");
         dispatch(logout());
       }
