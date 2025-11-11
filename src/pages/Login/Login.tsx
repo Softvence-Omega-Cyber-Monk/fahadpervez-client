@@ -7,8 +7,10 @@ import { toast } from 'sonner';
 import { HiEye, HiEyeOff } from 'react-icons/hi'; // Add react-icons
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("vendor1@gmail.com");
-  const [password, setPassword] = useState("secret123");
+  // const [email, setEmail] = useState("vendor1@gmail.com");
+  // const [password, setPassword] = useState("secret123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State to toggle password
   const [rememberMe, setRememberMe] = useState(false);
 
