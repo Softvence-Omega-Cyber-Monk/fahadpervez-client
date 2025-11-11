@@ -10,6 +10,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import GoogleTranslate from "@/common/GoogleTranslate";
 import { useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
+import { useUserLogoutMutation } from "@/Redux/Features/user/user.api";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -19,7 +20,11 @@ const Navbar: React.FC = () => {
   const { data } = useGetMeQuery({});
   const role = useAppSelector((state) => state?.auth?.user?.role);
   const { data: wishlistProducts } = useGetAllWishListQuery({});
+  const [userLogout,{data:logoutData}] = useUserLogoutMutation();
+
   const user = data?.data;
+  console.log(user);
+
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   useEffect(() => {
@@ -38,6 +43,20 @@ const Navbar: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleUserLogout = async () => {
+    try {
+      const res = await userLogout().unwrap();
+      if(res.success){
+        console.log(logoutData,"logout data");
+        console.log(res,"logout response");
+        toast.success("Logged out successfully.");
+        dispatch(logout());
+      }
+    } catch {
+      toast.error("Logout failed. Please try again.");
+    }
+  };
   return (
     <nav className="fixed top-0 w-full z-50">
       <div
@@ -72,18 +91,16 @@ const Navbar: React.FC = () => {
                 </span>
               </Link>
               {/* wishlist */}
-             {
-              role === "CUSTOMER" && (
+              {role === "CUSTOMER" && (
                 <Link to={`/buyer-dashboard/wishlist`}>
-                 <div className="relative">
-                <HeartIcon className="text-gray-600 size-5 cursor-pointer hover:scale-110" />
-                <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
-                  {wishlistProducts?.data?.length}
-                </span>
-              </div>
+                  <div className="relative">
+                    <HeartIcon className="text-gray-600 size-5 cursor-pointer hover:scale-110" />
+                    <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
+                      {wishlistProducts?.data?.length}
+                    </span>
+                  </div>
                 </Link>
-              )
-             }
+              )}
               {/* User Dropdown */}
               <div className="relative" ref={menuRef}>
                 <CircleUserRound
@@ -157,10 +174,7 @@ const Navbar: React.FC = () => {
                     {role && (
                       <li
                         className="cursor-pointer block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
-                        onClick={() => {
-                          dispatch(logout());
-                          toast.success("Logged out successfully.");
-                        }}
+                        onClick={handleUserLogout}
                       >
                         Logout
                       </li>

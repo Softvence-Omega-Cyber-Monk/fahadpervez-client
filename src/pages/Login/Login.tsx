@@ -4,27 +4,30 @@ import { setUser } from '@/store/Slices/AuthSlice/authSlice';
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { HiEye, HiEyeOff } from 'react-icons/hi'; // Add react-icons
 
 const Login: React.FC = () => {
-
+  // const [email, setEmail] = useState("vendor1@gmail.com");
+  // const [password, setPassword] = useState("secret123");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password
   const [rememberMe, setRememberMe] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch(); 
   const [logInUser] = useLogInUserMutation();
-  
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const toastId = toast.loading("Signing you in....."); 
     try {
       const data = { email, password };
       const res = await logInUser(data).unwrap();
-      console.log(res)
       if (res.success) {
-        dispatch(setUser({token:res.data.accessToken}));
+        dispatch(setUser({ token: res.data.accessToken }));
         toast.success("Logged In Successfully", { id: toastId });
-        navigate("/")
+        navigate("/");
       } else {
         toast.error("Login failed. Please check your credentials", { id: toastId });
       }
@@ -38,18 +41,16 @@ const Login: React.FC = () => {
       {/* Left Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
-
           {/* Register Link */}
           <div className="mb-8">
             <span className="text-gray-600">Don't have an account? </span>
             <NavLink to="/register" className="text-blue-600 hover:underline">
-               Register
+              Register
             </NavLink>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleLogin} >
-
+          <form onSubmit={handleLogin}>
             {/* Email Field */}
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -70,14 +71,24 @@ const Login: React.FC = () => {
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
+              <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none pr-10"
                 placeholder="Enter password"
               />
+              {/* Eye Icon */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 place-self-center text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+              </button>
+              </div>
             </div>
 
             {/* Remember Me & Forgot Password */}
@@ -114,15 +125,13 @@ const Login: React.FC = () => {
       <div className="hidden lg:block lg:w-1/2 relative">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1))',
-          }}
+          style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1))' }}
         >
           <img src="/login-img.png" alt="" className='w-full h-full' />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;
