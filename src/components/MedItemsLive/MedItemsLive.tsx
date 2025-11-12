@@ -15,7 +15,7 @@ import ProductSlider from "@/common/ProductSlider";
 import { Spinner } from "../ui/spinner";
 
 
-const BestSeller: React.FC = () => {
+const MedItemsLive: React.FC = () => {
   const { data: wishlistProducts } = useGetAllWishListQuery({});
   const [addWishlist, { isError, error }] = useAddWishlistMutation();
   const [removeWishList] = useRemoveWishListMutation();
@@ -58,11 +58,11 @@ const BestSeller: React.FC = () => {
 
   return (
     <CommonWrapper>
-      <div className="w-full px-4 sm:px-8 xl:px-0 pt-10 bg-[#F1F5F8]">
+      <div className="w-full px-4 sm:px-8 xl:px-0 bg-[#F1F5F8]">
         <div className="flex items-center gap-5">
-          <h3 className="font-semibold capitalize mb-4 text-website-color-blue py-10">
-            Best Seller
-          </h3>
+          <h2 className="font-montserrat mb-4 text-website-color-blue py-10">
+            BEST SELLERS
+          </h2>
           <Link to="/shop" className="mb-4 inline-block">
             <PrimaryButton type="Secondary" title="Shop All" className="bg-transparent text-sm! border-none shadow-none text-primary-blue capitalize underline"/>
           </Link>
@@ -90,4 +90,4 @@ const BestSeller: React.FC = () => {
   );
 };
 
-export default BestSeller;
+export default MedItemsLive;

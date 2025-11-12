@@ -51,14 +51,14 @@ const AllProducts: React.FC = () => {
     };
 
   return (
-    <div className="py-20 px-4 sm:px-10 ">
+    <div className="pt-10 pb-20 px-4 sm:px-10 ">
       <CommonWrapper>
         <h1 className="text-2xl font-montserrat font-semibold mb-6 text-website-color-blue py-10">
           ALL PRODUCTS
         </h1>
 
         {/* Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 gap-10 mb-8">
           {products?.data?.map((product: Product) => {
             const wishlist = wishlistProducts?.data?.find(
               (item: any) => item.productId?._id === product?._id
@@ -81,7 +81,7 @@ const AllProducts: React.FC = () => {
                     <img
                       src={product.mainImageUrl || "./bestsell.png"}
                       alt={product.productName}
-                      className="w-full h-80 object-cover"
+                      className="w-full h-40 object-contain"
                     />
                   </div>
 

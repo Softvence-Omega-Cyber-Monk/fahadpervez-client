@@ -1,13 +1,16 @@
 import AllProducts from "@/components/AllProducts/AllProducts";
 import BestSeller from "@/components/BestSeller/BestSeller";
 import HomeCategories from "@/components/Categorise/HomeCategorise";
-import HowItWorks from "@/components/HowToWork/HowItWorks";
+// import HowItWorks from "@/components/HowToWork/HowItWorks";
 import Autoplay from "embla-carousel-autoplay"
 import Hero from "./Hero";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useEffect } from "react";
 import { useRefreshTokenMutation } from "@/Redux/Features/auth/auth.api";
 import { toast } from "sonner";
+import SpecialProduct from "@/components/SpecialProduct/SpeicalProduct";
+import TrendingNow from "@/components/TrendingNow/TrendingNow";
+import CommonWrapper from "@/common/CommonWrapper";
 
 
 interface IHeroData {
@@ -80,9 +83,31 @@ const Home = () => {
           </CarouselContent>
         </Carousel>
         {/* Other Sections */}
+        <SpecialProduct/>
+        <CommonWrapper>
+       <hr className="border border-gray-200 mt-20"/>
+        </CommonWrapper>
         <HomeCategories />
+        <CommonWrapper>
+       <hr className="border border-gray-200 mt-20"/>
+        </CommonWrapper>
+
+        <TrendingNow />
+        <CommonWrapper>
+       <hr className="border border-gray-200 mt-20"/>
+        </CommonWrapper>
+
+   
         <BestSeller />
-        <HowItWorks />
+        {/* <CommonWrapper>
+       <hr className="border border-gray-200 mt-20"/>
+        </CommonWrapper>
+    
+        <HowItWorks /> */}
+  
+        <CommonWrapper>
+       <hr className="border border-gray-200 mt-20"/>
+        </CommonWrapper>
         <AllProducts />
       </div>
     </>

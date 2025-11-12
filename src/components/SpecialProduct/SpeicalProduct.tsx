@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import CommonWrapper from "@/common/CommonWrapper";
 import PrimaryButton from "@/common/PrimaryButton";
 import { useGetAllProductsQuery } from "@/Redux/Features/products/products.api";
-import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
+// import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 import {
   useAddWishlistMutation,
   useGetAllWishListQuery,
@@ -15,16 +15,16 @@ import ProductSlider from "@/common/ProductSlider";
 import { Spinner } from "../ui/spinner";
 
 
-const BestSeller: React.FC = () => {
+const SpecialProduct: React.FC = () => {
   const { data: wishlistProducts } = useGetAllWishListQuery({});
   const [addWishlist, { isError, error }] = useAddWishlistMutation();
   const [removeWishList] = useRemoveWishListMutation();
   const { data, isLoading } = useGetAllProductsQuery({});
-  const { data: categoryData, isLoading: categoryLoading } =
-    useGetAllCategoriesQuery({});
+//   const { data: categoryData, isLoading: categoryLoading } =
+//     useGetAllCategoriesQuery({});
 
   const products = data?.data.slice(0, 10) || [];
-  const categories = categoryData?.data || [];
+//   const categories = categoryData?.data || [];
 
   const handleWishlist = async (id: string) => {
     let toastId;
@@ -48,7 +48,7 @@ const BestSeller: React.FC = () => {
     }
   };
 
-  if (isLoading && categoryLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen grid place-content-center">
         <Spinner />
@@ -58,17 +58,17 @@ const BestSeller: React.FC = () => {
 
   return (
     <CommonWrapper>
-      <div className="w-full px-4 sm:px-8 xl:px-0 pt-10 bg-[#F1F5F8]">
+      <div className="w-full pt-10 px-4 sm:px-8 xl:px-0 bg-[#F1F5F8]">
         <div className="flex items-center gap-5">
-          <h3 className="font-semibold capitalize mb-4 text-website-color-blue py-10">
-            Best Seller
+          <h3 className="font-semibold mb-4 text-website-color-blue py-10">
+            Specials
           </h3>
           <Link to="/shop" className="mb-4 inline-block">
             <PrimaryButton type="Secondary" title="Shop All" className="bg-transparent text-sm! border-none shadow-none text-primary-blue capitalize underline"/>
           </Link>
         </div>
 
-        <div className="flex items-center gap-5 flex-wrap mb-10">
+        {/* <div className="flex items-center gap-5 flex-wrap mb-10">
           {categories.map((category: any) => (
             <PrimaryButton
               key={category._id}
@@ -77,7 +77,7 @@ const BestSeller: React.FC = () => {
               className="bg-white p-6! text-sm! font-medium hover:bg-gray-200"
             />
           ))}
-        </div>
+        </div> */}
 
         <ProductSlider
           products={products}
@@ -90,4 +90,4 @@ const BestSeller: React.FC = () => {
   );
 };
 
-export default BestSeller;
+export default SpecialProduct;
