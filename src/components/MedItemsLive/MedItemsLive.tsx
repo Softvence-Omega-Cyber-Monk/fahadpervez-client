@@ -55,7 +55,7 @@ const MedItemsLive: React.FC = () => {
   }
 
   return (
-      <div className="bg-linear-to-b from-orange-100 to-light-background to-90% w-fit p-6 mx-auto  rounded-2xl">
+      <div className="bg-linear-to-b from-orange-100 to-light-background to-90% w-fit p-6 mx-auto rounded-2xl">
     <CommonWrapper>
       <div className="w-full px-4 sm:px-8 xl:px-0 ">
         <div className="flex items-center gap-5">

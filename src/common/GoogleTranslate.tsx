@@ -111,7 +111,7 @@ const GoogleTranslate: React.FC = () => {
                 alt={lang.label}
                 className="rounded-sm"
               />
-              <span>{lang.label}</span>
+              <span className="text-gray-700!">{lang.label}</span>
             </button>
           ))}
         </div>
