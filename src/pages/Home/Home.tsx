@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect } from "react";
 import { useRefreshTokenMutation } from "@/Redux/Features/auth/auth.api";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import SpecialProduct from "@/components/SpecialProduct/SpeicalProduct";
 import TrendingNow from "@/components/TrendingNow/TrendingNow";
 import CommonWrapper from "@/common/CommonWrapper";
@@ -31,7 +31,7 @@ const Home = () => {
       try {
         await refreshToken(null).unwrap();
       } catch {
-        toast.error("Please Login");
+        // toast.error("Please Login");
       }
     })();
   }, [refreshToken]);
@@ -77,7 +77,7 @@ const Home = () => {
           orientation="horizontal"
           plugins={[
             Autoplay({
-              delay: 2000,
+              delay: 5000,
             }),
           ]}
         >
@@ -86,6 +86,7 @@ const Home = () => {
               <CarouselItem key={idx}>
                 <Hero data={item} />
               </CarouselItem>
+
             ))}
           </CarouselContent>
         </Carousel>
@@ -107,7 +108,6 @@ const Home = () => {
         {/* <CommonWrapper>
        <hr className="border border-gray-200 mt-20"/>
         </CommonWrapper>
-    
         <HowItWorks /> */}
         <CommonWrapper>
           <hr className="border border-gray-200 mt-20" />

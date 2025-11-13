@@ -1,7 +1,7 @@
 import React from "react"
 import Button from "@/components/Button/Button"
 import { MoveUpRight } from "lucide-react"
-import Marquee from "react-fast-marquee"
+// import Marquee from "react-fast-marquee"
 import CommonWrapper from "@/common/CommonWrapper"
 import { Link } from "react-router-dom"
 
@@ -43,8 +43,8 @@ const Hero: React.FC<IHeroProps> = ({ data }) => {
           </Link>
 
           {/* Brand Marquee */}
-          <div className="w-full mt-10">
-            <Marquee gradient={false} speed={40}>
+          {/* <div className="w-full mt-10">
+            <Marquee gradient={false} speed={10}>
               <div className="flex items-center gap-12 ">
                 <img src="/brand-1.png" alt="brand" className="w-20 md:w-28 object-contain" />
                 <img src="/brand-2.png" alt="brand" className="w-20 md:w-28 object-contain" />
@@ -52,7 +52,7 @@ const Hero: React.FC<IHeroProps> = ({ data }) => {
                 <img src="/brand-4.png" alt="brand" className="w-20 md:w-28 object-contain" />
               </div>
             </Marquee>
-          </div>
+          </div> */}
         </div>
       </CommonWrapper>
     </section>

@@ -11,6 +11,7 @@ interface ProductSliderProps {
   wishlistProducts?: any;
   handleWishlist: (id: string) => void;
   isLoading?: boolean;
+  autoplayInterval?: number; // in ms
 }
 
 const ProductSlider: React.FC<ProductSliderProps> = ({
@@ -18,6 +19,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
   wishlistProducts,
   handleWishlist,
   isLoading,
+  autoplayInterval = 5000,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
@@ -41,8 +43,17 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
 
   const maxIndex = Math.max(0, (products?.length || 0) - itemsPerPage);
 
-  const nextSlide = () => setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
-  const prevSlide = () => setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  // Autoplay with loop
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }, autoplayInterval);
+
+    return () => clearInterval(interval);
+  }, [maxIndex, autoplayInterval]);
+
+  const nextSlide = () => setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  const prevSlide = () => setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -60,7 +71,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
   if (isLoading)
     return (
       <div className="min-h-[200px] grid place-content-center">
-    <Spinner />
+        <Spinner />
       </div>
     );
 
@@ -69,8 +80,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
       {/* Prev Button */}
       <button
         onClick={prevSlide}
-        disabled={currentIndex === 0}
-        className="hidden sm:flex absolute top-1/3 translate-y-1/3 -translate-x-1/2 left-0 border border-gray-200 z-10 size-12 rounded-full bg-white shadow-2xl items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="hidden sm:flex absolute top-1/3 -translate-y-1/2 -left-4 border border-gray-200 z-10 size-12 rounded-full bg-white shadow-2xl items-center justify-center hover:bg-gray-50 transition-all"
         aria-label="Previous products"
       >
         <ChevronLeft className="size-7 text-blue-600" />
@@ -151,8 +161,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
       {/* Next Button */}
       <button
         onClick={nextSlide}
-        disabled={currentIndex === maxIndex}
-        className="hidden sm:flex absolute top-1/3 translate-y-1/3 translate-x-1/2 right-0 z-10 size-12 rounded-full bg-white shadow-2xl border border-gray-200 items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="hidden sm:flex absolute top-1/3 -translate-y-1/2 -right-4 z-10 size-12 rounded-full bg-white shadow-2xl border border-gray-200 items-center justify-center hover:bg-gray-50 transition-all"
         aria-label="Next products"
       >
         <ChevronRight className="size-7 text-blue-600" />
