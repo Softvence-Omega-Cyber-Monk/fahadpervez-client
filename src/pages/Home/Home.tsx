@@ -1,26 +1,29 @@
-import AllProducts from "@/components/AllProducts/AllProducts";
 import BestSeller from "@/components/BestSeller/BestSeller";
 import HomeCategories from "@/components/Categorise/HomeCategorise";
 // import HowItWorks from "@/components/HowToWork/HowItWorks";
-import Autoplay from "embla-carousel-autoplay"
+import Autoplay from "embla-carousel-autoplay";
 import Hero from "./Hero";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { useEffect } from "react";
 import { useRefreshTokenMutation } from "@/Redux/Features/auth/auth.api";
 import { toast } from "sonner";
 import SpecialProduct from "@/components/SpecialProduct/SpeicalProduct";
 import TrendingNow from "@/components/TrendingNow/TrendingNow";
 import CommonWrapper from "@/common/CommonWrapper";
-
+import BrandsOfTheWeek from "@/components/BrandOfTheWeek/BrandOfTheWeek";
+import MedItemsLive from "@/components/MedItemsLive/MedItemsLive";
 
 interface IHeroData {
-  title: string,
-  description: string,
-  image: string
+  title: string;
+  description: string;
+  image: string;
 }
 
 const Home = () => {
-
   const [refreshToken] = useRefreshTokenMutation();
 
   useEffect(() => {
@@ -30,88 +33,97 @@ const Home = () => {
       } catch {
         toast.error("Please Login");
       }
-    })()
+    })();
   }, [refreshToken]);
 
   // embla-carousel-autoplay
   const heroCarousel: IHeroData[] = [
     {
       title: "Experience Top-Notch Healthcare Products with Ease",
-      description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
-      image: "/hero-5.png"
+      description:
+        "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
+      image: "/hero-5.png",
     },
     {
       title: "Experience Top-Notch Healthcare Products with Ease",
-      description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
-      image: "/hero-1.png"
+      description:
+        "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
+      image: "/hero-1.png",
     },
     {
       title: "Experience Top-Notch Healthcare Products with Ease",
-      description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
-      image: "/hero-2.png"
+      description:
+        "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
+      image: "/hero-2.png",
     },
     {
       title: "Experience Top-Notch Healthcare Products with Ease",
-      description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
-      image: "/hero-3.png"
+      description:
+        "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
+      image: "/hero-3.png",
     },
     {
       title: "Experience Top-Notch Healthcare Products with Ease",
-      description: "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
-      image: "/hero-4.png"
+      description:
+        "Shop the best products online with seamless delivery and secure payments. Your trusted destination for premium products across all categories.",
+      image: "/hero-4.png",
     },
-
-  ]
+  ];
 
   return (
     <>
       <div className="bg-[#F1F5F8]">
-
-        <Carousel orientation="horizontal" plugins={[
-          Autoplay({
-            delay: 2000,
-          }),
-        ]} >
+        <Carousel
+          orientation="horizontal"
+          plugins={[
+            Autoplay({
+              delay: 2000,
+            }),
+          ]}
+        >
           <CarouselContent>
-            {
-              heroCarousel.map((item, idx) => (
-                <CarouselItem key={idx}>
-                  <Hero data={item} />
-                </CarouselItem>
-              ))
-            }
+            {heroCarousel.map((item, idx) => (
+              <CarouselItem key={idx}>
+                <Hero data={item} />
+              </CarouselItem>
+            ))}
           </CarouselContent>
         </Carousel>
         {/* Other Sections */}
-        <SpecialProduct/>
+        <SpecialProduct />
         <CommonWrapper>
-       <hr className="border border-gray-200 mt-20"/>
+          <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
         <HomeCategories />
         <CommonWrapper>
-       <hr className="border border-gray-200 mt-20"/>
+          <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
 
         <TrendingNow />
         <CommonWrapper>
-       <hr className="border border-gray-200 mt-20"/>
+          <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
-
-   
         <BestSeller />
         {/* <CommonWrapper>
        <hr className="border border-gray-200 mt-20"/>
         </CommonWrapper>
     
         <HowItWorks /> */}
-  
         <CommonWrapper>
-       <hr className="border border-gray-200 mt-20"/>
+          <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
-        <AllProducts />
+        <BrandsOfTheWeek />
+        <CommonWrapper>
+          <hr className="border border-gray-200 mt-20" />
+        </CommonWrapper>
+        <div className="pt-10 pb-20">
+          <MedItemsLive/>
+        </div>
+        
+        {/* <AllProducts /> */}
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Home;

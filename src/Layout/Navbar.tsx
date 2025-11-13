@@ -1,53 +1,48 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Search, CircleUserRound, Menu, X, HeartIcon } from "lucide-react";
+import { FaShoppingCart } from "react-icons/fa";
+import { toast } from "sonner";
 import CommonWrapper from "@/common/CommonWrapper";
+import GoogleTranslate from "@/common/GoogleTranslate";
+import logo from "@/assets/logo.png";
+
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { logout } from "@/store/Slices/AuthSlice/authSlice";
-import logo from "../assets/logo.png";
-import { toast } from "sonner";
-import { FaShoppingCart } from "react-icons/fa";
-import GoogleTranslate from "@/common/GoogleTranslate";
 import { useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 import { useUserLogoutMutation } from "@/Redux/Features/user/user.api";
+import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 
 const Navbar: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const {data:categoryData} = useGetAllCategoriesQuery({});
   const { data } = useGetMeQuery({});
-  const role = useAppSelector((state) => state?.auth?.user?.role);
   const { data: wishlistProducts } = useGetAllWishListQuery({});
   const [userLogout] = useUserLogoutMutation();
 
-  const user = data?.data;
-  
   const dispatch = useAppDispatch();
+  const user = data?.data;
+  const role = useAppSelector((state) => state?.auth?.user?.role);
   const cartItems = useAppSelector((state) => state.cart.items);
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 200);
-    window.addEventListener("scroll", handleScroll);
 
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleUserLogout = async () => {
     try {
       const res = await userLogout().unwrap();
-      if(res.success){
-
+      if (res.success) {
         toast.success("Logged out successfully.");
         dispatch(logout());
       }
@@ -55,79 +50,86 @@ const Navbar: React.FC = () => {
       toast.error("Logout failed. Please try again.");
     }
   };
+
   return (
-    <nav className="fixed top-0 w-full z-50">
-      <div
-        className={`px-4 py-2 transition-all duration-500 ${
-          scrolled ? "backdrop-blur-lg bg-white/60 shadow-sm" : "bg-transparent"
-        }`}
-      >
+    <nav className="f w-full bg-white shadow-md">
+      {/* Top Bar */}
+      <div className="bg-primary-blue text-white">
         <CommonWrapper>
-          <div
-            className={`flex items-center justify-between rounded-full transition-all duration-500 ${
-              scrolled
-                ? "bg-transparent px-4 py-3"
-                : "bg-white shadow-md px-5 py-4 mt-2"
-            }`}
-          >
-            {/* Logo */}
-            <Link
-              to="/"
-              className="transition-transform duration-300 hover:scale-105"
-            >
-              <img src={logo} alt="Logo" className="h-8 sm:h-10 w-auto" />
+          <div className="flex justify-between items-center px-4 py-2 text-sm">
+            <div className="flex items-center gap-6">
+              <div className="bg-white text-primary-blue px-4 py-1 rounded-full flex items-center gap-2 font-medium">
+                <span>20% off Beauty, Bath & Personal Care</span>
+                <span>›</span>
+              </div>
+              <span>Black Friday Month</span>
+            </div>
+            <GoogleTranslate />
+          </div>
+        </CommonWrapper>
+      </div>
+
+      {/* Main Navbar */}
+      <CommonWrapper>
+        <div className="flex items-center justify-between px-4 py-4 md:py-5">
+          {/* Logo */}
+          <Link to="/" className="transition-transform duration-300 hover:scale-105">
+            <img src={logo} alt="Logo" className="h-10 w-auto" />
+          </Link>
+
+          {/* Search Bar */}
+          <div className="relative hidden md:grid w-1/2 items-center">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full border border-gray-300 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+            />
+            <Search className="absolute right-4 text-gray-500 cursor-pointer hover:scale-110 transition-transform" />
+          </div>
+
+          {/* Desktop Icons */}
+          <div className="hidden sm:flex items-center gap-5">
+            {/* Cart */}
+            <Link to="/my-cart" className="relative">
+              <FaShoppingCart className="text-gray-700 size-5 cursor-pointer hover:scale-110 transition-transform" />
+              <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                {cartItems?.length || 0}
+              </span>
             </Link>
 
-            {/* Desktop Icons */}
-            <div className="hidden sm:flex items-center gap-5">
-              <Search className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110" />
-              {/* Cart */}
-              <Link to={`/my-cart`} className="relative">
-                <FaShoppingCart className="text-gray-600 text-lg cursor-pointer size-5 hover:scale-110" />
-                <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
-                  {cartItems?.length}
+            {/* Wishlist */}
+            {role === "CUSTOMER" && (
+              <Link to="/buyer-dashboard/wishlist" className="relative">
+                <HeartIcon className="text-gray-700 size-5 cursor-pointer hover:scale-110 transition-transform" />
+                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                  {wishlistProducts?.data?.length || 0}
                 </span>
               </Link>
-              {/* wishlist */}
-              {role === "CUSTOMER" && (
-                <Link to={`/buyer-dashboard/wishlist`}>
-                  <div className="relative">
-                    <HeartIcon className="text-gray-600 size-5 cursor-pointer hover:scale-110" />
-                    <span className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs size-4 rounded-full flex items-center justify-center">
-                      {wishlistProducts?.data?.length}
-                    </span>
-                  </div>
-                </Link>
-              )}
-              {/* User Dropdown */}
-              <div className="relative" ref={menuRef}>
-                <CircleUserRound
-                  className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110 "
-                  onClick={() => setMenuOpen((prev) => !prev)}
-                />
+            )}
 
-                {/* Dropdown */}
-                <div
-                  className={`absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-lg shadow-lg transition-all duration-300 origin-top-right transform ${
-                    menuOpen
-                      ? "opacity-100 scale-100 translate-y-0"
-                      : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-                  }`}
-                >
+            {/* User Dropdown */}
+            <div className="relative" ref={menuRef}>
+              <CircleUserRound
+                className="text-gray-700 size-6 cursor-pointer hover:scale-110 transition-transform"
+                onClick={() => setMenuOpen((prev) => !prev)}
+              />
+
+              {menuOpen && (
+                <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-[9999]">
                   <ul className="py-2">
                     {user && (
-                      <li className=" px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2">
+                      <li className="px-4 py-2 flex items-center gap-3 border-b border-gray-100">
                         <img
                           src={user.profileImage}
                           alt=""
-                          className="size-10 rounded-full"
+                          className="size-10 rounded-full object-cover"
                         />
-                        <div className="grid gap-px">
+                        <div>
                           <p className="text-sm font-medium text-gray-900">
                             {user.name}
                           </p>
                           {user.role && (
-                            <span className="text-[8px] bg-gray-200 px-2 py-1 rounded-full">
+                            <span className="text-[10px] bg-gray-200 px-2 py-[2px] rounded-full uppercase">
                               {user.role}
                             </span>
                           )}
@@ -135,35 +137,26 @@ const Navbar: React.FC = () => {
                       </li>
                     )}
                     <li>
-                      {role ? (
-                        <Link
-                          to={
-                            role === "ADMIN"
-                              ? "/admin-dashboard"
-                              : role === "VENDOR"
-                              ? "/seller-dashboard"
-                              : role === "CUSTOMER"
-                              ? "/buyer-dashboard"
-                              : "/login"
-                          }
-                          className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
-                          onClick={() => setMenuOpen(false)}
-                        >
-                          My Account
-                        </Link>
-                      ) : (
-                        <Link
-                          to="/login"
-                          className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
-                        >
-                          Login
-                        </Link>
-                      )}
+                      <Link
+                        to={
+                          role === "ADMIN"
+                            ? "/admin-dashboard"
+                            : role === "VENDOR"
+                            ? "/seller-dashboard"
+                            : role === "CUSTOMER"
+                            ? "/buyer-dashboard"
+                            : "/login"
+                        }
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        My Account
+                      </Link>
                     </li>
                     <li>
                       <Link
                         to="/customer-support"
-                        className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
                         onClick={() => setMenuOpen(false)}
                       >
                         Customer Support
@@ -171,82 +164,87 @@ const Navbar: React.FC = () => {
                     </li>
                     {role && (
                       <li
-                        className="cursor-pointer block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
                         onClick={handleUserLogout}
+                        className="block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                       >
                         Logout
                       </li>
                     )}
                   </ul>
                 </div>
-              </div>
-              <GoogleTranslate />
-            </div>
-
-            {/* Mobile Hamburger */}
-            <div className="sm:hidden">
-              {mobileOpen ? (
-                <X
-                  className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110"
-                  onClick={() => setMobileOpen(false)}
-                />
-              ) : (
-                <Menu
-                  className="text-[#455058] cursor-pointer transition-transform duration-200 hover:scale-110"
-                  onClick={() => setMobileOpen(true)}
-                />
               )}
             </div>
           </div>
-        </CommonWrapper>
-      </div>
 
-      {/* Mobile Menu with Animation */}
+          {/* Mobile Menu Button */}
+          <div className="sm:hidden">
+            {mobileOpen ? (
+              <X
+                className="text-gray-700 size-6 cursor-pointer hover:scale-110 transition-transform"
+                onClick={() => setMobileOpen(false)}
+              />
+            ) : (
+              <Menu
+                className="text-gray-700 size-6 cursor-pointer hover:scale-110 transition-transform"
+                onClick={() => setMobileOpen(true)}
+              />
+            )}
+          </div>
+        </div>
+      </CommonWrapper>
+      <div className="bg-gray-100">
+      <CommonWrapper>
+        {
+          categoryData?.data &&(
+            <div className="flex items-center justify-center gap-10 py-2">
+          {categoryData?.data?.slice(0,6).map((category : any) => (
+            <Link
+              to={`/shop?category=${category?._id}`}
+              key={category?._id}
+              className="flex items-center gap-3 py-3"
+            >
+              <p className="text-sm font-medium text-gray-700">{category?.categoryName}</p>
+            </Link>
+          ))}
+        </div>
+          )
+        }
+      </CommonWrapper>
+      </div>
+      {/* Mobile Menu */}
       <div
-        className={`fixed top-22 left-0 w-full bg-white shadow-md z-40 transform transition-all duration-500 ease-in-out ${
-          mobileOpen
-            ? "translate-y-0 opacity-100"
-            : "-translate-y-10 opacity-0 pointer-events-none"
+        className={`fixed top-[90px] left-0 w-full bg-white shadow-lg transition-all duration-500 ease-in-out z-998 ${
+          mobileOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0 pointer-events-none"
         }`}
       >
-        <ul className="flex flex-col py-6 space-y-2">
-          <li className="px-4">
+        <ul className="flex flex-col p-6 space-y-4 text-gray-700">
+          <li>
             <input
               type="text"
               placeholder="Search..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
             />
           </li>
-          <div className="flex items-center justify-between">
-            {user && (
-              <li className=" px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2">
-                <img
-                  src={user.profileImage}
-                  alt=""
-                  className="size-10 rounded-full"
-                />
-                <div className="grid gap-px">
-                  <p className="text-sm font-medium text-gray-900">
-                    {user.name}
-                  </p>
-                  {user.role && (
-                    <span className="text-[8px] bg-gray-200 px-2 py-1 rounded-full">
-                      {user.role}
-                    </span>
-                  )}
-                </div>
-              </li>
-            )}
-            <li className="px-6 py-2">
-              <Link to={`/my-cart`} className="relative">
-                <FaShoppingCart className="text-gray-600 size-6 cursor-pointer" />
-                <span className="absolute top-0 left-4 bg-blue-600 text-white text-xs w-3 h-3 p-1 rounded-full flex items-center justify-center">
-                  {cartItems?.length}
-                </span>
-              </Link>
+
+          {user && (
+            <li className="flex items-center gap-3 border-b border-gray-100 pb-3">
+              <img
+                src={user.profileImage}
+                alt=""
+                className="size-10 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-sm font-medium">{user.name}</p>
+                {user.role && (
+                  <span className="text-[10px] bg-gray-200 px-2 py-[2px] rounded-full uppercase">
+                    {user.role}
+                  </span>
+                )}
+              </div>
             </li>
-          </div>
-          <li className="px-4 py-2">
+          )}
+
+          <li>
             <Link
               to={
                 role === "ADMIN"
@@ -263,14 +261,15 @@ const Navbar: React.FC = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/customer-support"
-              className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors"
-              onClick={() => setMenuOpen(false)}
-            >
+            <Link to="/customer-support" onClick={() => setMobileOpen(false)}>
               Customer Support
             </Link>
           </li>
+          {role && (
+            <li onClick={handleUserLogout} className="cursor-pointer">
+              Logout
+            </li>
+          )}
         </ul>
       </div>
     </nav>

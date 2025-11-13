@@ -306,7 +306,7 @@ const Shop: React.FC = () => {
     <div className="py-20 bg-gray-50 min-h-screen">
       <CommonWrapper>
         {/* Header */}
-        <div className="mb-8 mt-16">
+        <div className="mb-8">
           <h1 className="text-3xl font-montserrat font-bold text-website-color-blue mb-2">
             Shop
           </h1>

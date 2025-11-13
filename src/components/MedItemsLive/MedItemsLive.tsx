@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import CommonWrapper from "@/common/CommonWrapper";
 import PrimaryButton from "@/common/PrimaryButton";
 import { useGetAllProductsQuery } from "@/Redux/Features/products/products.api";
-import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 import {
   useAddWishlistMutation,
   useGetAllWishListQuery,
@@ -20,11 +19,10 @@ const MedItemsLive: React.FC = () => {
   const [addWishlist, { isError, error }] = useAddWishlistMutation();
   const [removeWishList] = useRemoveWishListMutation();
   const { data, isLoading } = useGetAllProductsQuery({});
-  const { data: categoryData, isLoading: categoryLoading } =
-    useGetAllCategoriesQuery({});
+
 
   const products = data?.data.slice(0, 10) || [];
-  const categories = categoryData?.data || [];
+
 
   const handleWishlist = async (id: string) => {
     let toastId;
@@ -48,7 +46,7 @@ const MedItemsLive: React.FC = () => {
     }
   };
 
-  if (isLoading && categoryLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen grid place-content-center">
         <Spinner />
@@ -57,26 +55,16 @@ const MedItemsLive: React.FC = () => {
   }
 
   return (
+      <div className="bg-linear-to-b from-orange-100 to-light-background to-90% w-fit p-6 mx-auto  rounded-2xl">
     <CommonWrapper>
-      <div className="w-full px-4 sm:px-8 xl:px-0 bg-[#F1F5F8]">
+      <div className="w-full px-4 sm:px-8 xl:px-0 ">
         <div className="flex items-center gap-5">
-          <h2 className="font-montserrat mb-4 text-website-color-blue py-10">
-            BEST SELLERS
-          </h2>
+          <h3 className="font-montserrat mb-4 text-website-color-blue font-semibold!">
+            MDItems Live
+          </h3>
           <Link to="/shop" className="mb-4 inline-block">
             <PrimaryButton type="Secondary" title="Shop All" className="bg-transparent text-sm! border-none shadow-none text-primary-blue capitalize underline"/>
           </Link>
-        </div>
-
-        <div className="flex items-center gap-5 flex-wrap mb-10">
-          {categories.map((category: any) => (
-            <PrimaryButton
-              key={category._id}
-              type="Badge"
-              title={category.categoryName}
-              className="bg-white p-6! text-sm! font-medium hover:bg-gray-200"
-            />
-          ))}
         </div>
 
         <ProductSlider
@@ -87,6 +75,7 @@ const MedItemsLive: React.FC = () => {
         />
       </div>
     </CommonWrapper>
+      </div>
   );
 };
 
