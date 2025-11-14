@@ -77,3 +77,5 @@ export interface BuyerDetails {
   buyAmount: number;
   avatarUrl: string;
 }
+
+
