@@ -75,6 +75,7 @@
     "@types/react-dom": "^19.2.0",
     "@types/react-inner-image-zoom": "^3.0.3",
     "@types/react-select-country-list": "^2.2.3",
+    "@types/react-slick": "^0.23.13",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",

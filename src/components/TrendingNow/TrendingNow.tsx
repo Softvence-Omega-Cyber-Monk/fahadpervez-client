@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import CommonWrapper from "@/common/CommonWrapper";
 import PrimaryButton from "@/common/PrimaryButton";
 import { useGetAllProductsQuery } from "@/Redux/Features/products/products.api";
-import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
+// import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
 import {
   useAddWishlistMutation,
   useGetAllWishListQuery,
@@ -20,11 +20,11 @@ const TrendingNow: React.FC = () => {
   const [addWishlist, { isError, error }] = useAddWishlistMutation();
   const [removeWishList] = useRemoveWishListMutation();
   const { data, isLoading } = useGetAllProductsQuery({});
-  const { data: categoryData, isLoading: categoryLoading } =
-    useGetAllCategoriesQuery({});
+  // const { data: categoryData, isLoading: categoryLoading } =
+  //   useGetAllCategoriesQuery({});
 
   const products = data?.data.slice(0, 10) || [];
-  const categories = categoryData?.data || [];
+  // const categories = categoryData?.data || [];
 
   const handleWishlist = async (id: string) => {
     let toastId;
@@ -48,7 +48,7 @@ const TrendingNow: React.FC = () => {
     }
   };
 
-  if (isLoading && categoryLoading) {
+  if (isLoading ) {
     return (
       <div className="min-h-screen grid place-content-center">
         <Spinner />
@@ -68,7 +68,7 @@ const TrendingNow: React.FC = () => {
           </Link>
         </div>
 
-        <div className="flex items-center gap-5 flex-wrap mb-10">
+        {/* <div className="flex items-center gap-5 flex-wrap mb-10">
           {categories.map((category: any) => (
             <PrimaryButton
               key={category._id}
@@ -77,7 +77,7 @@ const TrendingNow: React.FC = () => {
               className="bg-white p-6! text-sm! font-medium hover:bg-gray-200"
             />
           ))}
-        </div>
+        </div> */}
 
         <ProductSlider
           products={products}

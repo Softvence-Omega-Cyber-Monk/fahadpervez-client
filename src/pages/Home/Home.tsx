@@ -86,7 +86,6 @@ const Home = () => {
               <CarouselItem key={idx}>
                 <Hero data={item} />
               </CarouselItem>
-
             ))}
           </CarouselContent>
         </Carousel>
@@ -99,16 +98,11 @@ const Home = () => {
         <CommonWrapper>
           <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
-
         <TrendingNow />
         <CommonWrapper>
           <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
         <BestSeller />
-        {/* <CommonWrapper>
-       <hr className="border border-gray-200 mt-20"/>
-        </CommonWrapper>
-        <HowItWorks /> */}
         <CommonWrapper>
           <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
@@ -117,9 +111,8 @@ const Home = () => {
           <hr className="border border-gray-200 mt-20" />
         </CommonWrapper>
         <div className="pt-10 pb-20">
-          <MedItemsLive/>
+          <MedItemsLive />
         </div>
-        
         {/* <AllProducts /> */}
       </div>
     </>

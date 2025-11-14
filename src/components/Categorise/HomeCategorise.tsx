@@ -28,7 +28,7 @@ const HomeCategories = () => {
             <NavLink key={category._id} to={`/category/${category._id}`}>
               <div
                 key={category._id}
-                className="p-3 w-full h-full cursor-pointer group"
+                className="p-3 w-48 h-full cursor-pointer group"
                 >
                 <div className="flex flex-col items-center justify-center w-full h-full space-y-4">
                   <div className="flex items-center justify-center overflow-hidden size-40 rounded-full bg-gray-300 group-hover:border group-hover:border-gray-600">
