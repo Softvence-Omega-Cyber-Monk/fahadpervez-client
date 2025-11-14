@@ -238,7 +238,7 @@ useEffect(() => {
       {/* Desktop categories */}
       <div className="bg-gray-50 border-t border-gray-200 hidden sm:block">
         <CommonWrapper>
-          <div className="flex items-center justify-center gap-1 px-4">
+          <div className="flex items-center justify-between gap-1 ">
             {visibleCategories.map((category: any) => (
               <Link
                 key={category._id}

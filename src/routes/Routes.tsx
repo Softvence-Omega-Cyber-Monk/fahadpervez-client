@@ -35,7 +35,7 @@ import SalesReportsPage from "@/pages/Admin/SalesReportsPage";
 import CMSDashboard from "@/components/Admin/CMS/CMSDashboard";
 import AdminMessage from "@/pages/Admin-Dashboard/Message/AdminMessage";
 import { CMSEditPage } from "@/components/Admin/CMS/CMSEditPage";
-import SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard"
+import SellerDashboard from "../pages/Seller-Dashboard/Dashboard/Dashboard";
 import { UnAuthoraised } from "@/pages/UnAuthoraised/UnAuthoraised";
 import Register from "@/pages/Login/Register";
 import WithAuth from "@/Config/WithAuth";
@@ -50,7 +50,7 @@ import AdminOrderDetails from "@/pages/Admin-Dashboard/Order/components/AdminOrd
 import CheckoutPage from "@/pages/AFSPay/AFSPay";
 import OrderSuccessPage from "@/pages/OrderSuccess/OrderSuccess";
 import PaymentFailedPage from "@/pages/OrderFailed/OrderFailed";
-
+import SellerCategory from "@/pages/Seller-Dashboard/components/SellerCategory/SellerCategory";
 
 const routes = createBrowserRouter([
   {
@@ -63,7 +63,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "/afs",
-        element: <CheckoutPage />
+        element: <CheckoutPage />,
       },
       {
         path: "/categories",
@@ -107,21 +107,25 @@ const routes = createBrowserRouter([
       },
       {
         path: "/shop",
-        element: <Shop />
+        element: <Shop />,
       },
       {
         path: "/checkout/success",
-        element: <OrderSuccessPage />
+        element: <OrderSuccessPage />,
       },
       {
         path: "/checkout/failed",
-        element: <PaymentFailedPage />
-      }
+        element: <PaymentFailedPage />,
+      },
     ],
   },
   {
     path: "buyer-dashboard",
-    element: <WithAuth requiredRole="CUSTOMER"><BuyerDashboardLayout /></WithAuth>,
+    element: (
+      <WithAuth requiredRole="CUSTOMER">
+        <BuyerDashboardLayout />
+      </WithAuth>
+    ),
     children: [
       {
         index: true,
@@ -132,13 +136,10 @@ const routes = createBrowserRouter([
         element: <MyOrders />,
       },
 
-
-
-      
-        {
-    path: "order-details/:id",
-    element: <OrderDetails />,
-  },
+      {
+        path: "order-details/:id",
+        element: <OrderDetails />,
+      },
       {
         path: "wishlist",
         element: <WishList />,
@@ -167,7 +168,7 @@ const routes = createBrowserRouter([
       //   path: "dashboard-product-details/:productId",
       //   element: <DashboardProductDetails />,
       // },
-    
+
       {
         path: "buyer-profile",
         element: <BuyerProfile />,
@@ -181,7 +182,11 @@ const routes = createBrowserRouter([
 
   {
     path: "admin-dashboard",
-    element: <WithAuth requiredRole="ADMIN"><AdminDashboardLayout /></WithAuth>,
+    element: (
+      <WithAuth requiredRole="ADMIN">
+        <AdminDashboardLayout />
+      </WithAuth>
+    ),
     children: [
       {
         index: true,
@@ -196,10 +201,13 @@ const routes = createBrowserRouter([
         element: <Order />,
       },
       {
+        path: "add-category",
+        element: <SellerCategory />,
+      },
+      {
         path: "orders/:id",
         element: <OrderDetails />,
       },
-       
 
       {
         path: "order-details/:id",
@@ -215,7 +223,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "coupons",
-        element: <CouponAdminPage />
+        element: <CouponAdminPage />,
       },
       {
         path: "cms",
@@ -253,18 +261,22 @@ const routes = createBrowserRouter([
   },
   {
     path: "/seller-dashboard",
-    element: <WithAuth requiredRole="VENDOR"><SellerDashboardLayout /></WithAuth>,
+    element: (
+      <WithAuth requiredRole="VENDOR">
+        <SellerDashboardLayout />
+      </WithAuth>
+    ),
     children: [
       {
         index: true,
-        element: <SellerDashboard />
+        element: <SellerDashboard />,
       },
-      ...sellerRoutes
+      ...sellerRoutes,
     ],
   },
   {
-        path:"/update-product/:id",
-        element:<AddProductPage/>
+    path: "/update-product/:id",
+    element: <AddProductPage />,
   },
   {
     path: "*",
@@ -272,8 +284,8 @@ const routes = createBrowserRouter([
   },
   {
     path: "/un-authoraised",
-    element: <UnAuthoraised />
-  }
+    element: <UnAuthoraised />,
+  },
 ]);
 
 export default routes;

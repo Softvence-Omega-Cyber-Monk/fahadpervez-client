@@ -11,6 +11,7 @@ import { MdLocalShipping, MdOutlinePayments } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 import Logout from "@/components/Logout/Logout";
+import { IoAddCircleOutline } from "react-icons/io5";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -19,7 +20,12 @@ interface SidebarItemProps {
   onClick?: () => void;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, onClick }) => (
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  icon,
+  label,
+  active = false,
+  onClick,
+}) => (
   <div
     onClick={onClick}
     className={`flex items-center px-4 py-2 rounded-lg cursor-pointer transition-colors ${
@@ -29,7 +35,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, active = false, 
     }`}
   >
     <div className="mr-3 text-lg">{icon}</div>
-    <span className="text-sm font-medium">{label}</span>
+    <span className="text-sm font-medium line-clamp-1">{label}</span>
   </div>
 );
 
@@ -44,14 +50,43 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const routes = [
     { path: "/admin-dashboard", icon: <FaTachometerAlt />, label: "Dashboard" },
     { path: "/admin-dashboard/users", icon: <FaUser />, label: "Users" },
-    { path: "/admin-dashboard/orders", icon: <FaClipboardList />, label: "Orders" },
+    {
+      path: "/admin-dashboard/orders",
+      icon: <FaClipboardList />,
+      label: "Orders",
+    },
+    {
+      label: "Add Category",
+      path : "/admin-dashboard/add-category",
+      icon: <IoAddCircleOutline/> ,
+    },
     { path: "/admin-dashboard/product", icon: <FaHeart />, label: "Product" },
-    { path: "/admin-dashboard/sales-reports", icon: <TbReportSearch />, label: "Sales & Reports" },
-    { path: "/admin-dashboard/message", icon: <TbReportSearch />, label: "Message" },
+    {
+      path: "/admin-dashboard/sales-reports",
+      icon: <TbReportSearch />,
+      label: "Sales & Reports",
+    },
+    {
+      path: "/admin-dashboard/message",
+      icon: <TbReportSearch />,
+      label: "Message",
+    },
     { path: "/admin-dashboard/cms", icon: <TbReportSearch />, label: "CMS" },
-    { path: "/admin-dashboard/payments", icon: <MdOutlinePayments />, label: "Payments" },
-    { path: "/admin-dashboard/coupons", icon: <RiCoupon2Line />, label: "Coupons" },
-    { path: "/admin-dashboard/shipping", icon: <MdLocalShipping />, label: "Shipping" },
+    {
+      path: "/admin-dashboard/payments",
+      icon: <MdOutlinePayments />,
+      label: "Payments",
+    },
+    {
+      path: "/admin-dashboard/coupons",
+      icon: <RiCoupon2Line />,
+      label: "Coupons",
+    },
+    {
+      path: "/admin-dashboard/shipping",
+      icon: <MdLocalShipping />,
+      label: "Shipping",
+    },
     { path: "/admin-dashboard/support", icon: <BiSupport />, label: "Support" },
     { path: "/admin-dashboard/settings", icon: <FaCog />, label: "Settings" },
   ];
@@ -85,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </Link>
           ))}
         </nav>
-        <Logout/>
+        <Logout />
       </div>
     </>
   );
