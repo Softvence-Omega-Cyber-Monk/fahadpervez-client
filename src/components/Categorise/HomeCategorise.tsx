@@ -23,7 +23,7 @@ const HomeCategories = () => {
           Shop By Categories
         </h3>
         
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-5 items-center justify-between">
           {categories?.data?.map((category:Category) => (
             <NavLink key={category._id} to={`/category/${category._id}`}>
               <div
@@ -31,14 +31,14 @@ const HomeCategories = () => {
                 className="p-3 w-48 h-full cursor-pointer group"
                 >
                 <div className="flex flex-col items-center justify-center w-full h-full space-y-4">
-                  <div className="flex items-center justify-center overflow-hidden size-40 rounded-full bg-gray-300 group-hover:border group-hover:border-gray-600">
+                  <div className="flex items-center justify-center overflow-hidden size-36 rounded-full bg-gray-300 group-hover:border group-hover:border-gray-600">
                     <img 
                       src={category.imageUrl} 
                       alt={category.categoryName}
-                      className="size-40 rounded-full object-cover"
+                      className="size-32 rounded-full object-cover"
                     />
                   </div>
-                  <h3 className="text-center text-sm font-bold p-1 text-gray-800 leading-tight group-hover:underline">
+                  <h3 className="text-center text-sm font-bold p-1 text-gray-800 leading-tight group-hover:underline line-clamp-2">
                     {category.categoryName}
                   </h3>
                 </div>
@@ -47,7 +47,7 @@ const HomeCategories = () => {
           ))}
          </div>
         
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap  items-center justify-between gap-4">
           {categories?.data?.map((category:Category) => (
             <NavLink key={category._id} to={`/category/${category._id}`}>
               <PrimaryButton type='Badge' title={category.categoryName} className="bg-white  p-6! text-sm! font-medium hover:bg-gray-200"/>
