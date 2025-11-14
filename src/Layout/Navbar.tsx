@@ -127,7 +127,7 @@ useEffect(() => {
           </Link>
 
           {/* Desktop search */}
-          <div className="relative hidden sm:flex w-full max-w-[450px] mx-4">
+          <div className="relative hidden sm:flex w-full max-w-1/2 mx-auto">
             <input
               type="text"
               placeholder="Search products..."

@@ -24,7 +24,7 @@ const HomeCategories = () => {
         </h3>
         
           <div className="flex flex-wrap gap-5 items-center justify-between">
-          {categories?.data?.map((category:Category) => (
+          {categories?.data?.slice(0,12).map((category:Category) => (
             <NavLink key={category._id} to={`/category/${category._id}`}>
               <div
                 key={category._id}

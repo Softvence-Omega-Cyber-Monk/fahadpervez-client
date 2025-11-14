@@ -13,16 +13,13 @@ import { toast } from "sonner";
 import ProductSlider from "@/common/ProductSlider";
 import { Spinner } from "../ui/spinner";
 
-
 const MedItemsLive: React.FC = () => {
   const { data: wishlistProducts } = useGetAllWishListQuery({});
   const [addWishlist, { isError, error }] = useAddWishlistMutation();
   const [removeWishList] = useRemoveWishListMutation();
   const { data, isLoading } = useGetAllProductsQuery({});
 
-
   const products = data?.data.slice(0, 10) || [];
-
 
   const handleWishlist = async (id: string) => {
     let toastId;
@@ -55,27 +52,39 @@ const MedItemsLive: React.FC = () => {
   }
 
   return (
-      <div className="bg-linear-to-b from-orange-100 to-light-background to-90% w-fit p-6 mx-auto rounded-2xl">
     <CommonWrapper>
-      <div className="w-full px-4 sm:px-8 xl:px-0 ">
-        <div className="flex items-center gap-5">
-          <h3 className="font-montserrat mb-4 text-website-color-blue font-semibold!">
-            MDItems Live
-          </h3>
-          <Link to="/shop" className="mb-4 inline-block">
-            <PrimaryButton type="Secondary" title="Shop All" className="bg-transparent text-sm! border-none shadow-none text-primary-blue capitalize underline"/>
-          </Link>
-        </div>
+        <div className="bg-linear-to-b from-orange-100 to-light-background to-90% w-full max-w-[1500px] mx-auto p-4 sm:p-6 rounded-2xl">
+        <div className="w-full px-2 sm:px-4 md:px-6 xl:px-0">
 
-        <ProductSlider
-          products={products}
-          wishlistProducts={wishlistProducts}
-          handleWishlist={handleWishlist}
-          isLoading={isLoading}
-        />
-      </div>
-    </CommonWrapper>
-      </div>
+          {/* Header Section */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
+
+            <h3 className="font-montserrat text-website-color-blue font-semibold">
+              MDItems Live
+            </h3>
+
+            <Link to="/shop">
+              <PrimaryButton
+                type="Secondary"
+                title="Shop All"
+                className="bg-transparent text-sm border-none shadow-none text-primary-blue underline"
+              />
+            </Link>
+
+          </div>
+
+          {/* Product Slider */}
+          <div className="w-full">
+            <ProductSlider
+              products={products}
+              wishlistProducts={wishlistProducts}
+              handleWishlist={handleWishlist}
+              isLoading={isLoading}
+            />
+          </div>
+        </div>
+    </div>
+      </CommonWrapper>
   );
 };
 

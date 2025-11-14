@@ -104,7 +104,7 @@ export default function OrderDetails() {
     const total = subtotal + delivery;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-6">
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-2 text-sm">
@@ -147,7 +147,7 @@ export default function OrderDetails() {
                 {/* Info Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {/* Buyer Card */}
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-md border border-blue-100 p-5 hover:shadow-lg transition-shadow">
+                    <div className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-md border border-blue-100 p-5 hover:shadow-lg transition-shadow">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
                                 {orderData.buyer[0]}
@@ -175,7 +175,7 @@ export default function OrderDetails() {
                     </div>
 
                     {/* Seller Card */}
-                    <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-md border border-purple-100 p-5 hover:shadow-lg transition-shadow">
+                    <div className="bg-linear-to-br from-purple-50 to-pink-50 rounded-2xl shadow-md border border-purple-100 p-5 hover:shadow-lg transition-shadow">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-lg">
                                 {orderData.seller[0]}
@@ -203,7 +203,7 @@ export default function OrderDetails() {
                     </div>
 
                     {/* Shipping Card */}
-                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-md border border-green-100 p-5 hover:shadow-lg transition-shadow">
+                    <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl shadow-md border border-green-100 p-5 hover:shadow-lg transition-shadow">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center">
@@ -235,7 +235,7 @@ export default function OrderDetails() {
                     </div>
 
                     {/* Order Date Card */}
-                    <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl shadow-md border border-orange-100 p-5 hover:shadow-lg transition-shadow">
+                    <div className="bg-linear-to-br from-orange-50 to-amber-50 rounded-2xl shadow-md border border-orange-100 p-5 hover:shadow-lg transition-shadow">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 rounded-full bg-orange-600 flex items-center justify-center">
                                 <Calendar className="w-5 h-5 text-white" />
@@ -263,7 +263,7 @@ export default function OrderDetails() {
 
                 {/* Product Summary */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-                    <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 border-b border-gray-200">
+                    <div className="bg-linear-to-r from-gray-50 to-gray-100 p-6 border-b border-gray-200">
                         <div className="flex items-center justify-between">
                             <h2 className="text-2xl font-bold text-gray-900">Product Summary</h2>
                             <button className="text-red-600 hover:text-red-700 text-sm font-semibold flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50 transition-colors">
@@ -276,7 +276,7 @@ export default function OrderDetails() {
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr className="bg-gradient-to-r from-slate-50 via-gray-50 to-slate-50 border-b-2 border-gray-200">
+                                <tr className="bg-linear-to-r from-slate-50 via-gray-50 to-slate-50 border-b-2 border-gray-200">
                                     <th className="text-left py-4 px-6 text-xs font-bold text-gray-700 uppercase tracking-wider">#</th>
                                     <th className="text-left py-4 px-6 text-xs font-bold text-gray-700 uppercase tracking-wider">Product</th>
                                     <th className="text-left py-4 px-6 text-xs font-bold text-gray-700 uppercase tracking-wider">Quantity</th>
@@ -359,7 +359,7 @@ export default function OrderDetails() {
                         <div className="absolute top-14 left-20 right-20 px-16">
                             <div className="relative h-1 bg-gray-200">
                                 <div 
-                                    className="absolute h-full bg-gradient-to-r from-purple-500 via-orange-500 to-cyan-500 transition-all duration-500 left-0"
+                                    className="absolute h-full bg-linear-to-r from-purple-500 via-orange-500 to-cyan-500 transition-all duration-500 left-0"
                                     style={{ width: `${((currentStatus - 1) / (orderStatuses.length - 1)) * 100}%` }}
                                 />
                             </div>

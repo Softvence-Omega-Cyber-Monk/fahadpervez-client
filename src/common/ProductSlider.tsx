@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -23,6 +23,36 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
   handleWishlist,
   isLoading,
 }) => {
+    const [slidesToShow, setSlidesToShow] = useState(6);
+const [slidesToScroll, setSlidesToScroll] = useState(2);
+
+useEffect(() => {
+  const updateSlides = () => {
+    const width = window.innerWidth;
+
+    if (width < 640) {
+      setSlidesToShow(1);
+      setSlidesToScroll(1);
+    } else if (width < 768) {
+      setSlidesToShow(2);
+      setSlidesToScroll(1);
+    } else if (width < 1024) {
+      setSlidesToShow(3);
+      setSlidesToScroll(1);
+    } else if (width < 1280) {
+      setSlidesToShow(4);
+      setSlidesToScroll(2);
+    } else {
+      setSlidesToShow(6);
+      setSlidesToScroll(2);
+    }
+  };
+
+  updateSlides(); // run on mount
+  window.addEventListener("resize", updateSlides);
+
+  return () => window.removeEventListener("resize", updateSlides);
+}, []);
   if (isLoading)
     return (
       <div className="min-h-[200px] grid place-content-center">
@@ -30,39 +60,40 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
       </div>
     );
 
+
   const settings = {
     infinite: true,
     autoplay: true,
     autoplaySpeed: 3000,
     speed: 500,
     cssEase: "ease-out", // marquee effect
-    slidesToShow: 6,
-    slidesToScroll: 2,
+    slidesToShow,
+    slidesToScroll,
     arrows: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: { slidesToShow: 4 },
-      },
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 3 },
-      },
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 640,
-        settings: { slidesToShow: 1 },
-      },
-    ],
+    // responsive: [
+    //   {
+    //     breakpoint: 1280,
+    //     settings: { slidesToShow: 4 },
+    //   },
+    //   {
+    //     breakpoint: 1024,
+    //     settings: { slidesToShow: 3 },
+    //   },
+    //   {
+    //     breakpoint: 768,
+    //     settings: { slidesToShow: 2 },
+    //   },
+    //   {
+    //     breakpoint: 640,
+    //     settings: { slidesToShow: 1 },
+    //   },
+    // ],
   };
 
   return (
-    <div className="relative">
+    <div className="relative slider-container w-full">
       <Slider {...settings}>
         {products?.map((product) => {
           const wishlist = wishlistProducts?.data?.find(
