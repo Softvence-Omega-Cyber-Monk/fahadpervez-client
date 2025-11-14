@@ -78,7 +78,7 @@ export const sellerRoutes = [
         element:<OrderLandingPage/>
       },
       {
-        path:"order-status",
+        path:"order-status/:id",
         element:<OrderTracking />
       }
     ]
