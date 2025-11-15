@@ -193,9 +193,10 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ onPrevious, onNext }) => {
           steps={[
             { number: 1, label: "Basic Info" },
             { number: 2, label: "Business Info" },
-            { number: 3, label: "Shipping Info" },
-            { number: 4, label: "Payment Info" },
-            { number: 5, label: "Contract Info" },
+            { number: 3, label: "What Would You Like to Sell" },
+            { number: 4, label: "Product Type" },
+            { number: 5, label: "Shipping Info" },
+            { number: 6, label: "Payment Info" },
           ]}
           currentStep={2} // dynamically pass step from parent
         />

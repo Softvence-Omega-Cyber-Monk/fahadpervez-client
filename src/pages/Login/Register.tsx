@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BuyerRegister } from "../Apis/BuyerSignupApi";
@@ -64,10 +65,16 @@ const Register: React.FC = () => {
     <div className="flex min-h-screen flex-row-reverse">
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
-          <div className="mb-8">
+          <div className="mb-1">
             <span className="text-gray-600">Already have an account? </span>
             <Link to="/login" className="text-blue-600 hover:underline">
               Login
+            </Link>
+          </div>
+          <div className="mb-8">
+            <span className="text-gray-600">Register as a Seller? </span>
+            <Link to="/signup" className="text-blue-600 hover:underline">
+              Seller Registration
             </Link>
           </div>
 

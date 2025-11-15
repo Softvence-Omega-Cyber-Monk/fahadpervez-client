@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { sendSupportMessage } from "../Apis/Customer";
 
@@ -59,7 +60,6 @@ const CustomerSupport: React.FC = () => {
       setLoading(true);
       const response = await sendSupportMessage(formData);
       console.log("✅ Support message sent:", response.data);
-
       setSubmitted(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setSubmitted(false), 3000);
@@ -72,7 +72,7 @@ const CustomerSupport: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 mt-20">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Get in Touch</h1>

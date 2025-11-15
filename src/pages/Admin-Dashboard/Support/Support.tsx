@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useMemo } from "react";
 import { X, Eye, TrendingUp, Clock, CheckCircle, Trash2, Loader2 } from "lucide-react";
 import {

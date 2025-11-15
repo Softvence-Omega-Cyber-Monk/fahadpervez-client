@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/api/CustomerSupport.ts
 import axios from "axios";
 

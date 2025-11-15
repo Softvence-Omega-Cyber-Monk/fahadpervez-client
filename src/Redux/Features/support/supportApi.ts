@@ -47,7 +47,7 @@ interface ApiResponse<T> {
 }
 
 export const supportApi = baseApi.injectEndpoints({
-  endpoints: (builder : any) => ({
+  endpoints: (builder) => ({
     // Create a new support message
     createSupportMessage: builder.mutation({
       query: (data: ICreateSupportMessage) => ({
