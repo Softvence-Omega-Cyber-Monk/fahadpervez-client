@@ -14,8 +14,10 @@ import { useGetAllWishListQuery } from "@/Redux/Features/wishlist/wishlist.api";
 import { useGetMeQuery } from "@/Redux/Features/auth/auth.api";
 import { useUserLogoutMutation } from "@/Redux/Features/user/user.api";
 import { useGetAllCategoriesQuery } from "@/Redux/Features/categories/categories.api";
+import { TfiWallet } from "react-icons/tfi";
 
-const Navbar: React.FC = () => {
+
+const Navbar: React.FC = () => {  
   const [menuOpen, setMenuOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
@@ -226,6 +228,9 @@ useEffect(() => {
                 </div>
               )}
             </div>
+
+            <TfiWallet className="text-gray-700 size-6 cursor-pointer hover:scale-110 transition-transform" />
+
           </div>
 
           {/* Hamburger for md and below */}
@@ -305,6 +310,7 @@ useEffect(() => {
               </div>
             </div>
           )}
+          <TfiWallet className="text-gray-700 size-6 cursor-pointer hover:scale-110 transition-transform" />
           <button onClick={() => setSidebarOpen(false)} className="p-1 hover:bg-white/20 rounded-lg transition-colors">
             <X className="" size={24} />
           </button>
@@ -418,7 +424,7 @@ useEffect(() => {
               </button>
             )}
           </div>
-
+            
         </div>
       </div>
 
